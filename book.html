@@ -114,64 +114,67 @@
         /* MEDIA QUERIES SOLO PER MOBILE (Fino a 768px)                       */
         /* ------------------------------------------------------------------ */
         @media (max-width: 768px) {
+            /* Manteniamo il blocco totale del body per dare il 100% all'iframe */
             body { 
-                /* Permettiamo lo scroll di tutta la pagina se serve */
-                overflow-y: auto; 
-                height: auto; 
-                min-height: 100vh;
+                height: 100vh; 
+                overflow: hidden; 
             }
 
-            /* Struttura Navigazione a blocchi */
+            /* Navigazione orizzontale scorrevole, tutto su una riga */
             nav {
-                flex-direction: column;
-                padding: 10px;
-                gap: 10px;
-            }
-
-            /* Badge: nasconde il nome per risparmiare spazio */
-            .user-fullname { display: none; }
-            .user-badge { padding: 5px; background: transparent; border: none; }
-            .nav-left { width: 100%; justify-content: center; }
-
-            /* Menu orizzontale scorrevole (come nelle altre pagine) */
-            nav ul {
-                justify-content: flex-start;
+                flex-direction: row;
                 flex-wrap: nowrap;
                 overflow-x: auto;
-                padding: 10px 0;
+                -webkit-overflow-scrolling: touch;
+                padding: 10px;
                 gap: 15px;
-                scrollbar-width: none; /* Nasconde scrollbar */
-                width: 100%;
+                justify-content: flex-start;
+                scrollbar-width: none; /* Nasconde scrollbar su Firefox */
             }
-            nav ul::-webkit-scrollbar { display: none; }
+            nav::-webkit-scrollbar { display: none; } /* Nasconde scrollbar su Chrome/Safari */
+
+            /* Impediamo il collasso degli elementi */
+            .nav-left, nav ul, .nav-right {
+                flex: 0 0 auto;
+                width: auto;
+                justify-content: flex-start;
+                margin: 0;
+                padding: 0;
+            }
+
+            .user-fullname { display: none; }
+            .user-badge { padding: 5px; background: transparent; border: none; }
+            
+            nav ul {
+                gap: 15px;
+                overflow: visible;
+            }
+            
             nav ul li a { font-size: 0.9rem; }
 
-            /* Area bottoni e logo */
             .nav-right {
                 flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-                width: 100%;
+                flex-wrap: nowrap;
                 gap: 10px;
+                align-items: center;
             }
+
             .nav-right .caricoPDF, .nav-right .stampaPDF {
                 margin: 0;
                 padding: 8px 15px;
                 font-size: 0.8rem;
-                flex: 1 1 40%; /* I bottoni prendono circa metà riga */
-                max-width: 150px;
             }
+
             .nav-logo {
-                width: 100%;
-                text-align: center;
-                margin-top: 5px;
+                margin-left: 5px;
             }
             .nav-logo img { height: 30px; }
 
-            /* Gestione Iframe su mobile */
+            /* Il wrapper dell'iframe prende tutto lo spazio rimanente */
             .iframe-wrapper {
-                /* Altezza fissa su mobile per permettere lo scorrimento del PDF al suo interno */
-                min-height: 70vh; 
+                flex: 1;
+                height: auto;
+                width: 100%;
             }
         }
     </style>
