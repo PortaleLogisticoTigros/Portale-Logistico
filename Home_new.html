@@ -14,11 +14,14 @@
             margin: 0;
             background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%);
             font-family: 'Montserrat', sans-serif;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh; /* Permette al body di crescere se ci sono molti box */
+            overflow-x: hidden;
+            overflow-y: auto; /* Attiva lo scroll verticale generale */
             display: flex;
             flex-direction: column;
         }
+
+        
 
        
         nav {
@@ -83,12 +86,12 @@
             flex: 1;
             display: flex;
             flex-wrap: wrap;
-            justify-content: safe center;
-            align-content: safe center;
+            justify-content: center;
+            align-content: flex-start; /* Allinea i box dall'alto così puoi scrollare */
             gap: 40px;
-            padding: 40px;
+            padding: 40px 20px;
             z-index: 50;
-            overflow-y: auto;
+            overflow-y: visible; /* Lasciamo che sia il body a gestire lo scroll */
         }
 
         container-glass::-webkit-scrollbar {
@@ -145,16 +148,29 @@
             background: rgba(0, 0, 0, 0.8);
         }
 
-        .book-glass-box, .report-glass-box, .accessi-glass-box, .frutta-glass-box, .manutenzione-glass-box, .haccp-glass-box, .trasporti-glass-box, .freschi-glass-box, .impost-glass-box {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            padding: 20px; border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-            text-align: center; width: 400px; height: 250px;      /**<-------------------------  MODIFICARE LA GRANDEZZA DEI BOX DEL MENU ***/
-            cursor: pointer; transition: all 0.4s ease;
-            animation: apparizioneIniziale 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
+       .book-glass-box, .report-glass-box, .accessi-glass-box, .frutta-glass-box, 
+            .manutenzione-glass-box, .haccp-glass-box, .trasporti-glass-box, 
+            .freschi-glass-box, .impost-glass-box {
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(15px);
+                padding: 20px; 
+                border-radius: 20px;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+                text-align: center; 
+                
+                /* DIMENSIONI GRANDI COME PRIMA */
+                width: 400px; 
+                height: 250px;
+                
+                /* ADATTAMENTO MOBILE */
+                max-width: 90vw; /* Se lo schermo è più piccolo di 400px, il box si stringe */
+                
+                cursor: pointer; 
+                transition: all 0.4s ease;
+                box-sizing: border-box; /* Impedisce al padding di allargare il box */
+                animation: apparizioneIniziale 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            }
 
         @keyframes apparizioneIniziale {
             0% { opacity: 0; filter: blur(20px); transform: scale(0.85); }
@@ -326,6 +342,36 @@
 
         .impost-glass-box:hover .impost_before, .report-glass-box:hover .report_before, .accessi-glass-box:hover .accessi_before, .frutta-glass-box:hover .frutta_before, .manutenzione-glass-box:hover .manutenzione_before, .haccp-glass-box:hover .haccp_before, .trasporti-glass-box:hover .trasporti_before, .freschi-glass-box:hover .freschi_before { width: 300px; }
         .impost-glass-box:hover .impost_before span, .report-glass-box:hover .report_before span, .accessi-glass-box:hover .accessi_before span, .frutta-glass-box:hover .frutta_before span, .manutenzione-glass-box:hover .manutenzione_before span, .haccp-glass-box:hover .haccp_before span, .trasporti-glass-box:hover .trasporti_before SPAN,.freschi-glass-box:hover .freschi_before span { transform: scale(1.5); }
+        
+                @media (max-width: 768px) {
+                        nav {
+                            flex-direction: column;
+                            height: auto;
+                            padding: 15px 10px;
+                        }
+
+                        nav ul {
+                            flex-direction: row;
+                            flex-wrap: wrap; /* Mette i link su più righe se non ci stanno */
+                            gap: 10px;
+                            margin: 15px 0;
+                            font-size: 0.9rem;
+                        }
+
+                        .nav-left, .nav-right {
+                            width: 100%;
+                            justify-content: center;
+                        }
+
+                        /* Rende le icone interne ai box un po' più flessibili per non uscire dai bordi se il box si stringe */
+                        .report_before, .frutta_before, .accessi_before, .manutenzione_before, 
+                        .haccp_before, .trasporti_before, .freschi_before, .impost_before {
+                            width: 130px;
+                            height: 130px;
+                        }
+                    }
+
+
 
     </style>
 </head>
