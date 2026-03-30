@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piattaforma Tigros - Home</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <style>
+        body { margin: 0; background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%); font-family: 'Segoe UI', sans-serif; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+        /* NAV SNELLA CON TASTO AGGIORNA FISSO VICINO AL LOGO */
+        nav { 
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); 
+            padding: 0 20px; display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2); height: 60px; position: relative; z-index: 100; 
+        }
+
+        .nav-left { flex: 1; display: flex; justify-content: flex-start; }
+        .user-badge { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.15); padding: 5px 12px; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.2); }
+        .user-initials { width: 30px; height: 30px; background: #ffcc00; color: #003087; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-family: Impact; font-size: 0.85rem; }
+        .user-fullname { color: white; font-size: 0.85rem; font-weight: 600; text-transform: capitalize; }
+
+        nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; flex: 2; justify-content: center; }
+        li a { text-decoration: none; color: white; font-family: Impact, sans-serif; font-size: 1.15rem; cursor: pointer; }
+        
+        .nav-right { flex: 1; display: flex; justify-content: flex-end; align-items: center; gap: 15px; }
+        .nav-logo img { height: 45px; width: auto; transition: 0.3s; cursor: pointer; }
+
+        .bnt_aggiorna { 
+            background: #ffcc00; color: #003087; font-family: Impact; border: none; 
+            border-radius: 8px; cursor: pointer; padding: 8px 15px; font-size: 16px; 
+            white-space: nowrap; transition: 0.2s;
+        }
+        .bnt_aggiorna:hover { transform: scale(1.05); background: #fff; }
+
+        
+        .btn-prev {
+            list-style: none;
+            background: #ffcc00; color: #003087; font-family: Impact; border: none; 
+            border-radius: 8px; cursor: pointer; padding: 8px 15px; font-size: 16px; 
+            white-space: nowrap; transition: 0.2s;
+        }
+        .btn-prev:hover { transform: scale(1.05); background: #fff; }
+
+        .container-glass { position: absolute; top: 8%; left: 1%; width: 98%; height: 90%; z-index: 10; }
+
+    
+        .laterale-glass-box {
+            position: absolute; display: flex; flex-direction: column; align-items: center; padding: 30px; width: 400px; height: 970px; 
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            gap: 20px;
+        }
+        .laterale-glass-box h2, .laterale-glass-box h3 { font-family: Impact; color: #ffcc00; font-size: 35px; margin: 0; text-align: center; }
+        .laterale-glass-box label { display: flex; flex-direction: column; align-items: center; font-family: Impact; font-size: 30px; color: #ffcc00; gap: 5px; }
+        .laterale-glass-box span { color: white; font-size: 35px; font-family: Verdana; background: rgba(255, 204, 0, 0.15); padding: 10px 40px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.1); min-width: 150px; text-align: center; }
+        
+   
+        #wkInevPer, span[id$="InevPer"] { 
+            background: rgba(247, 60, 60, 0.38) !important; 
+            font-weight: bold;
+        }
+
+
+        .centrale-glass-box {
+            position: absolute; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 20px; padding: 40px;
+            width: 500px; height: 300px; top: 1px; left: 500px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px;
+        }
+        .input-group { display: flex; align-items: center; width: 100%; }
+        .input-group label { font-family: Impact; color: #ffcc00; font-size: 1.2rem; width: 200px; }
+        .input-group input { width: 200px; height: 40px; font-size: 1.1rem; border-radius: 8px; padding: 0 15px; border: none; }
+
+   
+        .week-glass-box {
+            position: absolute; display: flex; width: 1200px; height: 317px; top: 1px; left: 1100px; padding: 30px; 
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .gruppoWeek { position: absolute; display: flex; flex-direction: row; justify-content: space-around; width: 94%; left: 3%; top: 20px; }
+        .gruppoWeek label { display: flex; flex-direction: column; align-items: center; font-family: Impact; font-size: 24px; gap: 15px; color: #ffcc00; }
+        .gruppoWeek span { color: white; font-size: 20px; font-family: Verdana; background: rgba(255, 204, 0, 0.15); padding: 3px 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); min-width: 40px; text-align: center; }
+
+     
+        .riepilogo-glass-box {
+            position: absolute; width: 1800px; height: 550px; padding: 30px; top: 420px; left: 500px; 
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2);
+            display: block !important; overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <div class="user-badge">
+                <div class="user-initials" id="userInitials">??</div>
+                <span class="user-fullname" id="userFullname">Utente</span>
+            </div>
+        </div>
+        <ul>
+            <li><a href="Home_new.html" style="color: #ffcc00;">HOME</a></li>
+            <li><a onclick="confermaEsci()" style="color: #efba0a; cursor:pointer">ESCI</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="btn-prev"onclick="location.href='home_freschi.html'">INDIETRO</button>
+            <button class="bnt_aggiorna" onclick="caricaDatiSettimana()">AGGIORNA DATI</button>
+            <div class="nav-logo"><img src="LOGO_TIGROS_VERTICALE.jpg" alt="Logo Tigros"></div>
+        </div>
+    </nav>
+
+    <div class="container-glass">
+        <div class="laterale-glass-box">
+            <h2>RIEPILOGO</h2>
+            <h3 id="displayWk">WEEK --</h3>
+            <label>COLLI ORDINATI <span id="wkOrd">0</span></label>
+            <label>COLLI EVASI <span id="wkEva">0</span></label>
+            <label>INEVASO LOG. <span id="wkInev">0</span></label>
+            <label>% INEVASO <span id="wkInevPer">0%</span></label>
+        </div>
+
+        <div class="week-glass-box">
+            <div class="gruppoWeek">
+                <label>LUNEDÌ <span id="LunOrd">0</span><span id="LunEva">0</span><span id="LunInev">0</span><span id="LunInevPer">0%</span></label>
+                <label>MARTEDÌ <span id="MarOrd">0</span><span id="MarEva">0</span><span id="MarInev">0</span><span id="MarInevPer">0%</span></label>
+                <label>MERCOLEDÌ <span id="MerOrd">0</span><span id="MerEva">0</span><span id="MerInev">0</span><span id="MerInevPer">0%</span></label>
+                <label>GIOVEDÌ <span id="GioOrd">0</span><span id="GioEva">0</span><span id="GioInev">0</span><span id="GioInevPer">0%</span></label>
+                <label>VENERDÌ <span id="VenOrd">0</span><span id="VenEva">0</span><span id="VenInev">0</span><span id="VenInevPer">0%</span></label>
+                <label>SABATO <span id="SabOrd">0</span><span id="SabEva">0</span><span id="SabInev">0</span><span id="SabInevPer">0%</span></label>
+                <label>DOMENICA <span id="DomOrd">0</span><span id="DomEva">0</span><span id="DomInev">0</span><span id="DomInevPer">0%</span></label>
+            </div>
+        </div>
+
+        <div class="centrale-glass-box">
+            <div class="input-group"><label>DATA</label><input type="date" id="in_giorno"></div>
+            <div class="input-group"><label>ORDINATI</label><input type="number" id="in_ordinati"></div>
+            <div class="input-group"><label>EVASI</label><input type="number" id="in_evasi"></div>
+            <div class="input-group"><label>INEVASO LOG.</label><input type="number" id="in_inevaso"></div>
+            <button id="btnSalva" onclick="scriviDati()" style="width: 250px; height: 50px; background:#ffcc00; color:#003087; font-family:Impact; border:none; border-radius:8px; cursor:pointer; font-size:20px; margin-left:120px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">SALVA DATI</button>
+        </div>
+
+        <div class="riepilogo-glass-box">
+            <canvas id="chartSettimanale"></canvas>
+        </div>
+    </div>
+
+    <script>
+        Chart.register(ChartDataLabels);
+        let mioGrafico = null;
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbwI91Xm_XtjU-OqjFBJ3C9ZAi7M-wVN58fDzI4iHSwNmRaCjmDZilLD0UD8J-9gXdzm/exec";
+
+        window.onload = function() {
+            const nomeLog = localStorage.getItem("utenteLoggato") || "Ospite";
+            document.getElementById('userFullname').innerText = nomeLog;
+            document.getElementById('userInitials').innerText = nomeLog.substring(0,2).toUpperCase();
+            document.getElementById('displayWk').innerText = "WEEK " + getSettimanaCorrente();
+            caricaDatiSettimana();
+        };
+
+        async function scriviDati() {
+            const btn = document.getElementById('btnSalva');
+            const payload = {
+                giorno: document.getElementById('in_giorno').value,
+                ordinati: document.getElementById('in_ordinati').value,
+                evasi: document.getElementById('in_evasi').value,
+                inevaso: document.getElementById('in_inevaso').value,
+                azione: 'salvaInevasiFreschi'
+            };
+
+            if(!payload.giorno || !payload.ordinati) { alert("Data e Ordinati obbligatori!"); return; }
+            btn.innerText = "SALVATAGGIO..."; btn.disabled = true;
+
+            try {
+                await fetch(webAppUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+                alert("Dati salvati correttamente!");
+                // Svuoto i campi input
+                document.getElementById('in_giorno').value = "";
+                document.getElementById('in_ordinati').value = "";
+                document.getElementById('in_evasi').value = "";
+                document.getElementById('in_inevaso').value = "";
+                caricaDatiSettimana();
+            } catch(e) { alert("Errore connessione"); }
+            finally { btn.innerText = "SALVA DATI"; btn.disabled = false; }
+        }
+
+        async function caricaDatiSettimana() {
+            let btn = (window.event && window.event.target && window.event.target.tagName === 'BUTTON') ? window.event.target : null;
+            if (btn) { btn.innerText = "SYNC..."; btn.disabled = true; }
+
+            try {
+                const response = await fetch(webAppUrl);
+                const datiSettimana = await response.json();
+
+                const mappa = { 1: "Lun", 2: "Mar", 3: "Mer", 4: "Gio", 5: "Ven", 6: "Sab", 0: "Dom" };
+                let tOrd = 0, tEva = 0, tInev = 0;
+
+                for (let g in datiSettimana) {
+                    let pref = mappa[g];
+                    let info = datiSettimana[g];
+                    if (pref) {
+                        let ord = parseFloat(info.ordinati) || 0;
+                        let inev = parseFloat(info.inevaso) || 0;
+                        let per = ord > 0 ? (inev / ord * 100) : 0;
+                        tOrd += ord; tEva += (parseFloat(info.evasi) || 0); tInev += inev;
+
+                        document.getElementById(pref + "Ord").innerText = ord.toLocaleString('it-IT');
+                        document.getElementById(pref + "Eva").innerText = (parseFloat(info.evasi) || 0).toLocaleString('it-IT');
+                        document.getElementById(pref + "Inev").innerText = inev.toLocaleString('it-IT');
+                        document.getElementById(pref + "InevPer").innerText = per.toFixed(2) + "%";
+                    }
+                }
+
+                document.getElementById("wkOrd").innerText = tOrd.toLocaleString('it-IT');
+                document.getElementById("wkEva").innerText = tEva.toLocaleString('it-IT');
+                document.getElementById("wkInev").innerText = tInev.toLocaleString('it-IT');
+                document.getElementById("wkInevPer").innerText = tOrd > 0 ? (tInev/tOrd*100).toFixed(2) + "%" : "0%";
+
+                disegnaGrafico(datiSettimana);
+            } catch (e) { console.error(e); }
+            finally { if(btn) { btn.innerText = "AGGIORNA DATI"; btn.disabled = false; } }
+        }
+
+        function disegnaGrafico(datiSettimana) {
+            const ctx = document.getElementById('chartSettimanale').getContext('2d');
+            if (mioGrafico) mioGrafico.destroy();
+
+            const labels = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"];
+            const ordine = [1, 2, 3, 4, 5, 6, 0];
+            const datasetOrd = ordine.map(g => datiSettimana[g]?.ordinati || 0);
+            const datasetPer = ordine.map(g => {
+                let o = datiSettimana[g]?.ordinati || 0;
+                return o > 0 ? ((datiSettimana[g]?.inevaso || 0) / o * 100).toFixed(2) : 0;
+            });
+
+            mioGrafico = new Chart(ctx, {
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            type: 'line', 
+                            label: '% Inevaso', 
+                            data: datasetPer, 
+                            borderColor: '#ff4d4d', 
+                            backgroundColor: '#ff4d4d', 
+                            borderWidth: 4, 
+                            pointRadius: 0,       // RIMOSSI PALLINI
+                            tension: 0.4,         // LINEA SMUSSATA
+                            yAxisID: 'y1',
+                            datalabels: { display: true, align: 'top', color: 'white', font: { weight: 'bold', size: 15 }, formatter: v => v > 0 ? v + '%' : '' }
+                        },
+                        {
+                            type: 'bar', 
+                            label: 'Ordinati', 
+                            data: datasetOrd, 
+                            backgroundColor: 'rgba(255, 204, 0, 0.5)', 
+                            borderColor: '#ffcc00', 
+                            borderWidth: 1, 
+                            yAxisID: 'y',
+                            datalabels: { display: true, anchor: 'end', align: 'top', color: '#ffcc00', font: { weight: 'bold', size: 14 } }
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        y: { position: 'left', ticks: { color: 'white' }, title: { display: true, text: 'Volumi Colli', color: '#ffcc00' } },
+                        y1: { position: 'right', min: -1, ticks: { color: 'white', callback: v => v + '%' }, grid: { drawOnChartArea: false } },
+                        x: { ticks: { color: 'white', font: { family: 'Impact', size: 18 } } }
+                    },
+                    plugins: { legend: { labels: { color: 'white', font: { family: 'Impact' } } } }
+                }
+            });
+        }
+
+        function getSettimanaCorrente() {
+            const oggi = new Date(); const target = new Date(oggi.valueOf());
+            const dayNr = (oggi.getDay() + 6) % 7;
+            target.setDate(target.getDate() - dayNr + 3);
+            const firstThursday = target.valueOf();
+            target.setMonth(0, 1);
+            if (target.getDay() !== 4) target.setMonth(0, 1 + ((4 - target.getDay() + 7) % 7));
+            let numWk = 1 + Math.ceil((firstThursday - target) / 604800000);
+            let wkStr = numWk < 10 ? "0" + numWk : numWk;
+            return wkStr + "-" + oggi.getFullYear(); // Formato: WEEK-ANNO
+        }
+
+        function confermaEsci() { if(confirm("Sicuro di voler uscire?")) window.location.href="index_new.html"; }
+    </script>
+</body>
+</html>

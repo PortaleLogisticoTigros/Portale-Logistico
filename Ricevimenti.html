@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piattaforma Tigros - Viaggi</title>
+    <style>
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%);
+            font-family: 'Segoe UI', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; 
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-left {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 5px 12px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .user-initials {
+            width: 30px;
+            height: 30px;
+            background: #ffcc00;
+            color: #003087;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-family: Impact, sans-serif;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .user-fullname {
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            white-space: nowrap;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+            margin: 0;
+            padding: 0;
+            flex: 2;
+            justify-content: center;
+        }
+
+        li a {
+            text-decoration: none;
+            text-align: center;
+            color: white;
+            font-family: Impact, sans-serif;
+            font-size: 1.2rem;
+            display: inline-block;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+
+        .nav-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .nav-logo img {
+            height: 40px;
+            width: auto;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+        }
+
+        ul:hover li a { filter: blur(3px); opacity: 0.5; transform: scale(0.9); }
+        ul li a:hover { filter: blur(0px); opacity: 1; transform: scale(1.2); color: #ffcc00; }
+        li a.logout { color: #efba0a; }
+        li a.logout:hover { color: #ff0000; text-shadow: 0 0 15px rgba(255, 0, 0, 0.6); }
+
+
+        .iframe-wrapper {
+            flex-grow: 1;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <div class="user-badge">
+                <div class="user-initials" id="userInitials">??</div>
+                <span class="user-fullname" id="userFullname">Utente</span>
+            </div>
+        </div>
+
+        <ul>
+            <li><a href="Home_new.html">HOME</a></li>
+            <li><a href="Viaggi.html">DASHBOARD VIAGGI</a></li>
+            <li><a href="Ordini.html">DASHBOARD ORDINI</a></li>
+            <li><a href="Ricevimenti.html"  style="color: #ffcc00;">DASHBOARD RICEVIMENTI</a></li>
+            
+            <li><a onclick="confermaEsci()" class="logout">ESCI</a></li>
+        </ul>
+
+        <div class="nav-right">
+            <div class="nav-logo">
+                <img src="LOGO_TIGROS_VERTICALE.jpg" alt="Logo Tigros">
+            </div>
+        </div>
+    </nav>
+
+    <div class="iframe-wrapper">
+        <iframe id="dashboardFrame" 
+                src="http://10.9.0.144:8080/Dashboard/Cedi/ricevimentoMerci/ricevimentomerci.php" 
+                allowfullscreen="" 
+                loading="lazy">
+        </iframe>
+    </div>
+
+    <script>
+
+        window.onload = function() {
+            const nomeUtente = localStorage.getItem("utenteLoggato") || "Ospite";
+            document.getElementById('userFullname').innerText = nomeUtente;
+            
+            const parti = nomeUtente.split(/[._ ]/); 
+            let iniziali = "";
+            if (parti.length > 1) {
+                iniziali = parti[0][0] + (parti[1][0] || "");
+            } else {
+                iniziali = parti[0][0] + (parti[0][1] || "");
+            }
+            document.getElementById('userInitials').innerText = iniziali.toUpperCase();
+        };
+
+  
+        setInterval(function() {
+            const frame = document.getElementById('dashboardFrame');
+            frame.src = frame.src; 
+            console.log("Dashboard aggiornata");
+        }, 20000); 
+
+        function confermaEsci() {
+            if (confirm("Sei sicuro di voler uscire dalla Piattaforma Tigros?")) {
+                localStorage.removeItem("utenteLoggato");
+                window.location.href = "index.html";
+            }
+        }
+
+        function tornaHome(){
+            window.location.href = "Home.html";
+        }
+    </script>
+
+</body>
+</html>

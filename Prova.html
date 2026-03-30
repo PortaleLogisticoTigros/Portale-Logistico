@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tigros - Dashboard Qualità</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { margin: 0; background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%); font-family: 'Segoe UI', sans-serif; color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        #loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 48, 135, 0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
+        .spinner { width: 50px; height: 50px; border: 5px solid rgba(255, 255, 255, 0.3); border-top-color: #ffcc00; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        nav { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+        .filter-bar { background: rgba(255, 255, 255, 0.05); padding: 15px 30px; display: flex; gap: 20px; align-items: center; }
+        select { background: rgba(0, 48, 135, 0.8); color: white; border: 1px solid #ffcc00; padding: 8px 15px; border-radius: 5px; font-family: Impact; }
+        .container { display: grid; grid-template-columns: 450px 1fr; gap: 20px; padding: 20px; flex-grow: 1; overflow: hidden; }
+        .sidebar { overflow-y: auto; padding-right: 10px; }
+        .card, .chart-container { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.2); }
+        h2 { font-family: Impact; color: #ffcc00; margin: 0 0 10px 0; text-transform: uppercase; border-bottom: 2px solid #ffcc00; }
+        .month-row { display: grid; grid-template-columns: 110px 1fr 75px; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .month-stats { display: flex; gap: 12px; justify-content: center; font-size: 0.85rem; font-weight: bold; }
+        .stat-ok { color: #4eff4e; } .stat-no { color: #ff4d4d; }
+        .month-incid { text-align: right; font-family: Impact; font-size: 1.2rem; color: #ffcc00; }
+        .chart-wrapper { flex-grow: 1; position: relative; height: 500px; }
+    </style>
+</head>
+<body>
+
+    <div id="loader-overlay">
+        <div class="spinner"></div>
+        <p id="loader-text" style="margin-top: 15px; font-family: Impact; color: #ffcc00;">LETTURA DATI FOGLIO GOOGLE...</p>
+        <div id="debug-log" style="font-size: 10px; color: white; margin-top: 10px;"></div>
+    </div>
+
+    <nav>
+        <div style="font-family: Impact; font-size: 1.5rem; color: #ffcc00;">TIGROS - KPI QUALITÀ</div>
+        <button onclick="location.href='Home.html'" style="background: #ffcc00; color: #003087; border: none; padding: 8px 20px; border-radius: 5px; font-family: Impact; cursor: pointer;">HOME</button>
+    </nav>
+
+    <div class="filter-bar">
+        <span>Anno:</span>
+        <select id="selectAnno" onchange="processaDati()">
+            <option value="2024">2024</option>
+            <option value="2025" selected>2025</option>
+            <option value="2026">2026</option>
+        </select>
+        <span id="counter-display" style="margin-left:auto; font-weight: bold; color:#ffcc00;"></span>
+    </div>
+
+    <div class="container">
+        <div class="sidebar"><div class="card"><h2>REPORT MENSILE</h2><div id="listaMesi"></div></div></div>
+        <div class="chart-container"><h2>ANDAMENTO ANNUALE</h2><div class="chart-wrapper"><canvas id="annualChart"></canvas></div></div>
+    </div>
+
+    <script>
+        let datiOriginali = [];
+        let mioGrafico;
+        const nomiMesi = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
+        
+        // Link CSV
+        const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSEU_jF9mbvM3Md2lTz9A67HYiYFWkmoVV9oTKPRWweb_-DaVWg_yEFEyYXj2l2w9s0LT2i54OZq3AA/pub?gid=0&single=true&output=csv'; 
+
+        async function caricaDati() {
+            const loader = document.getElementById('loader-overlay');
+            const debugLog = document.getElementById('debug-log');
+            try {
+                const response = await fetch(sheetUrl + '&t=' + new Date().getTime());
+                const rawData = await response.text();
+                const lines = rawData.split(/\r?\n/).filter(l => l.trim().length > 10);
+                
+                debugLog.innerText = "Linee trovate: " + lines.length;
+
+                datiOriginali = lines.slice(1).map((line, i) => {
+                    // Split avanzato per gestire virgole nel testo
+                    const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                    return {
+                        esito: cols[70] ? cols[70].replace(/"/g, "").trim().toLowerCase() : "",
+                        mese: cols[77] ? cols[77].replace(/"/g, "").trim() : "",
+                        anno: cols[78] ? cols[78].replace(/"/g, "").trim() : ""
+                    };
+                });
+
+                processaDati();
+                loader.style.display = 'none';
+            } catch (e) {
+                console.error(e);
+                document.getElementById('loader-text').innerText = "ERRORE DI RETE O CSV";
+                debugLog.innerText = e.message;
+            }
+        }
+
+        function processaDati() {
+            const annoScelto = document.getElementById('selectAnno').value;
+            let mensili = Array.from({ length: 12 }, (_, i) => ({ nome: nomiMesi[i], ok: 0, no: 0, tot: 0 }));
+            let validi = 0;
+
+            datiOriginali.forEach(r => {
+                const cleanAnno = r.anno.replace(/\D/g, "");
+                const cleanMese = parseInt(r.mese.replace(/\D/g, ""), 10);
+
+                if (cleanAnno === annoScelto && !isNaN(cleanMese)) {
+                    const idx = cleanMese - 1;
+                    if (idx >= 0 && idx < 12) {
+                        mensili[idx].tot++;
+                        validi++;
+                        if (r.esito.includes("neg") || r.esito.includes("non") || r.esito === "no") {
+                            mensili[idx].no++;
+                        } else {
+                            mensili[idx].ok++;
+                        }
+                    }
+                }
+            });
+
+            document.getElementById('counter-display').innerText = "CONTROLLI TROVATI: " + validi;
+            aggiornaUI(mensili);
+        }
+
+        function aggiornaUI(dati) {
+            const labels = dati.map(d => d.nome);
+            const nTot = dati.map(d => d.tot);
+            const nIncid = dati.map(d => d.tot > 0 ? ((d.no / d.tot) * 100).toFixed(1) : 0);
+
+            const listaDiv = document.getElementById('listaMesi');
+            listaDiv.innerHTML = '';
+            dati.forEach((d, i) => {
+                listaDiv.innerHTML += `
+                    <div class="month-row">
+                        <span style="font-family:Impact">${d.nome}</span>
+                        <div class="month-stats"><span class="stat-ok">OK: ${d.ok}</span><span class="stat-no">NO: ${d.no}</span></div>
+                        <span class="month-incid">${nIncid[i]}%</span>
+                    </div>`;
+            });
+
+            const ctx = document.getElementById('annualChart').getContext('2d');
+            if (mioGrafico) mioGrafico.destroy();
+            mioGrafico = new Chart(ctx, {
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { type: 'bar', label: 'Totale', data: nTot, backgroundColor: 'rgba(255, 204, 0, 0.8)', yAxisID: 'y' },
+                        { type: 'line', label: 'Incidenza %', data: nIncid, borderColor: 'white', borderWidth: 3, yAxisID: 'y1' }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        y: { ticks: { color: 'white' } },
+                        y1: { position: 'right', beginAtZero: true, ticks: { color: 'white', callback: v => v + '%' }, grid: { drawOnChartArea: false } }
+                    }
+                }
+            });
+        }
+        caricaDati();
+    </script>
+</body>
+</html>

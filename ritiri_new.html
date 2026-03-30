@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tigros - Gestione Ritiri e Richiami</title>
+    <link rel="icon" type="image/png" href="images.png">
+    <link rel="apple-touch-icon" href="images.png">
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+        body { 
+            margin: 0; 
+            background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%); 
+            font-family: 'Montserrat', sans-serif;
+            color: white; 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+        }
+
+
+        nav { 
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(10px); 
+            padding: 10px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            min-height: 60px;
+        }
+
+        .search-box {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 15px;
+            border-radius: 10px;
+            width: 700px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            align-items: center;
+            margin: 0 20px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            outline: none;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .btn-home { 
+            background: #ffcc00; 
+            color: #003087; 
+            border: none; 
+            padding: 8px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-weight: bold;
+        }
+
+        .btn-prev{ 
+            background: #ffcc00; 
+            color: #003087; 
+            border: none; 
+            padding: 8px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-weight: bold;
+        }
+
+        .btn-home:hover, .btn-prev:hover { 
+            background: #ffdb4d;
+            
+        }
+
+       
+        .filter-bar { 
+            background: rgba(255, 255, 255, 0.05); 
+            padding: 10px 30px; 
+            display: flex; 
+            gap: 15px; 
+            align-items: center; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+        }
+
+        .btn-aggiungi, .btn-aggiorna { 
+            background: #ffcc00; 
+            color: #003087; 
+            border: none; 
+            padding: 10px 30px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .btn-aggiungi { margin-left: auto; }
+        .btn-aggiungi:hover, .btn-aggiorna:hover { transform: scale(1.05); }
+
+        select { 
+            background: #003087; 
+            color: white; 
+            border: 1px solid #ffcc00; 
+            padding: 8px 15px; 
+            border-radius: 5px; 
+        }
+
+        .main-container { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px; 
+            overflow-y: auto; 
+            gap: 20px; 
+        }
+
+        .top-row { display: flex; width: 98%; gap: 20px; justify-content: center; flex-wrap: wrap; }
+
+        .hero-glass, .box_lato {
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(15px);
+            padding: 20px; 
+            border-radius: 20px; 
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .hero-glass { width: 30%; min-width: 300px; text-align: center; }
+        .box_lato { width: 65%; display: flex; align-items: center; gap: 20px; min-width: 400px; }
+
+        .reparti-list {
+            display: flex; flex-wrap: wrap; flex: 1; list-style: none; padding: 0; margin: 0;
+            font-weight: bold; color: #ffcc00;
+        }
+
+        .reparti-list li { width: 25%; margin-bottom: 10px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px;}
+        
+        .reparti-list span {
+                display: inline-block;
+                text-align: center;
+                min-width: 35px;
+                font-size: 25px;
+                background-color: #003087;
+                color: #ffcc00;
+                padding: 2px 5px;
+                border-radius: 8px;
+            }
+
+        .filter-title { font-size: 35px; color: #ffcc00; font-weight: bold; letter-spacing: 1px; align-items: center; margin-bottom: 10px;}
+
+        .readingData {
+            display: inline-block;
+            font-size: 30px; 
+            color: #ffcc00; 
+            margin-top: 20px;
+            background-color: #003087;
+            border-radius: 10px;
+            min-width: 40px;
+            padding: 5px 20px;
+
+        }
+
+
+        .table-container { 
+            width: 98%; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); 
+            overflow: auto; background: rgba(0, 0, 0, 0.2);
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #003087; color: #ffcc00; padding: 15px; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid #ffcc00; }
+        td { padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); text-align: center; font-size: 14px; }
+        
+        /* Effetto hover riga */
+        #bodyTable tr:hover { background: rgba(255, 255, 255, 0.05); cursor: pointer; }
+
+
+        .modal-overlay {
+            position: fixed; inset: 0; 
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2000;
+            opacity: 0; visibility: hidden; pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+        }
+
+        .modal-overlay.active {
+            opacity: 1; visibility: visible; pointer-events: auto;
+        }
+
+        .modal-content {
+            background-color: #003087; 
+            margin: auto;
+            padding: 20px;
+            border: 2px solid #ffcc00; 
+            display: flex;
+            flex-direction: column;
+            width: 90%;     
+            max-width: 500px;
+            max-height: 90vh;    
+            overflow-y: auto;    
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 30px; width: 450px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform: scale(0);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-overlay.active .modal-content { transform: scale(1); }
+
+        .modal-content input {
+            width: 100%; padding: 12px; margin: 1px 0; border-radius: 8px;
+            border: 1px solid rgba(255, 204, 0, 0.5); background: rgba(0, 48, 135, 0.7);
+            color: white; outline: none; box-sizing: border-box;
+        }
+
+        .modal-content input::placeholder { color: rgba(255, 255, 255, 0.5); }
+
+        .in_stile {
+            width: 100%;            
+            padding: 12px;          
+            border:1px solid rgba(255, 204, 0, 0.5);
+            border-radius: 5px;    
+            font-size: 16px;
+            margin: 1px 0;      
+            font-family: inherit;  
+            box-sizing: border-box;
+            background-color: rgba(0, 48, 135, 0.7);
+            color: #ffcc00;
+            gap: 10px;
+        }
+        
+        select.in_stile {
+            height: 45px;           
+            cursor: pointer;
+            appearance: none;       
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23003087'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 20px;
+            color: #ffcc00;
+        }
+
+        .in_stile:focus {
+            outline: none;
+            border: 2px solid #ffcc00; 
+        }
+
+        .container-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 5px;
+            cursor: pointer;
+            
+        }
+
+        .custom-checkbox {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: #ffcc00;
+        
+        }
+
+        .label-checkbox {
+            color: white;
+            font-size: 16px;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            user-select: none;      
+            color: #ffcc00; 
+        }
+
+        .container-checkbox:hover .label-checkbox {
+            color: #ffcc00;
+        }
+
+        .context-menu {
+            display: none;
+            position: absolute;
+            background: #003087;
+            border: 2px solid #ffcc00;
+            color: white;
+            z-index: 10000;
+            width: 200px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        .context-menu div {
+            padding: 12px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255,204,0,0.2);
+            transition: background 0.2s;
+        }
+
+        .context-menu div:last-child { border-bottom: none; }
+        .context-menu div:hover { background: #ffcc00; color: #003087; font-weight: bold; }
+
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div style="font-size: 1.5rem; color: #ffcc00; font-weight: bold;">TIGROS - UFFICIO QUALITÀ</div>
+        <div class="search-box">
+            <span>🔍</span>
+            <input type="text" id="searchInput" onkeyup="filtraTabella()" placeholder="Cerca NC, Articolo o Fornitore...">
+        </div>
+        <div style="display:flex; gap:15px; align-items: center;">
+            <button onclick="location.href='home_qualita.html'" class="btn-prev">INDIETRO</button>
+            <button onclick="location.href='Home_new.html'" class="btn-home">HOME</button>
+        </div>
+    </nav>
+
+    <div class="filter-bar">
+        <label style="color: #ffcc00; font-weight: bold;">ANNO:</label>
+        <select id="selectAnno" onchange="renderizzaTabella()">
+            <option value="2026">2026</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+        </select>
+
+        <button onclick="apriModale(event)" class="btn-aggiungi">AGGIUNGI NUOVO</button>
+        <button onclick="location.reload()" class="btn-aggiorna">AGGIORNA</button>
+    </div>
+
+
+
+    <div class="main-container">
+        <div class="top-row">
+            <div class="hero-glass">
+                <h1 class="filter-title" id="titoloFiltro">REPORT 2026</h1>
+                <p class="readingData" id="info-box">Lettura dati...</p>
+            </div>
+
+            <div class="box_lato">
+                <div style="color:#ffcc00; font-size:1.5rem; border-right:2px solid rgba(255,204,0,0.3); padding-right:20px; font-weight: bold;">REPARTI</div>
+                <ul class="reparti-list">
+                    <li>FRESCHI <span id="count-FRESCHI">0</span></li>
+                    <li>ORTOFRUTTA <span id="count-ORTOFRUTTA">0</span></li>
+                    <li>MACELLERIA <span id="count-MACELLERIA">0</span></li>
+                    <li>PESCHERIA <span id="count-PESCHERIA">0</span></li>
+                    <li>GROCERY <span id="count-GROCERY">0</span></li>
+                    <li>NO FOOD <span id="count-NO FOOD">0</span></li>
+                    <li>IGIENE CASA <span id="count-IGIENE CASA">0</span></li>
+                    <li>FREDDO <span id="count-FREDDO">0</span></li>
+                    <li>SURGELATI <span id="count-SURGELATI">0</span></li>
+                    <li>LIQUIDI - BEVANDE <span id="count-LIQUIDI-BEVANDE">0</span></li>  
+                </ul>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>N° NC</th><th>ARTICOLO</th><th>FORNITORE</th><th>MARCHIO</th>
+                        <th>MACRO</th><th>REPARTO</th><th>DATA</th><th>CESS.</th>
+                        <th>Q.TÀ</th><th>CAUSALE</th><th>INIZIATORE</th><th>RICHIAMO</th><th>STATO</th>
+                    </tr>
+                </thead>
+                <tbody id="bodyTable">
+                    <tr><td colspan="13" style="padding:40px; color:#ffcc00; font-size:20px;">Lettura dati in corso...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="customMenu" class="context-menu">
+        <div id="menuModifica">✏️ Modifica Riga</div>
+        <div id="menuElimina" style="color: #ff4444;">🗑️ Elimina Definitivamente</div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent">
+            <h3 style="color:#ffcc00; border-bottom:1px solid #ffcc00; padding-bottom:10px; margin-top: 0;">NUOVO INSERIMENTO</h3>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <input type="text" id="in_numero" class="in_stile" placeholder="Numero NC">
+                    <input type="number" id="in_codArt" class="in_stile" placeholder="Codice Articolo">
+                    <input type="text" id="in_desArt" class="in_stile" placeholder="Descrizione Articolo">
+                    <input type="text" id="in_fornitore" class="in_stile" placeholder="Fornitore">
+                    
+                    <select id="in_marchio" class="in_stile">
+                        <option value="" disabled selected>Seleziona Marchio</option>
+                        <option value="TIGROS">TIGROS</option>
+                        <option value="LABORATORI TIGROS">LABORATORI TIGROS</option>
+                        <option value="INDUSTRIA">INDUSTRIA</option>
+                        <option value="INDUSTRIA - BANCHI TIGROS">INDUSTRIA - BANCHI TIGROS</option>
+                        <option value="PERCORSI DI GUSTO">PERCORSI DI GUSTO</option>
+                        <option value="PRIMIA">PRIMIA</option>
+                        <option value="NOIDUE PRIMIA">NOIDUE PRIMIA</option>
+                        <option value="SPESA LEGGERA">SPESA LEGGERA</option>
+                        <option value="VIA VERDE BIO">VIA VERDE BIO</option>
+                    </select>
+                    <select id="in_Macromarchio" class="in_stile">
+                        <option value="" disabled selected>Seleziona Macro-Marchio</option>
+                        <option value="TIGROS">TIGROS</option>
+                        <option value="INDUSTRIA">INDUSTRIA</option>
+                        <option value="PRIMIA-VVBIO-PDG-NOI2-SPESA LEGGERA">PRIMIA-VVBIO-PDG-NOI2-SPESA LEGGERA</option>
+                    </select>
+                    <select id="in_reparto" class="in_stile">
+                        <option value="" disabled selected>Seleziona Reparto</option>
+                        <option value="GROCERY">GROCERY</option>
+                        <option value="SAFO">SAFO</option>
+                        <option value="PESCHERIA">PESCHERIA</option>
+                        <option value="ORTOFRUTTA">ORTOFRUTTA</option>
+                        <option value="PASTICCERIA">PASTICCERIA</option>
+                        <option value="FRESCHI">FRESCHI</option>
+                        <option value="MACELLERIA">MACELLERIA</option>
+                        <option value="SURGELATI">SURGELATI</option>
+                        <option value="NO FOOD">NO FOOD</option>
+                        <option value="PANETTERIA">PANETTERIA</option>
+                        <option value="IGIENE PERSONA">IGIENE PERSONA</option>
+                        <option value="LIQUIDI - BEVANDE">LIQUIDI - BEVANDE</option>
+                        <option value="FREDDO">FREDDO</option>
+                        <option value="IGIENE CASA">IGIENE CASA</option>
+                        <option value="IGIENE">IGIENE</option>
+                    </select>
+                    <input type="date" id="in_date" placeholder="Inserisci data...">
+                    <select id="in_cessione" class="in_stile">
+                        <option value="" disabled selected>Seleziona Imballo cessione</option>
+                        <option value="PZ">PEZZI</option>
+                        <option value="KG">KG</option>
+                    </select>
+                    <input type="number" id="in_quantita" placeholder="Inserisci le quantità">
+                    
+                    <select id="in_causale" class="in_stile">
+                        <option value="" disabled selected>Seleziona Causale</option>
+                        <option value="CARATTERISTICHE ORGANOLETTICHE">CARATTERISTICHE ORGANOLETTICHE</option>
+                        <option value="CORPO ESTRANEO">CORPO ESTRANEO</option>
+                        <option value="SOTTOPESO">SOTTOPESO</option>
+                        <option value="PRODOTTO ALTERATO">PRODOTTO ALTERATO</option>
+                        <option value="PARASSITI PRODOTTI ITTICI">PARASSITI PRODOTTI ITTICI</option>
+                        <option value="SCADUTO">SCADUTO</option>
+                        <option value="PARAMETRO MICROBIOLOGICO">PARAMETRO MICROBIOLOGICO</option>
+                        <option value="ETICHETTATURA">ETICHETTATURA</option>
+                        <option value="PARAMETRO NON CONFORME">PARAMETRO NON CONFORME</option>
+                        <option value="INTEGRITÁ">INTEGRITÁ</option>
+                        <option value="MUFFA">MUFFA</option>
+                        <option value="PARAMETRO CHIMICO">PARAMETRO CHIMICO</option>
+                        <option value="INFESTANTI">INFESTANTI</option>
+                        <option value="ALTRO">ALTRO</option>
+                    </select>
+                    <input type="text" id="in_noteCausale" placeholder="Note causale">
+                    <select id="in_iniziatore" class="in_stile">
+                        <option value="" disabled selected>Iniziatore del Ritiro</option>
+                        <option value="AGORÁ">AGORÁ</option>
+                        <option value="FORNITORE">FORNITORE</option>
+                        <option value="TIGROS">TIGROS</option>
+                    </select>
+                    <div class="container-checkbox">
+                        <label for="in_richiamo" class="label-checkbox">Seleziona se si tratta di un Richiamo</label>
+                        <input type="checkbox" id="in_richiamo" class="custom-checkbox">
+                    </div>
+                    <input type="text" id="in_codReso" placeholder="Codice reso">
+                    <input type="text" id="in_Note" placeholder="Eventuali annotazoni">
+
+
+                </div>
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button onclick="salvaNuovoDato(event)" style="flex:1; background:#ffcc00; color:#003087; border:none; padding:12px; border-radius:5px; font-weight:bold; cursor:pointer;">SALVA</button>
+                <button onclick="chiudiModale()" style="flex:1; background:rgba(255,255,255,0.1); color:white; border:none; padding:12px; border-radius:5px; cursor:pointer;">ANNULLA</button>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+   const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTRrF_9GDVRzyNTMHeZZXq7jiEsnHphUteQeOJi7Zvg0q3viC1VWJ-BzCL7CxXBl2lv1P9eKpnQCIo9/pub?output=csv';
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbyO2hIb1DgSOq15G3IVru-oeCIuln6R-C6oWkbsIGv93B3kg3w_Ct93o_bIPI3t_HtnLg/exec"; 
+    let tuttiIDati = [];
+
+    async function caricaDatiDaGoogle() {
+        try {
+            const response = await fetch(sheetUrl + '&t=' + new Date().getTime());
+            const csvData = await response.text();
+
+            const rows = csvData.split(/\r?\n(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+
+            tuttiIDati = rows.slice(1).map(row => {
+
+                const cols = [];
+                let campo = '';
+                let inQ = false;
+                for (let i = 0; i < row.length; i++) {
+                    let c = row[i];
+                    if (c === '"') inQ = !inQ;
+                    else if (c === ',' && !inQ) { cols.push(campo); campo = ''; }
+                    else campo += c;
+                }
+                cols.push(campo);
+
+                const pulisci = (v) => v ? v.trim().replace(/^"|"$/g, '') : "";
+                
+
+                let nr = pulisci(cols[1]);
+                let dataPura = pulisci(cols[9]);
+                
+
+                if (nr === "" || nr === "-") {
+                    for(let i=0; i<5; i++) { if(pulisci(cols[i]) === "13") nr = "13"; }
+                }
+
+                const repartiTarget = ["FRESCHI", "ORTOFRUTTA", "MACELLERIA", "PESCHERIA", "GROCERY", "NO FOOD", "IGIENE CASA", "FREDDO", "SURGELATI", "LIQUIDI - BEVANDE"];
+                let repTrovato = pulisci(cols[17]).toUpperCase();
+                
+                if (!repartiTarget.includes(repTrovato)) {
+
+                    const rigaTesto = row.toUpperCase();
+                    repTrovato = repartiTarget.find(r => rigaTesto.includes(r)) || "NON DEFINITO";
+                }
+
+
+                let art = (pulisci(cols[20]) + " " + pulisci(cols[21])).trim();
+                if (art.length < 3) art = pulisci(cols[2]); 
+
+                let annoEstratto = dataPura.includes("/") ? dataPura.split("/")[2] : dataPura.split("-")[0];
+                if (!annoEstratto && dataPura.includes("-")) annoEstratto = dataPura.split("-")[0];
+
+                return {
+                    numero: nr || "-",
+                    codiceArt: pulisci(cols[2]),
+                    articolo: art || "Articolo NC " + nr,
+                    descrizionePura: pulisci(cols[20]) || pulisci(cols[21]),
+                    fornitore: (pulisci(cols[23]) + " " + pulisci(cols[22])).trim(),
+                    fornitorePuro: pulisci(cols[22]),
+                    marchio: pulisci(cols[5]),
+                    macro: pulisci(cols[6]),
+                    reparto: repTrovato,
+                    data: dataPura || "01/01/2025",
+                    anno: annoEstratto || "2025",
+                    cessione: pulisci(cols[11]),
+                    pezzi: pulisci(cols[10]),
+                    causale: pulisci(cols[8]),
+                    iniziatore: pulisci(cols[14]),
+                    richiamo: pulisci(cols[18]),
+                    stato: pulisci(cols[13]),
+                    codReso: pulisci(cols[12]),
+                    note: pulisci(cols[15]),
+                    noteCaus: pulisci(cols[19])
+                };
+            }).filter(d => d.numero !== "-"); 
+
+            renderizzaTabella();
+        } catch (e) {
+            console.error("Errore:", e);
+        }
+    }
+
+    function renderizzaTabella() {
+        const anno = document.getElementById('selectAnno').value;
+        const body = document.getElementById('bodyTable');
+        const filtrati = tuttiIDati.filter(d => d.anno === anno);
+        
+        filtrati.sort((a, b) => (parseInt(b.numero) || 0) - (parseInt(a.numero) || 0));
+
+
+        const counts = { "FRESCHI":0, "ORTOFRUTTA":0, "MACELLERIA":0, "PESCHERIA":0, "GROCERY":0, "NO FOOD":0, "IGIENE CASA":0, "FREDDO":0, "SURGELATI":0, "LIQUIDI - BEVANDE":0 };
+        filtrati.forEach(d => { if (counts.hasOwnProperty(d.reparto)) counts[d.reparto]++; });
+
+        Object.keys(counts).forEach(k => {
+            const el = document.getElementById(`count-${k.replace(/ /g, "-")}`);
+            if (el) el.innerText = counts[k];
+        });
+            
+        body.innerHTML = filtrati.map(d => `
+            <tr data-numero="${d.numero}">
+                <td>${d.numero}</td>
+                <td style="text-align:left;">${d.articolo}</td>
+                <td style="text-align:left;">${d.fornitore}</td>
+                <td>${d.marchio}</td>
+                <td>${d.macro}</td>
+                <td>${d.reparto}</td>
+                <td>${d.data}</td>
+                <td>${d.cessione}</td>
+                <td>${d.pezzi}</td>
+                <td>${d.causale}</td>
+                <td>${d.iniziatore}</td>
+                <td>${d.richiamo}</td>
+                <td><span style="background:rgba(255,204,0,0.2); padding:4px 10px; border-radius:10px;">${d.stato}</span></td>
+            </tr>`).join('');
+
+        document.getElementById('titoloFiltro').innerText = `REPORT ${anno}`;
+        document.getElementById('info-box').innerText = `Segnalazioni totali: ${filtrati.length}`;
+    }
+
+        function filtraTabella() {
+            const input = document.getElementById("searchInput").value.toUpperCase();
+            const rows = document.querySelectorAll("#bodyTable tr");
+            rows.forEach(row => {
+                row.style.display = row.innerText.toUpperCase().includes(input) ? "" : "none";
+            });
+        }
+
+        function renderizzaTabella() {
+            const anno = document.getElementById('selectAnno').value;
+            const body = document.getElementById('bodyTable');
+            const filtrati = tuttiIDati.filter(d => d.anno === anno);
+            
+            filtrati.sort((a, b) => (parseInt(b.numero) || 0) - (parseInt(a.numero) || 0));
+
+            const counts = { "FRESCHI":0, "ORTOFRUTTA":0, "MACELLERIA":0, "PESCHERIA":0, "GROCERY":0, "NO FOOD":0, "IGIENE CASA":0, "FREDDO":0, "SURGELATI":0};
+            filtrati.forEach(d => { if(counts.hasOwnProperty(d.reparto)) counts[d.reparto]++; });
+            Object.keys(counts).forEach(k => { document.getElementById(`count-${k}`).innerText = counts[k]; });
+            body.innerHTML = filtrati.map((d, index) => `
+                <tr data-numero="${d.numero}" onclick="avviaModificaDaRiga(this)">
+                    <td>${d.numero}</td><td style="text-align:left;">${d.articolo}</td>
+                    <td style="text-align:left;">${d.fornitore}</td><td>${d.marchio}</td>
+                    <td>${d.macro}</td><td>${d.reparto}</td><td>${d.data}</td><td>${d.cessione}</td>
+                    <td>${d.pezzi}</td><td>${d.causale}</td><td>${d.iniziatore}</td><td>${d.richiamo}</td>
+                    <td><span style="background:rgba(255,204,0,0.2); padding:4px 10px; border-radius:10px;">${d.stato}</span></td>
+                </tr>`).join('');
+
+
+            document.getElementById('titoloFiltro').innerText = `REPORT ${anno}`;
+            document.getElementById('info-box').innerText = `Segnalazioni totali: ${filtrati.length}`;
+        }
+
+        function avviaModificaDaRiga(rowElement) {
+            const numeroNC = rowElement.dataset.numero;
+            const dato = tuttiIDati.find(d => d.numero === numeroNC);
+            
+            if(dato) {
+                document.getElementById('in_numero').value = dato.numero;
+                document.getElementById('in_codArt').value = dato.codiceArt;
+                document.getElementById('in_desArt').value = dato.descrizionePura;
+                document.getElementById('in_fornitore').value = dato.fornitorePuro;
+                document.getElementById('in_marchio').value = dato.marchio;
+                document.getElementById('in_Macromarchio').value = dato.macro;
+                document.getElementById('in_reparto').value = dato.reparto;
+                
+                if(dato.data.includes("/")){
+                    const parti = dato.data.split("/");
+                    document.getElementById('in_date').value = `${parti[2]}-${parti[1]}-${parti[0]}`;
+                }
+
+                document.getElementById('in_cessione').value = dato.cessione;
+                document.getElementById('in_quantita').value = dato.pezzi;
+                document.getElementById('in_causale').value = dato.causale;
+                document.getElementById('in_iniziatore').value = dato.iniziatore;
+                document.getElementById('in_codReso').value = dato.codReso;
+                document.getElementById('in_Note').value = dato.note;
+                document.getElementById('in_noteCausale').value = dato.noteCaus;
+                document.getElementById('in_richiamo').checked = (dato.richiamo === "SI" || dato.richiamo === "SÌ");
+
+                document.querySelector('#modalContent h3').innerText = "MODIFICA INSERIMENTO";
+                document.getElementById('modalOverlay').classList.add('active');
+            }
+        }
+
+   
+        const menu = document.getElementById('customMenu');
+                            const bodyTable = document.getElementById('bodyTable');
+
+                            document.addEventListener('contextmenu', function(e) {
+                                const riga = e.target.closest('tr');
+                                
+
+                                if (riga && riga.parentNode.id === "bodyTable") {
+                                    e.preventDefault();
+                                    
+                                    const numeroNC = riga.dataset.numero;
+                                    
+                                    menu.style.display = 'block';
+
+                                    let posX = e.pageX;
+                                    let posY = e.pageY;
+
+                                    const menuWidth = menu.offsetWidth;
+                                    const menuHeight = menu.offsetHeight;
+                                    const windowWidth = window.innerWidth;
+                                    const windowHeight = window.innerHeight;
+
+                                    if (posX + menuWidth > windowWidth + window.scrollX) {
+                                        posX = posX - menuWidth;
+                                    }
+
+
+                                    if (posY + menuHeight > windowHeight + window.scrollY) {
+                                        posY = posY - menuHeight;
+                                    }
+
+ 
+                                    menu.style.left = posX + "px";
+                                    menu.style.top = posY + "px";
+                                    
+
+                                    document.getElementById('menuModifica').onclick = () => {
+                                        menu.style.display = 'none';
+                                        avviaModificaDaRiga(riga);
+                                    };
+                                    
+                                    document.getElementById('menuElimina').onclick = () => {
+                                        menu.style.display = 'none';
+                                        eliminaRiga(numeroNC);
+                                    };
+                                } else {
+                                    menu.style.display = 'none';
+                                }
+                            });
+
+                            document.addEventListener('click', function(e) {
+                                menu.style.display = 'none';
+
+                                const riga = e.target.closest('tr');
+                                if (riga && riga.parentNode.id === "bodyTable") {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                }
+                            }, true); 
+
+                            document.addEventListener('keydown', (e) => {
+                                if (e.key === "Escape") menu.style.display = 'none';
+                            });
+
+                            async function eliminaRiga(numeroNC) {
+                                if (!confirm(`Sei sicuro di voler ELIMINARE DEFINITIVAMENTE la NC n° ${numeroNC}? L'azione è irreversibile.`)) return;
+
+                                const payload = {
+                                    azione: "eliminaDato",
+                                    numero: numeroNC,
+                                    utente: localStorage.getItem("utenteLoggato") || "Anonimo"
+                                };
+
+                                try {
+                                    await fetch(webAppUrl, {
+                                        method: "POST",
+                                        mode: "no-cors",
+                                        body: JSON.stringify(payload)
+                                    });
+                                    alert("Richiesta di eliminazione inviata. La tabella si aggiornerà.");
+                                    location.reload();
+                                } catch (error) {
+                                    alert("Errore durante l'invio della richiesta.");
+                                    console.error("Dettaglio errore:", error);
+                                }
+                            }
+
+        function apriModale(event) {
+            const formInputs = document.querySelectorAll('.in_stile, input[type="date"], input[type="number"], input[type="text"]');
+            formInputs.forEach(i => i.value = "");
+            document.getElementById('in_richiamo').checked = false;
+            document.querySelector('#modalContent h3').innerText = "NUOVO INSERIMENTO";
+
+            const overlay = document.getElementById('modalOverlay');
+            overlay.classList.add('active');
+        }
+
+        function chiudiModale() {
+            //if (confirm("Chiudendo il pannello perderai i dati inseriti, vuoi proseguire?")) {
+                document.getElementById('modalOverlay').classList.remove('active');
+            //}
+        }
+
+        async function salvaNuovoDato(event) {
+            const numeroNC = document.getElementById('in_numero').value;
+            const codArticolo = document.getElementById('in_codArt').value;
+            const desArticolo = document.getElementById('in_desArt').value;
+            const fornitore = document.getElementById('in_fornitore').value;
+            const marchio = document.getElementById('in_marchio').value;
+            const macromarchio = document.getElementById('in_Macromarchio').value;
+            const reparto = document.getElementById('in_reparto').value;
+            const giorno = document.getElementById('in_date').value;
+            const cess = document.getElementById('in_cessione').value;
+            const qnt = document.getElementById('in_quantita').value;
+            const causale = document.getElementById('in_causale').value;
+            const iniz = document.getElementById('in_iniziatore').value;
+            const codiceReso = document.getElementById('in_codReso').value;
+            const note = document.getElementById('in_Note').value;
+            const noteCaus = document.getElementById('in_noteCausale').value;
+
+            if(!numeroNC || !codArticolo || !desArticolo || !fornitore || !marchio || !macromarchio || !giorno || !cess || !causale || !iniz){
+                alert('Compila tutti i campi obbligatori!');
+                return;
+            }
+
+            const btnSalva = event.target;
+            const testoOriginale = btnSalva.innerText;
+            btnSalva.innerText = "SALVATAGGIO...";
+            btnSalva.disabled = true;
+
+            const dataObj = new Date(giorno);
+            const mensile = (dataObj.getMonth() + 1).toString().padStart(2, '0') + '/' + dataObj.getFullYear();
+            const statoRichiamo = document.getElementById('in_richiamo').checked ? 'SI' : 'NO';
+
+            const dati = {
+                azione: "nuovoInserimento",
+                anno: dataObj.getFullYear(),
+                numero: numeroNC,
+                codice: codArticolo,
+                descrizione: desArticolo,
+                fornitore: fornitore,
+                marchio: marchio,
+                macroMar: macromarchio,
+                reparto: reparto,
+                dataInserimento: giorno,
+                specifica: cess,
+                quant: qnt,
+                caus: causale,
+                noteCaus: noteCaus,
+                iniziatore: iniz,
+                codReso: codiceReso,
+                notes: note,
+                mensilita: mensile,
+                richiamo: statoRichiamo,
+                utente: localStorage.getItem("utenteLoggato") || "Anonimo"
+            };
+
+            try {
+                await fetch(webAppUrl, {
+                    method: "POST",
+                    mode: "no-cors", 
+                    body: JSON.stringify(dati)
+                });
+                alert("Operazione completata!");
+                location.reload(); 
+            } catch (error) {
+                alert("Errore durante il salvataggio.");
+            } finally {
+                btnSalva.innerText = testoOriginale;
+                btnSalva.disabled = false;
+            }
+        }
+
+        window.onload = caricaDatiDaGoogle;
+    </script>
+</body>
+</html>

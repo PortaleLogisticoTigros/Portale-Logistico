@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tigros - Dashboard Accessi Settimanali</title>
+    <link rel="icon" type="image/png" href="images.png">
+    <link rel="apple-touch-icon" href="images.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+        body { margin: 0; background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%); font-family: 'Montserrat', sans-serif; color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        nav { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+        .filter-bar { background: rgba(255, 255, 255, 0.05); padding: 15px 30px; display: flex; gap: 20px; align-items: center; }
+        select { background: rgba(0, 48, 135, 0.8); color: white; border: 1px solid #ffcc00; padding: 8px 15px; border-radius: 5px; font-family: 'Montserrat', sans-serif; cursor: pointer; }
+        .container { display: grid; grid-template-columns: 350px 1fr; gap: 20px; padding: 20px; flex-grow: 1; overflow: hidden; }
+        
+        
+        
+        .card { 
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(15px); 
+            border-radius: 20px; padding: 20px; 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            overflow-y: auto;
+            height: 570px;
+        }
+        
+          
+        
+        
+        
+        .chart-container { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.2); overflow-y: auto; }
+        h2 { font-family: 'Montserrat', sans-serif; color: #ffcc00; text-transform: uppercase; border-bottom: 2px solid #ffcc00; font-size: 1.2rem; margin-top: 0; }
+        
+        
+        .stat-row {
+            display: flex; 
+            justify-content: space-between; 
+            padding: 20px 20px; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem; 
+            font-weight: bold;
+            
+        }
+
+        .conteggioDay {
+            background-color: #003087;
+            padding: 5px 15px; 
+            border-radius: 12px;
+            
+        }
+        
+        
+        .canvas-wrapper { position: relative; margin-bottom: 20px; height: 42%; width: 100%; }
+        
+        #loader-overlay { position: fixed; inset: 0; background: rgba(0, 48, 135, 1); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #ffcc00; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+            @media (max-width: 900px) {
+                .container { grid-template-columns: 1fr; }
+                .chart-container { height: 400px; }
+            }
+         
+            .display_totali{
+            margin-left:auto;
+            font-weight: bold;
+            color:#003087;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            background-color: #ffcc00;
+            border-color: #ffcc00; 
+            border: 6px solid #ffcc00; 
+            border-radius: 15px; padding: 5px;
+         }
+
+
+
+
+    </style>
+</head>
+<body>
+
+    <div id="loader-overlay"><div class="spinner"></div><p style="font-family: 'Montserrat', sans-serif; color: #ffcc00; margin-top:10px; font-size: 20px;">Lettura dati dal Database degli Accessi...</p></div>
+
+    <nav>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 1.5rem; color: #ffcc00; font-weight: bold;">TIGROS - ACCESSI PIATTAFORMA</div>
+        <button onclick="location.href='Home_new.html'" style="background: #ffcc00; color: #003087; border: none; padding: 8px 20px; border-radius: 5px; font-family: 'Montserrat', sans-serif; font-weight: bold; cursor: pointer;">HOME</button>
+    </nav>
+
+    <div class="filter-bar">
+        <span>Seleziona Settimana:</span>
+        <select id="selectSettimana" onchange="processaDati()"></select>
+        <span class="display_totali" id="counter-display"></span>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>Dati per Giorno</h2>
+            <div id="listaGiorni"></div>
+        </div>
+        
+        <div class="chart-container">
+            <h2>Accessi Totali per Giorno</h2>
+            <div class="canvas-wrapper"><canvas id="dailyChart"></canvas></div>
+            
+            <h2>Suddivisione per Reparto</h2>
+            <div class="canvas-wrapper"><canvas id="deptPieChart"></canvas></div>
+        </div>
+    </div>
+
+    <script>
+    
+        Chart.register(ChartDataLabels);
+
+        let datiOriginali = [];
+        let dailyChart, deptPieChart;
+        const giorniNomi = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"];
+        const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQJSsaqnuyzKhFmxzipIeuX8d5hj95qeEkQ7X6WwyNpeF_88FrjnSEVANZFzaZoA_WI_5GlPgMhs5KR/pub?gid=0&single=true&output=csv';
+
+        function getSettimanaCorrente() {
+            const d = new Date();
+            d.setHours(0, 0, 0, 0);
+            d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+            const yearStart = new Date(d.getFullYear(), 0, 1);
+            const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+            const w = weekNo < 10 ? "0" + weekNo : weekNo;
+            return `${w}-${d.getFullYear()}`;
+        }
+
+        function popolaSettimane() {
+            const select = document.getElementById('selectSettimana');
+            const settAttuale = getSettimanaCorrente();
+            for (let anno = 2024; anno <= 2026; anno++) {
+                for (let i = 1; i <= 52; i++) {
+                    let w = i < 10 ? "0" + i : i;
+                    let val = `${w}-${anno}`;
+                    let opt = document.createElement('option');
+                    opt.value = val;
+                    opt.text = `Settimana ${w} - ${anno}`;
+                    if (val === settAttuale) opt.selected = true; 
+                    select.appendChild(opt);
+                }
+            }
+        }
+
+        async function caricaDati() {
+            popolaSettimane();
+            try {
+                const response = await fetch(sheetUrl + '&t=' + new Date().getTime());
+                const rawData = await response.text();
+                const lines = rawData.split(/\r?\n/).filter(l => l.trim().length > 10);
+                
+                datiOriginali = lines.slice(1).map(line => {
+                    const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                    const dataStr = cols[1] ? cols[1].replace(/"/g, "").trim() : ""; 
+                    const reparto = cols[2] ? cols[2].replace(/"/g, "").trim() : "N.D."; 
+                    const settimanaCSV = cols[19] ? cols[19].replace(/"/g, "").trim() : "";
+
+                    let d;
+                    if (dataStr.includes("/")) {
+                        const p = dataStr.split("/");
+                        d = new Date(`${p[2]}-${p[1]}-${p[0]}`);
+                    } else { d = new Date(dataStr); }
+                    const giornoIndice = isNaN(d.getTime()) ? 0 : (d.getDay() + 6) % 7;
+                    return { settimana: settimanaCSV, giorno: giornoIndice, reparto: reparto };
+                });
+
+                
+                setTimeout(() => {
+                    document.getElementById('loader-overlay').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('loader-overlay').style.display = 'none';
+                        processaDati();
+                    }, 500);
+                }, 1000);
+
+            } catch (e) { console.error(e); }
+        }
+
+        function processaDati() {
+            const selSett = document.getElementById('selectSettimana').value.trim();
+            let accessiGiorno = new Array(7).fill(0);
+            let repartiCount = {};
+            let totali = 0;
+
+            datiOriginali.forEach(r => {
+                const settimanaPulita = r.settimana.replace(/[^\x20-\x7E]/g, "").trim();
+                if (settimanaPulita === selSett) {
+                    accessiGiorno[r.giorno]++;
+                    repartiCount[r.reparto] = (repartiCount[r.reparto] || 0) + 1;
+                    totali++;
+                }
+            });
+
+            document.getElementById('counter-display').innerText = "TOTALI ACCESSI: " + totali;
+            aggiornaUI(accessiGiorno, repartiCount, totali);
+        }
+
+        function aggiornaUI(giorni, reparti, totali) {
+            const lista = document.getElementById('listaGiorni');
+            lista.innerHTML = giorni.map((v, i) => `
+                <div class="stat-row">
+                    <span>${giorniNomi[i]}</span>
+                    <span class="conteggioDay" style="color:#ffcc00">${v}</span>
+                </div>`).join('');
+            
+
+            
+
+            if (dailyChart) dailyChart.destroy();
+            dailyChart = new Chart(document.getElementById('dailyChart'), {
+                type: 'bar',
+                data: {
+                    labels: giorniNomi,
+                    datasets: [{ 
+                        data: giorni, 
+                        backgroundColor: 'rgba(255, 204, 0, 0.8)',
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+        
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart',
+                        delay: (context) => {
+                            let delay = 0;
+                            if (context.type === 'data' && context.mode === 'default') {
+                                delay = context.dataIndex * 200;
+                            }
+                            return delay;
+                        }
+                    },
+                    plugins: { 
+                        legend: { display: false },
+                        datalabels: { 
+                            color: '#003087', 
+                            anchor: 'start', 
+                            align: 'top', 
+                            font: { weight: 'bold', size: 18, fontFamily: 'Impact' } 
+                        }
+                    },
+                    scales: { 
+                        y: { beginAtZero: true, ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+                        x: { ticks: { color: 'white', font: { family: 'Montserrat, sans-serif', weight: 'bold', size: 18 } } }
+                    }
+                }
+            });
+
+           
+            if (deptPieChart) deptPieChart.destroy();
+            deptPieChart = new Chart(document.getElementById('deptPieChart'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(reparti),
+                    datasets: [{ 
+                        data: Object.values(reparti), 
+                        backgroundColor: ['#ff4d4d', '#4eff4e', '#2b75ee', '#ffcc00', '#ffffff', '#a0861d', '#00cccc'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        animateRotate: true,
+                        animateScale: true,
+                        duration: 2000,
+                        easing: 'easeOutcubic'
+                    },
+                    plugins: { 
+                        legend: { position: 'right', labels: { color: 'white', font: { family: 'Montserrat, sans-serif', weight: 'bold', size: 20 } } },
+                        datalabels: { 
+                            color: 'black', 
+                            font: { weight: 'bold', size: 18, fontFamily: 'Impact' }, 
+                            formatter: (v) => totali > 0 ? (v*100/totali).toFixed(1)+'%' : '' 
+                        }
+                    }
+                }
+            });
+        }
+        
+        caricaDati();
+    </script>
+</body>
+</html>

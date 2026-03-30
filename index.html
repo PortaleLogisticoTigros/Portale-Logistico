@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piattaforma Tigros - Accedi</title>
+    <link rel="icon" type="image/png" href="images.png">
+    <link rel="apple-touch-icon" href="images.png">
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+        
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%); 
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            background: rgba(138, 171, 232, 0.5); 
+            padding: 40px 60px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            color: #003087; 
+            width: 350px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            animation: apparizioneIniziale 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes apparizioneIniziale {
+            0% { opacity: 0; filter: blur(20px); transform: scale(0.85); }
+            100% { opacity: 1; filter: blur(0px); transform: scale(1); }
+        }
+
+        .foto-profilo { width: 120px; height: auto; margin-bottom: 20px; display: block; margin-left: auto; margin-right: auto; }
+        h1 { font-family: 'Montserrat', sans-serif; font-size: 2.2rem; margin: 0; }
+        h2 { font-family: 'Montserrat', sans-serif; font-style: oblique; font-size: 1.1rem; color: #ffcc00; -webkit-text-stroke: 0.5px #003087; margin-bottom: 20px; }
+
+        .login-group { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        #sceltaIniziale:hover button { filter: blur(4px); opacity: 0.6; transform: scale(0.95); }
+        #sceltaIniziale button:hover { filter: blur(0); opacity: 1; transform: scale(1.08); background: #eda20b; }
+
+        .form-scelta { display: none; flex-direction: column; gap: 12px; margin-top: 20px; }
+        .show { display: flex; animation: fadeIn 0.5s ease forwards; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        input { 
+            background: rgba(255, 255, 255, 0.8); 
+            border: 1px solid #003087; 
+            padding: 12px; 
+            border-radius: 8px; 
+            outline: none; 
+            color: #003087; 
+            font-weight: bold;
+            transition: border 0.3s ease;
+        }
+
+        .input-errore { border: 2px solid #ee2d24 !important; background: rgba(255, 200, 200, 0.9); }
+
+        button { width: 100%; padding: 12px; font-size: 1.1rem; background: #003087; color: white; border: none; border-radius: 8px; cursor: pointer; font-family: 'Montserrat', sans-serif; letter-spacing: 1px; transition: all 0.3s ease; }
+        .btn-back { background: rgba(0, 48, 135, 0.2); color: #003087; font-size: 0.9rem; margin-top: 10px; }
+
+        #messaggio { margin-top: 20px; font-weight: bold; min-height: 25px; }
+        .successo { color: #008000; }
+        .errore { color: #ee2d24; }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainContainer">
+        <img src="LOGO_TIGROS_VERTICALE.jpg" alt="Logo Tigros" class="foto-profilo">
+        <h1 style="display: flex; padding: 25px; align-items: center;">PIATTAFORMA TIGROS</h1>
+
+
+        <div id="sceltaIniziale" class="login-group">
+            <button onclick="mostraForm('login')">ACCEDI</button>
+            <button onclick="mostraForm('registrati')">REGISTRATI</button>
+        </div>
+
+        <div id="formLogin" class="form-scelta">
+            <input type="text" id="user" placeholder="Username">
+            <input type="password" id="psw" placeholder="Password">
+            <button onkeypress="controllaLogin()" onclick="controllaLogin()">ENTRA</button>
+            <button class="btn-back" onclick="tornaIndietro()">INDIETRO</button>
+        </div>
+
+        <div id="formReg" class="form-scelta">
+            <input type="email" id="regEmail" placeholder="Email aziendale">
+            <input type="text" id="regUser" placeholder="Nome Utente">
+            <input type="password" id="regPass" placeholder="Password">
+            <input type="password" id="regConf" placeholder="Conferma Password">
+            <button onclick="inviaRegistrazione()">INVIA RICHIESTA</button>
+            <button class="btn-back" onclick="tornaIndietro()">INDIETRO</button>
+        </div>
+
+        <div id="messaggio"></div>
+    </div>
+
+    <script>
+
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjgzkWhP284tzaZjKS2_siazqUYIJcNO8hu6SsktyTWbsxqORHkpuj7OUia2nRDaFWjQ/exec"; 
+
+        function mostraForm(tipo) {
+            document.getElementById('sceltaIniziale').style.display = 'none';
+            const container = document.getElementById('mainContainer');
+            if (tipo === 'login') {
+                container.style.width = "400px";
+                document.getElementById('formLogin').classList.add('show');
+            } else {
+                container.style.width = "480px";
+                document.getElementById('formReg').classList.add('show');
+            }
+        }
+
+        function tornaIndietro() {
+            document.getElementById('formLogin').classList.remove('show');
+            document.getElementById('formReg').classList.remove('show');
+            document.getElementById('sceltaIniziale').style.display = 'flex';
+            document.getElementById('mainContainer').style.width = "350px";
+            document.getElementById('messaggio').innerHTML = "";
+            resetErrori();
+        }
+
+        function resetErrori() {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(i => i.classList.remove('input-errore'));
+        }
+
+
+        async function controllaLogin() {
+            const user = document.getElementById('user').value;
+            const pass = document.getElementById('psw').value;
+            const msg = document.getElementById('messaggio');
+
+            if (!user || !pass) {
+                msg.innerHTML = "⚠️ Inserisci le credenziali";
+                msg.className = "errore";
+                return;
+            }
+
+            msg.innerHTML = "⏳ Accesso in corso...";
+            msg.className = "";
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ azione: "login", user: user, pass: pass })
+                });
+                
+                const result = await response.text();
+
+                if (result === "OK") {
+                    localStorage.setItem("utenteLoggato", user);
+                    msg.innerHTML = "✅ Accesso autorizzato!";
+                    msg.className = "successo";
+                    setTimeout(() => { window.location.href = "Home_new.html"; }, 1000);
+                } else if (result === "NON_APPROVATO") {
+                    msg.innerHTML = "⏳ Account in attesa di approvazione";
+                    msg.className = "errore";
+                } else {
+                    msg.innerHTML = "❌ Username o Password errati";
+                    msg.className = "errore";
+                }
+            } catch (error) {
+                msg.innerHTML = "❌ Errore di connessione al database";
+                msg.className = "errore";
+            }
+        }
+
+
+        async function inviaRegistrazione() {
+            
+            resetErrori();
+            const email = document.getElementById('regEmail').value;
+            const user = document.getElementById('regUser').value;
+            const pass = document.getElementById('regPass').value;
+            const conf = document.getElementById('regConf').value;
+            const msg = document.getElementById('messaggio');
+
+            if (!email || !user || !pass || !conf) {
+                msg.innerHTML = "⚠️ Compila tutti i campi";
+                msg.className = "errore";
+                return;
+            }
+
+            if (pass !== conf) {
+                document.getElementById('regPass').classList.add('input-errore');
+                document.getElementById('regConf').classList.add('input-errore');
+                msg.innerHTML = "❌ Le password non coincidono!";
+                msg.className = "errore";
+                return;
+            }
+
+            msg.innerHTML = "⏳ Invio richiesta...";
+            msg.className = "";
+            
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ azione: "registrazione", email, user, pass })
+                });
+
+                msg.innerHTML = "✅ Richiesta inviata correttamente!";
+                msg.className = "successo";
+                setTimeout(tornaIndietro, 3000);
+
+            } catch (error) {
+                msg.innerHTML = "❌ Errore durante l'invio";
+                msg.className = "errore";
+            }
+        }
+    </script>
+</body>
+</html>
