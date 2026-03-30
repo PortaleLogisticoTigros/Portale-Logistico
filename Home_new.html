@@ -269,7 +269,21 @@
 
             .nav-logo img { height: 30px; }
 
-            .container-glass { padding: 20px 10px; gap: 20px; }
+            .container-glass {
+                    display: flex !important;
+                    flex-direction: column !important; /* Mettiamoli in colonna se il wrap fallisce */
+                    align-items: center !important;
+                    height: auto !important;
+                    min-height: 100vh !important;
+                    overflow: visible !important;
+                    padding-bottom: 100px !important; /* Spazio extra in fondo per scrollare */
+                }
+
+                .glass-box-container {
+                    display: block !important; /* Forza la visibilità */
+                    margin-bottom: 20px !important;
+                    width: 90vw !important;
+                }
             
             .report_before, .frutta_before, .accessi_before, .manutenzione_before, 
             .haccp_before, .trasporti_before, .freschi_before, .impost_before {
