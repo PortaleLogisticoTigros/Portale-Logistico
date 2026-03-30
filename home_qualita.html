@@ -10,15 +10,20 @@
 
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
 
-        body {
+       body {
             margin: 0;
-            background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%);
+            background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%) !important;
+            background-attachment: fixed;
             font-family: 'Montserrat', sans-serif;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            height: auto; 
+            overflow-y: auto; 
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
+            color: white;
         }
+
 
        
         nav {
