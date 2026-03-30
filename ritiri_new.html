@@ -21,7 +21,6 @@
             overflow: hidden; 
         }
 
-
         nav { 
             background: rgba(255, 255, 255, 0.1); 
             backdrop-filter: blur(10px); 
@@ -76,10 +75,8 @@
 
         .btn-home:hover, .btn-prev:hover { 
             background: #ffdb4d;
-            
         }
 
-       
         .filter-bar { 
             background: rgba(255, 255, 255, 0.05); 
             padding: 10px 30px; 
@@ -121,6 +118,13 @@
             gap: 20px; 
         }
 
+        /* Scrollbar personalizzata per main-container */
+        .main-container::-webkit-scrollbar { width: 10px; height: 10px; }
+        .main-container::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
+        .main-container::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; border: 2px solid rgba(0, 48, 135, 0.5); }
+        .main-container::-webkit-scrollbar-thumb:hover { background: #ffdb4d; }
+        .main-container { scrollbar-width: thin; scrollbar-color: #ffcc00 rgba(255, 255, 255, 0.05); }
+
         .top-row { display: flex; width: 98%; gap: 20px; justify-content: center; flex-wrap: wrap; }
 
         .hero-glass, .box_lato {
@@ -143,15 +147,15 @@
         .reparti-list li { width: 25%; margin-bottom: 10px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px;}
         
         .reparti-list span {
-                display: inline-block;
-                text-align: center;
-                min-width: 35px;
-                font-size: 25px;
-                background-color: #003087;
-                color: #ffcc00;
-                padding: 2px 5px;
-                border-radius: 8px;
-            }
+            display: inline-block;
+            text-align: center;
+            min-width: 35px;
+            font-size: 25px;
+            background-color: #003087;
+            color: #ffcc00;
+            padding: 2px 5px;
+            border-radius: 8px;
+        }
 
         .filter-title { font-size: 35px; color: #ffcc00; font-weight: bold; letter-spacing: 1px; align-items: center; margin-bottom: 10px;}
 
@@ -164,9 +168,7 @@
             border-radius: 10px;
             min-width: 40px;
             padding: 5px 20px;
-
         }
-
 
         .table-container { 
             width: 98%; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); 
@@ -177,9 +179,7 @@
         th { background: #003087; color: #ffcc00; padding: 15px; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid #ffcc00; }
         td { padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); text-align: center; font-size: 14px; }
         
-        /* Effetto hover riga */
         #bodyTable tr:hover { background: rgba(255, 255, 255, 0.05); cursor: pointer; }
-
 
         .modal-overlay {
             position: fixed; inset: 0; 
@@ -189,7 +189,6 @@
             z-index: 2000;
             opacity: 0; visibility: hidden; pointer-events: none;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-
         }
 
         .modal-overlay.active {
@@ -263,7 +262,6 @@
             gap: 10px;
             padding: 10px 5px;
             cursor: pointer;
-            
         }
 
         .custom-checkbox {
@@ -271,7 +269,6 @@
             height: 22px;
             cursor: pointer;
             accent-color: #ffcc00;
-        
         }
 
         .label-checkbox {
@@ -311,7 +308,64 @@
         .context-menu div:last-child { border-bottom: none; }
         .context-menu div:hover { background: #ffcc00; color: #003087; font-weight: bold; }
 
+        /* ------------------------------------------------------------------ */
+        /* MEDIA QUERIES SOLO PER MOBILE (Fino a 768px)                       */
+        /* ------------------------------------------------------------------ */
+        @media (max-width: 768px) {
+            body { 
+                overflow-y: auto !important; 
+                height: auto !important; 
+                min-height: 100vh; 
+            }
+            .main-container { 
+                overflow-y: visible !important; 
+                padding: 10px; 
+            }
+            
+            nav {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px;
+            }
+            nav > div:first-child { font-size: 1.2rem !important; text-align: center; width: 100%; }
+            .search-box { width: 95%; margin: 0; }
+            .nav-right { justify-content: center; width: 100%; }
 
+            .filter-bar {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px;
+            }
+            .filter-bar > label, .filter-bar > select { width: 100%; text-align: center; }
+            .btn-aggiungi { margin-left: 0; width: 100%; }
+            .btn-aggiorna { width: 100%; }
+
+            .top-row { flex-direction: column; gap: 15px; }
+            .hero-glass, .box_lato {
+                width: 100%;
+                min-width: 0;
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .box_lato > div:first-child {
+                border-right: none;
+                border-bottom: 2px solid rgba(255,204,0,0.3);
+                padding-right: 0;
+                padding-bottom: 10px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .reparti-list li { width: 50%; } /* 2 colonne su mobile invece di 4 */
+            
+            .table-container { width: 100%; }
+            
+            .modal-content {
+                width: 95%;
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -322,7 +376,7 @@
             <span>🔍</span>
             <input type="text" id="searchInput" onkeyup="filtraTabella()" placeholder="Cerca NC, Articolo o Fornitore...">
         </div>
-        <div style="display:flex; gap:15px; align-items: center;">
+        <div style="display:flex; gap:15px; align-items: center;" class="nav-right">
             <button onclick="location.href='home_qualita.html'" class="btn-prev">INDIETRO</button>
             <button onclick="location.href='Home_new.html'" class="btn-home">HOME</button>
         </div>
@@ -339,8 +393,6 @@
         <button onclick="apriModale(event)" class="btn-aggiungi">AGGIUNGI NUOVO</button>
         <button onclick="location.reload()" class="btn-aggiorna">AGGIORNA</button>
     </div>
-
-
 
     <div class="main-container">
         <div class="top-row">
@@ -471,15 +523,12 @@
                     <input type="text" id="in_codReso" placeholder="Codice reso">
                     <input type="text" id="in_Note" placeholder="Eventuali annotazoni">
 
-
-                </div>
+            </div>
             <div style="display:flex; gap:10px; margin-top:20px;">
                 <button onclick="salvaNuovoDato(event)" style="flex:1; background:#ffcc00; color:#003087; border:none; padding:12px; border-radius:5px; font-weight:bold; cursor:pointer;">SALVA</button>
                 <button onclick="chiudiModale()" style="flex:1; background:rgba(255,255,255,0.1); color:white; border:none; padding:12px; border-radius:5px; cursor:pointer;">ANNULLA</button>
             </div>
         </div>
-
-
     </div>
 
     <script>
@@ -509,11 +558,9 @@
 
                 const pulisci = (v) => v ? v.trim().replace(/^"|"$/g, '') : "";
                 
-
                 let nr = pulisci(cols[1]);
                 let dataPura = pulisci(cols[9]);
                 
-
                 if (nr === "" || nr === "-") {
                     for(let i=0; i<5; i++) { if(pulisci(cols[i]) === "13") nr = "13"; }
                 }
@@ -522,11 +569,9 @@
                 let repTrovato = pulisci(cols[17]).toUpperCase();
                 
                 if (!repartiTarget.includes(repTrovato)) {
-
                     const rigaTesto = row.toUpperCase();
                     repTrovato = repartiTarget.find(r => rigaTesto.includes(r)) || "NON DEFINITO";
                 }
-
 
                 let art = (pulisci(cols[20]) + " " + pulisci(cols[21])).trim();
                 if (art.length < 3) art = pulisci(cols[2]); 
@@ -571,7 +616,6 @@
         
         filtrati.sort((a, b) => (parseInt(b.numero) || 0) - (parseInt(a.numero) || 0));
 
-
         const counts = { "FRESCHI":0, "ORTOFRUTTA":0, "MACELLERIA":0, "PESCHERIA":0, "GROCERY":0, "NO FOOD":0, "IGIENE CASA":0, "FREDDO":0, "SURGELATI":0, "LIQUIDI - BEVANDE":0 };
         filtrati.forEach(d => { if (counts.hasOwnProperty(d.reparto)) counts[d.reparto]++; });
 
@@ -581,7 +625,7 @@
         });
             
         body.innerHTML = filtrati.map(d => `
-            <tr data-numero="${d.numero}">
+            <tr data-numero="${d.numero}" onclick="avviaModificaDaRiga(this)">
                 <td>${d.numero}</td>
                 <td style="text-align:left;">${d.articolo}</td>
                 <td style="text-align:left;">${d.fornitore}</td>
@@ -607,30 +651,6 @@
             rows.forEach(row => {
                 row.style.display = row.innerText.toUpperCase().includes(input) ? "" : "none";
             });
-        }
-
-        function renderizzaTabella() {
-            const anno = document.getElementById('selectAnno').value;
-            const body = document.getElementById('bodyTable');
-            const filtrati = tuttiIDati.filter(d => d.anno === anno);
-            
-            filtrati.sort((a, b) => (parseInt(b.numero) || 0) - (parseInt(a.numero) || 0));
-
-            const counts = { "FRESCHI":0, "ORTOFRUTTA":0, "MACELLERIA":0, "PESCHERIA":0, "GROCERY":0, "NO FOOD":0, "IGIENE CASA":0, "FREDDO":0, "SURGELATI":0};
-            filtrati.forEach(d => { if(counts.hasOwnProperty(d.reparto)) counts[d.reparto]++; });
-            Object.keys(counts).forEach(k => { document.getElementById(`count-${k}`).innerText = counts[k]; });
-            body.innerHTML = filtrati.map((d, index) => `
-                <tr data-numero="${d.numero}" onclick="avviaModificaDaRiga(this)">
-                    <td>${d.numero}</td><td style="text-align:left;">${d.articolo}</td>
-                    <td style="text-align:left;">${d.fornitore}</td><td>${d.marchio}</td>
-                    <td>${d.macro}</td><td>${d.reparto}</td><td>${d.data}</td><td>${d.cessione}</td>
-                    <td>${d.pezzi}</td><td>${d.causale}</td><td>${d.iniziatore}</td><td>${d.richiamo}</td>
-                    <td><span style="background:rgba(255,204,0,0.2); padding:4px 10px; border-radius:10px;">${d.stato}</span></td>
-                </tr>`).join('');
-
-
-            document.getElementById('titoloFiltro').innerText = `REPORT ${anno}`;
-            document.getElementById('info-box').innerText = `Segnalazioni totali: ${filtrati.length}`;
         }
 
         function avviaModificaDaRiga(rowElement) {
@@ -665,14 +685,12 @@
             }
         }
 
-   
         const menu = document.getElementById('customMenu');
                             const bodyTable = document.getElementById('bodyTable');
 
                             document.addEventListener('contextmenu', function(e) {
                                 const riga = e.target.closest('tr');
                                 
-
                                 if (riga && riga.parentNode.id === "bodyTable") {
                                     e.preventDefault();
                                     
@@ -692,16 +710,13 @@
                                         posX = posX - menuWidth;
                                     }
 
-
                                     if (posY + menuHeight > windowHeight + window.scrollY) {
                                         posY = posY - menuHeight;
                                     }
 
- 
                                     menu.style.left = posX + "px";
                                     menu.style.top = posY + "px";
                                     
-
                                     document.getElementById('menuModifica').onclick = () => {
                                         menu.style.display = 'none';
                                         avviaModificaDaRiga(riga);
@@ -718,7 +733,6 @@
 
                             document.addEventListener('click', function(e) {
                                 menu.style.display = 'none';
-
                                 const riga = e.target.closest('tr');
                                 if (riga && riga.parentNode.id === "bodyTable") {
                                     e.preventDefault();
@@ -764,9 +778,7 @@
         }
 
         function chiudiModale() {
-            //if (confirm("Chiudendo il pannello perderai i dati inseriti, vuoi proseguire?")) {
-                document.getElementById('modalOverlay').classList.remove('active');
-            //}
+            document.getElementById('modalOverlay').classList.remove('active');
         }
 
         async function salvaNuovoDato(event) {
