@@ -433,7 +433,7 @@
                     labels: dati.map(d => d.nome.substring(0,3)),
                     datasets: [
                         { type: 'line', label: 'Incidenza NC %', data: dati.map(d => d.tot > 0 ? (d.no/d.tot*100).toFixed(1) : 0), borderColor: 'white', backgroundColor: 'white', borderWidth: 3, pointRadius: null, yAxisID: 'y1', datalabels: { display: true, align:'top', color:'white', font:{weight:'bold', size:12}, formatter: (v) => v > 0 ? v + '%' : '' }},
-                        { type: 'bar', label: 'Totale Controlli', data: dati.map(d => d.tot), backgroundColor: 'rgba(255, 204, 0, 0.8)', borderRadius: 5, datalabels: { display: true, anchor:'center', align:'center', font:{weight:'bold', size:14}, color:'#003087' }}
+                        { type: 'bar', label: 'Totale Controlli', data: dati.map(d => d.tot), backgroundColor: 'rgba(255, 204, 0, 0.8)', borderRadius: 5, datalabels: { display: true, anchor:'start', align:'end', font:{weight:'bold', size:14}, color:'#003087' }}
                     ]
                 },
                 options: { 
@@ -442,7 +442,7 @@
                    scales: {
                                 x: { display: true, ticks: { color: 'white', font: { family:'Montserrat', size: 12 } } }, 
                                 y: { display: true, min: 0, ticks: { color: 'white', font: { family:'Montserrat', size: 12 } }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
-                                y1: { position: 'right', display: true, min: -3, max: 15, ticks: { color: 'white', font: { family:'Montserrat', size: 12 }, callback: (v) => v + '%' }, grid: { drawOnChartArea: false } }
+                                y1: { position: 'right', display: true, min: -3, max: 25, ticks: { color: 'white', font: { family:'Montserrat', size: 12 }, callback: (v) => v + '%' }, grid: { drawOnChartArea: false } }
                             },
                     plugins: { legend: { display: false } }
                 }
