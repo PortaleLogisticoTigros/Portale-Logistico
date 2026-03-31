@@ -425,7 +425,7 @@
                 return `<li><span class="value-span perc">${incid}%</span></li>`;
             }).join('');
 
-            // Aggiorna Grafico a Barre/Linee
+           
             const ctxBar = document.getElementById('annualChart').getContext('2d');
             if (mioGrafico) mioGrafico.destroy();
             mioGrafico = new Chart(ctxBar, {
@@ -439,11 +439,11 @@
                 options: { 
                     animation: { duration: 1500, easing: 'easeInOutQuart'},
                     responsive: true, maintainAspectRatio: false, 
-                    scales: {
-                        x: {ticks: { color: 'white',font: { family:'Montserrat', size: 12}}}, 
-                        y: { display: true, beginAtZero: true, ticks: { color: 'white', font: { family:'Montserrat', size: 12}}}, 
-                        y1: { position: 'right', beginAtZero: true, display: true, ticks: { max: 120, min:-10 } } 
-                    },
+                   scales: {
+                                x: { display: true, ticks: { color: 'white', font: { family:'Montserrat', size: 12 } } }, 
+                                y: { display: true, min: 0, ticks: { color: 'white', font: { family:'Montserrat', size: 12 } }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
+                                y1: { position: 'right', display: true, min: -3, max: 15, ticks: { color: 'white', font: { family:'Montserrat', size: 12 }, callback: (v) => v + '%' }, grid: { drawOnChartArea: false } }
+                            },
                     plugins: { legend: { display: false } }
                 }
             });
