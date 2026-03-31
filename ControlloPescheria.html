@@ -33,195 +33,212 @@
             justify-content: space-between; 
             align-items: center; 
             border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+            z-index: 100;
         }
 
-        .nav-buttons {
-            display: flex;
-            gap: 15px;
+        .nav-title {
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 20px; 
+            font-weight: bold; 
+            color: #ffcc00;
         }
+
+        .nav-buttons { display: flex; gap: 15px; }
 
         .btn-nav {
-            border: none;
-            padding: 8px 30px;
-            border-radius: 5px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 200;
-            cursor: pointer;
-            transition: 0.3s;
-            width: 220px;
-            height: auto;
-            text-align: center;
-            font-size: 15px;
+            border: none; padding: 8px 30px; border-radius: 5px;
+            font-family: 'Montserrat', sans-serif; font-weight: bold;
+            cursor: pointer; transition: 0.3s; width: 220px; text-align: center; font-size: 15px;
         }
-
         .btn-pdf { background: #ffffff; color: #003087; }
         .btn-home { background: #ffcc00; color: #003087; }
         .btn-nav:hover { transform: scale(1.05); filter: brightness(1.1); }
 
-        .filter-bar { background: rgba(255, 255, 255, 0.05); padding: 15px 15px; display: flex; gap: 20px; align-items: center; }
+        /* --- FILTER BAR --- */
+        .filter-bar { 
+            background: rgba(255, 255, 255, 0.05); padding: 15px 20px; 
+            display: flex; gap: 20px; align-items: center; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+        }
         
+        .filter-label {
+            font-family: 'Montserrat', sans-serif; font-size: 15px; background-color: #ffcc00; color: #322e9f; 
+            border: 4px solid #ffcc00; border-radius: 10px; padding: 5px 10px; font-weight: bold;
+        }
+
         select { 
-            background: rgba(0, 48, 135, 0.8); 
-            color: white; 
-            border: 1px solid #ffcc00; 
-            padding: 8px 15px; 
-            border-radius: 5px; 
-            font-family: 'Montserrat', sans-serif; 
-            cursor: pointer; 
-        }
-        
-        .container { display: grid; grid-template-columns: 400px 1fr; gap: 20px; padding: 20px; flex-grow: 1; overflow: hidden;}
-
-        .sidebar { overflow-y: auto; padding-right: 10px; font-family: 'Montserrat', sans-serif; }
-        
-        .card, .chart-container { 
-            background: rgba(255, 255, 255, 0.1); 
-            backdrop-filter: blur(15px); 
-            border-radius: 20px; 
-            padding: 20px; 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            font-family: 'Montserrat', sans-serif;
-
+            background: rgba(0, 48, 135, 0.8); color: white; border: 1px solid #ffcc00; 
+            padding: 8px 15px; border-radius: 5px; font-family: 'Montserrat', sans-serif; cursor: pointer; 
         }
 
-        .boxInfo { display: flex; gap: 15px; margin-left: auto; font-size: 15px;}
-        
-            .chart-container { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 30px; 
-            overflow-y: auto;
-        }
-
-        .chart-container::-webkit-scrollbar {
-            width: 10px;               
-            height: 10px;             
-        }
-
-        .chart-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-
-        .chart-container::-webkit-scrollbar-thumb {
-            background: #ffcc00;      
-            border-radius: 10px;       
-            border: 2px solid rgba(0, 48, 135, 0.5); 
-        }
-
-        .chart-container::-webkit-scrollbar-thumb:hover {
-            background: #ffdb4d;     
-        }
-
-
-
-
-        .container-2 { display: flex; flex-direction: column; gap: 30px; overflow-y: auto;}
+        .boxInfo { display: flex; gap: 15px; margin-left: auto; font-size: 15px; align-items: center;}
 
         .testoRiepilogo { 
-            margin-left:auto; 
-            font-weight: bold; 
-            color:#ffcc00; 
-            font-family: 'Montserrat', sans-serif;
-            font-size:25px;
-            background-color: #322e9f;
-            border-color: #322e9f; 
-            border: 6px solid #322e9f; 
-            border-radius: 15px; padding: 5px;
+            font-weight: bold; color:#ffcc00; background-color: #003087;
+            border-radius: 10px; padding: 5px 10px;
         }
 
         .percentualeNC { 
-            margin-left:auto; 
-            font-weight: bold; 
-            color:#322e9f; 
-            font-family: 'Montserrat', sans-serif;
-            font-size:20px;
-            background-color: #ffcc00;
-            border-color: #ffcc00; 
-            border: 6px solid #ffcc00; 
-            border-radius: 15px; padding: 5px;
+            font-weight: bold; color:#003087; background-color: #ffcc00;
+            border-radius: 10px; padding: 5px 10px;
         }
-        
-        h2 { 
-            font-family: Impact; 
-            color: #ffcc00; 
-            margin: 0; 
-            text-transform: uppercase; 
-            border-bottom: 2px solid #ffcc00; 
-            font-size: 1.2rem; 
-            padding-bottom: 5px; 
+
+        /* --- MAIN CONTAINER --- */
+        .main-container { 
+            flex: 1; 
+            padding: 20px; 
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 30px; 
+            width: 100%;
+            box-sizing: border-box;
+            padding-bottom: 100px; 
         }
+
+        .main-container::-webkit-scrollbar { width: 10px; height: 10px; }
+        .main-container::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
+        .main-container::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; border: 2px solid rgba(0, 48, 135, 0.5); }
+        .main-container::-webkit-scrollbar-thumb:hover { background: #ffdb4d; }
+
+
+        .box_lato, .glass-chart-box {
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(15px);
+            padding: 25px; 
+            border-radius: 20px; 
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            width: 98%; 
+            max-width: 98vw; 
+            margin: -5px auto;
+            box-sizing: border-box;
+        }
+
+        /* --- TABELLA (DASHBOARD GRID) --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 220px 1fr; 
+            gap: 15px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .label-main { color: #ffcc00; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; }
+        .label-sub { color: #ffcc00; background-color: #003087; border-radius: 10px; padding: 8px 15px; font-size: 0.95rem; font-weight: bold; text-align: left; }
+
+        .data-row-mesi { display: flex; justify-content: space-around; list-style: none; padding: 10px; margin: 0; gap: 5px; background-color: #003087; border-radius: 15px; }
+        .data-row-mesi li { flex: 1; text-align: center; font-weight: bold; font-size: 0.9rem; color: #ffcc00; }
+
+        .data-row { display: flex; justify-content: space-around; list-style: none; padding: 0; margin: 0; gap: 5px; }
+        .data-row li { flex: 1; text-align: center; font-weight: bold; font-size: 1rem; }
         
-        .month-row { display: grid; grid-template-columns: 100px 1fr 65px; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-        
-        .stat-ok { color: #322e9f; font-weight: bold; font-family: 'Montserrat', sans-serif;font-size: 20px; font-weight: bold;  } 
-        .stat-no { color: #f58585; font-weight: bold; font-family: 'Montserrat', sans-serif;font-size: 20px; font-weight: bold;  }
-        .month-incid { text-align: right; font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: bold; color: #ffcc00; background-color: #322e9f; border-radius: 15px; text-align: center; }
-        
-        .canvas-wrapper { position: relative; min-height: 400px; width: 100%; }
-        .pie-wrapper { position: relative; min-height: 350px; width: 100%; margin-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px; height: auto;}
-        
+        .value-span { background: rgba(0, 48, 135, 0.6); color: white; padding: 6px 5px; border-radius: 8px; display: inline-block; width: 100%; box-sizing: border-box; }
+        .value-span.ok { background: rgba(142, 202, 230, 0.2); color: #8ecae6; }
+        .value-span.no { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; }
+        .value-span.perc { background: #ffcc00; color: #003087; }
+
+        .separator { grid-column: 1 / -1; height: 1px; background: rgba(255, 204, 0, 0.2); margin: 5px 0; }
+
+        /* --- GRAFICI (DUE COLONNE) --- */
+        .container-grafici-doppi { 
+            display: flex; 
+            justify-content: space-between; 
+            gap: 30px; 
+            width: 98%; 
+            margin: 0 auto; 
+            box-sizing: border-box; 
+        }
+
+        .glass-chart-box { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            height: 480px; 
+            width: 100%; 
+        }
+
+        .title-chart { 
+            color: #ffcc00; background-color: #003087; padding: 8px 20px; 
+            border-radius: 15px; font-family: 'Montserrat', sans-serif; 
+            font-size: 1.1rem; margin: 0 0 15px 0; text-align: center; width: 80%;
+            letter-spacing: 1px; text-transform: uppercase;
+        }
+
+        .canvas-wrapper, .pie-wrapper { position: relative; flex: 1; width: 100%; min-height: 0; }
+
+        /* --- ALTRI STILI --- */
         #loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 48, 135, 0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
-        
-        
-        .spinner { width: 40px; height: 40px; border: 4px solid rgba(255, 255, 255, 0.3); border-top-color: #ffcc00; border-radius: 50%; animation: spin 1s linear infinite; }
+        .spinner { width: 50px; height: 50px; border: 5px solid rgba(255, 255, 255, 0.3); border-top-color: #ffcc00; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-
-        .gruppo-btn {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            border-radius: 20px;
-            align-items: center;
-            width: 390px;
-            text-align: center;
-            bottom: 100px;
+        .container-button {
+            display: flex; justify-content: center; gap: 15px; width: 100%; padding: 15px 0;
+            position: fixed; bottom: 0; left: 0; background: rgba(0, 0, 0, 0.6); 
+            backdrop-filter: blur(10px); border-top: 1px solid rgba(255, 255, 255, 0.1); z-index: 1000;
         }
 
         .btn-report {
-            display: flexbox;
-            bottom: 35px;
-            left: 20px;
-            width: 350px;
-            background: #ffcc00;
-            color: #003087;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 5px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: bold; 
-            font-size: auto;
-            
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: transform 0.3s, filter 0.3s;
+            background: #ffcc00; color: #003087; border: none; padding: 12px 25px;
+            border-radius: 20px; font-family: 'Montserrat', sans-serif; font-weight: bold; 
+            font-size: 14px; cursor: pointer; flex: 1; max-width: 250px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s, filter 0.3s;
+        }
+        .btn-report:hover { transform: translateY(-3px); filter: brightness(1.1); box-shadow: #ffcc00 0px 0px 15px; }
+        
+        .container-2 { display: flex; flex-direction: column; gap: 30px; width: 98%;}
+
+        /* ------------------------------------------------------------------ */
+        /* MEDIA QUERIES SOLO PER MOBILE (Fino a 768px)                       */
+        /* ------------------------------------------------------------------ */
+        @media (max-width: 768px) {
+            body { overflow-y: auto !important; height: auto !important; min-height: 100vh; }
+            .main-container { padding-bottom: 150px; overflow-y: visible !important; }
+
+            nav { flex-direction: column; text-align: center; gap: 15px; padding: 15px 10px; }
+            .nav-title { font-size: 1.1rem; line-height: 1.3; }
+            .nav-buttons { width: 100%; justify-content: center; flex-wrap: wrap; }
+            .btn-nav { width: 45%; max-width: none; font-size: 0.9rem; padding: 10px 5px; }
+
+            .filter-bar { flex-direction: column; align-items: center; gap: 10px; padding: 15px 10px; }
+            .boxInfo { flex-direction: column; width: 100%; gap: 10px; margin: 10px 0 0 0; }
+            .testoRiepilogo, .percentualeNC { width: 90%; text-align: center; font-size: 0.9rem; }
+
+            /* 1. Tabella Confronto Mesi (Colonna Singola + Scroll Orizzontale) */
+            .dashboard-grid { grid-template-columns: 1fr; gap: 10px; }
+            .label-main, .label-sub { text-align: center; }
+            .data-row-mesi, .data-row {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                gap: 8px;
+            }
+            .data-row-mesi li, .data-row li { min-width: 60px; font-size: 0.9rem; }
+            .value-span { font-size: 1.1rem; }
+
+            /* 2. Grafici (Incolonnati) */
+            .container-grafici-doppi { flex-direction: column !important; gap: 20px; width: 100%; }
+            .glass-chart-box { height: 350px; width: 100%; padding: 15px; }
+            .title-chart { width: 95%; font-size: 0.9rem; }
+
+            /* Barra pulsanti su mobile */
+            .container-button { flex-wrap: wrap; padding: 10px; gap: 10px; }
+            .btn-report { flex: 1 1 40%; max-width: 100%; font-size: 0.7rem; padding: 10px 5px; }
         }
 
-        .btn-report:hover {
-            transform: scale(1.05);
-            filter: brightness(1.1);
-        }
-        
-        .sidebar::-webkit-scrollbar { width: 6px; }
-        .sidebar::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    
-
-
     <div id="loader-overlay">
         <div class="spinner"></div>
-        <p id="loader-text" style="font-family: 'Montserrat', sans-serif; font-size: 20px; color: #ffcc00; margin-top:10px;">Caricamento dati dal Database controllo Qualità Pescheria...</p>
+        <p id="loader-text" style="font-family: 'Montserrat', sans-serif; font-size: 20px; color: #ffcc00; margin-top:15px; text-align: center;">Caricamento dati dal Database controllo Qualità Pescheria...</p>
     </div>
 
     <nav>
-        <div style="font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: bold; color: #ffcc00;">
-            TIGROS PIATTAFORMA LOGISTICA - ANDAMENTO CONTROLLO QUALITA' PESCHERIA
-        </div>
+        <div class="nav-title">TIGROS - ANDAMENTO QUALITA' PESCHERIA</div>
         <div class="nav-buttons">
             <button onclick="esportaPDF()" class="btn-nav btn-pdf">ESPORTA PDF</button>
             <button onclick="location.href='Home_new.html'" class="btn-nav btn-home">HOME</button>
@@ -229,68 +246,93 @@
     </nav>
 
     <div class="filter-bar">
-        <span style="font-family: 'Montserrat', sans-serif; font-size: 15px; background-color: #ffcc00; color: #322e9f;border-color: #ffcc00; border: 6px solid #ffcc00; border-radius: 15px; padding: 5px; font-weight: bold;">Anno:</span>
-        <select id="selectAnno" onchange="processaDati()" style="font-family: 'Montserrat', sans-serif; font-size: 15px;">
+        <span class="filter-label">ANNO:</span>
+        <select id="selectAnno" onchange="processaDati()">
             <option value="2024">2024</option>
             <option value="2025">2025</option>
             <option value="2026" selected>2026</option>
         </select>
-             <span id="elencoMesi" style="display: none; font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: bold; background-color: #ffcc00; color: #322e9f;border-color: #ffcc00; border: 6px solid #ffcc00; border-radius: 15px; padding: 5px;">Mese:</span>
-        <select id="selectMese" onchange="" style="display: none; font-family: 'Montserrat', sans-serif; font-size: 15px;">
-            <option value="1">Gennaio</option>
-            <option value="2">Febbraio</option>
-            <option value="3">Marzo</option>
-            <option value="4">Aprile</option>
-            <option value="5">Maggio</option>
-            <option value="6">Giugno</option>
-            <option value="7">Luglio</option>
-            <option value="8">Agosto</option>
-            <option value="9">Settembre</option>
-            <option value="10">Ottobre</option>
-            <option value="11">Novembre</option>
-            <option value="12">Dicembre</option>
+        
+        <span id="elencoMesi" class="filter-label" style="display: none;">MESE:</span>
+        <select id="selectMese" onchange="" style="display: none;">
+            <option value="1">Gennaio</option><option value="2">Febbraio</option><option value="3">Marzo</option>
+            <option value="4">Aprile</option><option value="5">Maggio</option><option value="6">Giugno</option>
+            <option value="7">Luglio</option><option value="8">Agosto</option><option value="9">Settembre</option>
+            <option value="10">Ottobre</option><option value="11">Novembre</option><option value="12">Dicembre</option>
         </select>
+        
         <div class="boxInfo">
-            <span class="testoRiepilogo" id="descrizioneAnno">Riepilogo Anno selezionato: </span>    
+            <span class="testoRiepilogo" id="descrizioneAnno">Riepilogo Anno: </span>    
             <span class="percentualeNC" id="counter-display"></span>
             <span class="percentualeNC" id="counter-displayC"></span>
             <span class="percentualeNC" id="counter-displayNC"></span>
             <span class="percentualeNC" id="counter-display%NC"></span>
         </div>
-
     </div>
 
-    <div class="container">
+    <div class="main-container">
    
-        <div class="sidebar"><div class="card"><h2 style="font-family: 'Montserrat', sans-serif; font-weight: bold; text-align: center;">REPORT MENSILE</h2><div id="listaMesi"></div></div></div>
+        <div class="box_lato" id="boxConteggi">
+            <div class="dashboard-grid">
+                <div class="label-main">MESI</div>
+                <ul class="data-row-mesi">
+                    <li>GEN</li><li>FEB</li><li>MAR</li><li>APR</li><li>MAG</li><li>GIU</li>
+                    <li>LUG</li><li>AGO</li><li>SET</li><li>OTT</li><li>NOV</li><li>DIC</li>
+                </ul>
 
-        <div class="chart-container" id="chart-container">
-            <h2 style="font-family: 'Montserrat', sans-serif;">ANDAMENTO CONTROLLI ANNUALI</h2>
-            <div class="canvas-wrapper">
-                <canvas id="annualChart"></canvas>
+                <div class="separator"></div>
+
+                <div class="label-sub">TOTALI CONTROLLI</div>
+                <ul class="data-row" id="row-totali"></ul>
+
+                <div class="separator"></div>
+
+                <div class="label-sub" style="color:#8ecae6; background: rgba(0, 48, 135, 0.5);">CONFORMI (OK)</div>
+                <ul class="data-row" id="row-ok"></ul>
+
+                <div class="separator"></div>
+
+                <div class="label-sub" style="color:#ff6b6b; background: rgba(0, 48, 135, 0.5);">NON CONFORMI (NC)</div>
+                <ul class="data-row" id="row-nc"></ul>
+
+                <div class="separator"></div>
+
+                <div class="label-sub" style="color:#003087; background: #ffcc00;">INCIDENZA %</div>
+                <ul class="data-row" id="row-incidenza"></ul>
+            </div>
+        </div>
+
+        <div class="container-grafici-doppi" id="boxGrafici">
+            <div class="glass-chart-box">
+                <h4 class="title-chart">ANDAMENTO CONTROLLI ANNUALI</h4>
+                <div class="canvas-wrapper">
+                    <canvas id="annualChart"></canvas>
+                </div>
             </div>
             
-            <div class="pie-wrapper">
-                <h2 id="titoloTorta" style="font-family: 'Montserrat', sans-serif; font-weight: bold;">DETTAGLIO CAUSALI NON CONFORMITÀ</h2>
-                <canvas id="pieChart"></canvas>
+            <div class="glass-chart-box">
+                <h4 class="title-chart" id="titoloTorta">DETTAGLIO CAUSALI NON CONFORMITÀ</h4>
+                <div class="pie-wrapper">
+                    <canvas id="pieChart"></canvas>
+                </div>
             </div>
         </div>
 
-    <div class="container-2" id="container-2" style="display:none;">
-        <div class="card"><h2>REPORT 2</h2>
-            <div id="report2Content">
-                Contenuto Report 2...
+        <div class="container-2" id="container-2" style="display:none;">
+            <div class="box_lato">
+                <h2>REPORT 2</h2>
+                <div id="report2Content">Contenuto Report 2...</div>
+            </div>
         </div>
-    </div>
-    
 
     </div>
-    <div class="gruppo-btn" style="position: fixed; bottom: 20px; left: 20px; font-family: 'Montserrat', sans-serif;">
-        <button class="btn-report" id="exportBtn" onclick="controlliCausaliNC()">CONTROLLI MENSILI & CAUSALI</button>
-        <button class="btn-report" id="exportBtn" onclick="analisiNC()">ANALISI NON CONFORMITÀ</button>
-        <button class="btn-report" id="exportBtn" onclick="">Report_3</button>
-        <button class="btn-report" id="exportBtn" onclick="">Report_4</button>
-        <button class="btn-report" id="exportBtn" onclick="">Report_5</button>
+
+    <div class="container-button">
+        <button class="btn-report" id="btnExport1" onclick="controlliCausaliNC()">CONTROLLI & CAUSALI</button>
+        <button class="btn-report" id="btnExport2" onclick="analisiNC()">ANALISI NC</button>
+        <button class="btn-report" id="btnExport3" onclick="">REPORT 3</button>
+        <button class="btn-report" id="btnExport4" onclick="">REPORT 4</button>
+        <button class="btn-report" id="btnExport5" onclick="">REPORT 5</button>
     </div>
 
     <script>
@@ -303,7 +345,6 @@
         const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSEU_jF9mbvM3Md2lTz9A67HYiYFWkmoVV9oTKPRWweb_-DaVWg_yEFEyYXj2l2w9s0LT2i54OZq3AA/pub?gid=0&single=true&output=csv'; 
 
         async function caricaDati() {
-
             try {
                 const response = await fetch(sheetUrl + '&t=' + new Date().getTime());
                 const rawData = await response.text();
@@ -327,13 +368,9 @@
         }
 
         function processaDati() {
-
-           
-
             const annoScelto = document.getElementById('selectAnno').value;
-            document.getElementById('titoloTorta').innerText = "DETTAGLIO CAUSALI NON CONFORMITÀ ANNO " + annoScelto;
-
-            document.getElementById('descrizioneAnno').innerText = "Riepilogo Anno " + annoScelto + ": ";
+            document.getElementById('titoloTorta').innerText = "CAUSALI NON CONFORMITÀ " + annoScelto;
+            document.getElementById('descrizioneAnno').innerText = "Riepilogo " + annoScelto + ": ";
 
             let mensili = Array.from({ length: 12 }, (_, i) => ({ nome: nomiMesi[i], ok: 0, no: 0, tot: 0 }));
             let causaliCount = { "Corpo Estraneo": 0, "Parassiti": 0, "Etichettatura/Conf.": 0, "Qualità Prodotto": 0 };
@@ -343,9 +380,6 @@
             datiOriginali.forEach(r => {
                 const cleanAnno = r.anno.replace(/\D/g, "");
                 const cleanMese = parseInt(r.mese.replace(/\D/g, ""), 10);
-
-                console.log(`Anno Pulito: ${cleanAnno}`);
-                console.log(`Mese Pulito: ${cleanMese}`);
 
                 if (cleanAnno === annoScelto && !isNaN(cleanMese)) {
                     const idx = cleanMese - 1;
@@ -370,52 +404,51 @@
             const causaliFiltrate = {};
             for (const key in causaliCount) { if (causaliCount[key] > 0) causaliFiltrate[key] = causaliCount[key]; }
 
-                let conteggioC = 0;
-                
-                let controlliConformi = validi - conteggioNC;
-                let percentualeNC = validi > 0 ? ((conteggioNC / validi) * 100).toFixed(1) : 0;
+            let controlliConformi = validi - conteggioNC;
+            let percentualeNC = validi > 0 ? ((conteggioNC / validi) * 100).toFixed(1) : 0;
 
-            document.getElementById('counter-display').innerText = "CONTROLLI: " + validi;
-            document.getElementById('counter-displayC').innerText = "CONFORMI: " + controlliConformi;
-            document.getElementById('counter-displayNC').innerText = "NON CONF: " + conteggioNC;
-            document.getElementById('counter-display%NC').innerText = "PERCENTUALE NON CONF: " + percentualeNC + "%";
+            document.getElementById('counter-display').innerText = "CTRL: " + validi;
+            document.getElementById('counter-displayC').innerText = "OK: " + controlliConformi;
+            document.getElementById('counter-displayNC').innerText = "NC: " + conteggioNC;
+            document.getElementById('counter-display%NC').innerText = "% NC: " + percentualeNC + "%";
 
             aggiornaUI(mensili, causaliFiltrate);
         }
 
         function aggiornaUI(dati, causali) {
-            const listaDiv = document.getElementById('listaMesi');
-            listaDiv.innerHTML = '';
-            dati.forEach(d => {
+            // Aggiorna le righe della tabella in alto
+            document.getElementById('row-totali').innerHTML = dati.map(d => `<li><span class="value-span">${d.tot}</span></li>`).join('');
+            document.getElementById('row-ok').innerHTML = dati.map(d => `<li><span class="value-span ok">${d.ok}</span></li>`).join('');
+            document.getElementById('row-nc').innerHTML = dati.map(d => `<li><span class="value-span no">${d.no}</span></li>`).join('');
+            document.getElementById('row-incidenza').innerHTML = dati.map(d => {
                 const incid = d.tot > 0 ? ((d.no / d.tot) * 100).toFixed(1) : 0;
-                listaDiv.innerHTML += `
-                    <div class="month-row">
-                        <span style="font-family: 'Montserrat', sans-serif; font-weight: bold;">${d.nome}</span>
-                        <div class="month-stats"><span class="stat-ok">OK: ${d.ok}</span> - <span class="stat-no">NO: ${d.no}</span></div>
-                        <span class="month-incid">${incid}%</span>
-                    </div>`;
-            });
+                return `<li><span class="value-span perc">${incid}%</span></li>`;
+            }).join('');
 
-            
+            // Aggiorna Grafico a Barre/Linee
             const ctxBar = document.getElementById('annualChart').getContext('2d');
             if (mioGrafico) mioGrafico.destroy();
             mioGrafico = new Chart(ctxBar, {
                 data: {
-                    labels: dati.map(d => d.nome),
+                    labels: dati.map(d => d.nome.substring(0,3)),
                     datasets: [
-                        { type: 'line', label: 'Incidenza NC %', data: dati.map(d => d.tot > 0 ? (d.no/d.tot*100).toFixed(1) : 0), borderColor: 'white', borderWidth: 3, pointRadius: null, yAxisID: 'y1', datalabels: { display: true, align:'top', color:'white', font:{weight:'bold', size:20}, formatter: (v) => v > 0 ? v + '%' : '' }},
-                        { type: 'bar', label: 'Totale Controlli', data: dati.map(d => d.tot), backgroundColor: 'rgba(255, 204, 0, 0.7)', datalabels: { display: true, anchor:'start', align:'top', font:{weight:'200', size:20}, color:'#003087' }}
+                        { type: 'line', label: 'Incidenza NC %', data: dati.map(d => d.tot > 0 ? (d.no/d.tot*100).toFixed(1) : 0), borderColor: 'white', backgroundColor: 'white', borderWidth: 3, pointRadius: null, yAxisID: 'y1', datalabels: { display: true, align:'top', color:'white', font:{weight:'bold', size:12}, formatter: (v) => v > 0 ? v + '%' : '' }},
+                        { type: 'bar', label: 'Totale Controlli', data: dati.map(d => d.tot), backgroundColor: 'rgba(255, 204, 0, 0.8)', borderRadius: 5, datalabels: { display: true, anchor:'center', align:'center', font:{weight:'bold', size:14}, color:'#003087' }}
                     ]
                 },
                 options: { 
-                    animation: { duration: 2000, easing: 'easeInOutSine', delay: (c) => c.dataIndex * 250 },
+                    animation: { duration: 1500, easing: 'easeInOutQuart'},
                     responsive: true, maintainAspectRatio: false, 
-                    scales: {x: {ticks: { color: 'white',font: {  family:'Montserrat, sans-serif', size: 15}}}, y: { ticks: { color: 'white' } }, y1: { position: 'right', beginAtZero: true, ticks: { color: 'white', callback: v => v + '%' }, grid: { drawOnChartArea: false } } },
-                    plugins: { legend: { labels: { color: 'white', font: { family:'Montserrat, sans-serif', size: 15 } } } }
+                    scales: {
+                        x: {ticks: { color: 'white',font: { family:'Montserrat', size: 12}}}, 
+                        y: { display: true, beginAtZero: true, ticks: { color: 'white', font: { family:'Montserrat', size: 12}}}, 
+                        y1: { position: 'right', beginAtZero: true, display: true, ticks: { max: 120, min:-10 } } 
+                    },
+                    plugins: { legend: { display: false } }
                 }
             });
 
-           
+            // Aggiorna Grafico a Torta
             const ctxPie = document.getElementById('pieChart').getContext('2d');
             if (mioPie) mioPie.destroy();
             mioPie = new Chart(ctxPie, {
@@ -424,23 +457,17 @@
                     labels: Object.keys(causali),
                     datasets: [{
                         data: Object.values(causali),
-                        backgroundColor: ['#ffcc00', '#ff4d4d', '#4eff4e', '#2b75ee', '#a0861d', '#ffffff'],
-                        borderWidth: 0, hoverOffset: 25
-     
+                        backgroundColor: ['#ffcc00', '#ff6b6b', '#8ecae6', '#2b75ee', '#a0861d', '#ffffff'],
+                        borderWidth: 0, hoverOffset: 15
                     }]
                 },
                 options: { 
-                    animation: {
-                        animateRotate: true,
-                        animateScale: true,
-                        duration: 2000,
-                        easing: 'easeOutcubic'
-                    },
+                    animation: { animateRotate: true, animateScale: true, duration: 1500, easing: 'easeOutQuart' },
                     responsive: true, maintainAspectRatio: false,
                     plugins: { 
-                        legend: { position: 'right', labels: { color: 'white', font: { family:'Montserrat, sans-serif', size: 20 } } },
+                        legend: { position: 'bottom', labels: { color: 'white', font: { family:'Montserrat', size: 12 } } },
                         datalabels: {
-                            color: 'black', font: { weight: 'bold', size: 20 }, anchor:'middle',
+                            color: 'black', font: { weight: 'bold', size: 16 }, anchor:'middle',
                             formatter: (val, ctx) => {
                                 let sum = 0;
                                 ctx.chart.data.datasets[0].data.forEach(d => sum += d);
@@ -456,12 +483,12 @@
             const { jsPDF } = window.jspdf;
             const loader = document.getElementById('loader-overlay');
             loader.style.display = 'flex';
-            document.getElementById('loader-text').innerText = "GENERAZIONE PDF...";
+            document.getElementById('loader-text').innerText = "GENERAZIONE PDF IN CORSO...";
 
             try {
                 const canvas = await html2canvas(document.body, {
                     scale: 2, useCORS: true,
-                    ignoreElements: (el) => el.tagName === 'BUTTON' || el.id === 'loader-overlay'
+                    ignoreElements: (el) => el.tagName === 'BUTTON' || el.id === 'loader-overlay' || el.classList.contains('container-button')
                 });
                 const imgData = canvas.toDataURL('image/png');
                 const pdf = new jsPDF('l', 'mm', 'a4');
@@ -475,23 +502,21 @@
 
         caricaDati();
 
-            function analisiNC(){
+        function analisiNC(){
+            document.getElementById('boxConteggi').style.display = 'none';
+            document.getElementById('boxGrafici').style.display = 'none';
+            document.getElementById('container-2').style.display = 'flex';
+            document.getElementById('selectMese').style.display = 'inline-block';
+            document.getElementById('elencoMesi').style.display = 'inline-block';
+        }
 
-                document.getElementById('chart-container').style.display = 'none';
-                document.getElementById('container-2').style.display = 'flex';
-                document.getElementById('selectMese').style.display = 'flex';
-                document.getElementById('elencoMesi').style.display = 'flex';
-                
-            }
-
-            function controlliCausaliNC(){
-                document.getElementById('chart-container').style.display = 'flex';
-                document.getElementById('container-2').style.display = 'none';
-                document.getElementById('selectMese').style.display = 'none';
-                document.getElementById('elencoMesi').style.display = 'none';
-                
-            }
-
+        function controlliCausaliNC(){
+            document.getElementById('boxConteggi').style.display = 'block';
+            document.getElementById('boxGrafici').style.display = 'flex';
+            document.getElementById('container-2').style.display = 'none';
+            document.getElementById('selectMese').style.display = 'none';
+            document.getElementById('elencoMesi').style.display = 'none';
+        }
 
     </script>
 </body>
