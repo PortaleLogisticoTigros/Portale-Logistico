@@ -25,6 +25,7 @@
             overflow: hidden; 
         }
 
+        /* --- NAV E HEADER --- */
         nav { 
             background: rgba(255, 255, 255, 0.1); 
             backdrop-filter: blur(10px); 
@@ -36,13 +37,7 @@
             z-index: 100;
         }
 
-        .nav-title {
-            font-family: 'Montserrat', sans-serif; 
-            font-size: 20px; 
-            font-weight: bold; 
-            color: #ffcc00;
-        }
-
+        .nav-title { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: bold; color: #ffcc00; }
         .nav-buttons { display: flex; gap: 15px; }
 
         .btn-nav {
@@ -72,29 +67,14 @@
         }
 
         .boxInfo { display: flex; gap: 15px; margin-left: auto; font-size: 15px; align-items: center;}
-
-        .testoRiepilogo { 
-            font-weight: bold; color:#ffcc00; background-color: #003087;
-            border-radius: 10px; padding: 5px 10px;
-        }
-
-        .percentualeNC { 
-            font-weight: bold; color:#003087; background-color: #ffcc00;
-            border-radius: 10px; padding: 5px 10px;
-        }
+        .testoRiepilogo { font-weight: bold; color:#ffcc00; background-color: #003087; border-radius: 10px; padding: 5px 10px; }
+        .percentualeNC { font-weight: bold; color:#003087; background-color: #ffcc00; border-radius: 10px; padding: 5px 10px; }
 
         /* --- MAIN CONTAINER --- */
         .main-container { 
-            flex: 1; 
-            padding: 20px; 
-            overflow-y: auto; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 30px; 
-            width: 100%;
-            box-sizing: border-box;
-            padding-bottom: 100px; 
+            flex: 1; padding: 20px; overflow-y: auto; 
+            display: flex; flex-direction: column; align-items: center; 
+            gap: 30px; width: 100%; box-sizing: border-box; padding-bottom: 100px; 
         }
 
         .main-container::-webkit-scrollbar { width: 10px; height: 10px; }
@@ -102,29 +82,17 @@
         .main-container::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; border: 2px solid rgba(0, 48, 135, 0.5); }
         .main-container::-webkit-scrollbar-thumb:hover { background: #ffdb4d; }
 
-
-        .box_lato, .glass-chart-box {
-            background: rgba(255, 255, 255, 0.1); 
-            backdrop-filter: blur(15px);
-            padding: 25px; 
-            border-radius: 20px; 
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-            width: 98%; 
-            max-width: 98vw; 
-            margin: -5px auto;
-            box-sizing: border-box;
+        /* --- BOX VETRO --- */
+        .box_lato, .glass-chart-box, .box_lato-ricevimenti, .box_lato-blocchi {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
+            padding: 25px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3); width: 98%; max-width: 98vw; 
+            margin: 0 auto; box-sizing: border-box;
         }
 
-        /* --- TABELLA (DASHBOARD GRID) --- */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 220px 1fr; 
-            gap: 15px;
-            align-items: center;
-            width: 100%;
-        }
-
+        /* --- TABELLE E GRIGLIE --- */
+        .dashboard-grid { display: grid; grid-template-columns: 220px 1fr; gap: 15px; align-items: center; width: 100%; }
+        
         .label-main { color: #ffcc00; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; }
         .label-sub { color: #ffcc00; background-color: #003087; border-radius: 10px; padding: 8px 15px; font-size: 0.95rem; font-weight: bold; text-align: left; }
 
@@ -141,54 +109,24 @@
 
         .separator { grid-column: 1 / -1; height: 1px; background: rgba(255, 204, 0, 0.2); margin: 5px 0; }
 
-        /* --- GRAFICI (DUE COLONNE) --- */
-        .container-grafici-doppi { 
-            display: flex; 
-            justify-content: space-between; 
-            gap: 30px; 
-            width: 98%; 
-            margin: 0 auto; 
-            box-sizing: border-box; 
-        }
-
-        .glass-chart-box { 
-            flex: 1; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            height: 480px; 
-            width: 100%; 
-        }
-
-        .title-chart { 
-            color: #ffcc00; background-color: #003087; padding: 8px 20px; 
-            border-radius: 15px; font-family: 'Montserrat', sans-serif; 
-            font-size: 1.1rem; margin: 0 0 15px 0; text-align: center; width: 80%;
-            letter-spacing: 1px; text-transform: uppercase;
-        }
-
+        /* --- GRAFICI --- */
+        .container-grafici-doppi { display: flex; justify-content: space-between; gap: 30px; width: 98%; margin: 0 auto; box-sizing: border-box; }
+        .glass-chart-box { flex: 1; display: flex; flex-direction: column; align-items: center; height: 480px; width: 100%; }
+        .title-chart { color: #ffcc00; background-color: #003087; padding: 8px 20px; border-radius: 15px; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; margin: 0 0 15px 0; text-align: center; width: 80%; letter-spacing: 1px; text-transform: uppercase; }
         .canvas-wrapper, .pie-wrapper { position: relative; flex: 1; width: 100%; min-height: 0; }
+
+        .title-ricev { color: #ffcc00; background-color: #003087; padding: 8px 20px; border-radius: 15px; font-family: 'Montserrat', sans-serif; font-size: 1.2rem; margin: -10px auto 20px auto; text-align: center; width:fit-content; letter-spacing: 1px; text-transform: uppercase; }
 
         /* --- ALTRI STILI --- */
         #loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 48, 135, 0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
         .spinner { width: 50px; height: 50px; border: 5px solid rgba(255, 255, 255, 0.3); border-top-color: #ffcc00; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .container-button {
-            display: flex; justify-content: center; gap: 15px; width: 100%; padding: 15px 0;
-            position: fixed; bottom: 0; left: 0; background: rgba(0, 0, 0, 0.6); 
-            backdrop-filter: blur(10px); border-top: 1px solid rgba(255, 255, 255, 0.1); z-index: 1000;
-        }
-
-        .btn-report {
-            background: #ffcc00; color: #003087; border: none; padding: 12px 25px;
-            border-radius: 20px; font-family: 'Montserrat', sans-serif; font-weight: bold; 
-            font-size: 14px; cursor: pointer; flex: 1; max-width: 250px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s, filter 0.3s;
-        }
+        .container-button { display: flex; justify-content: center; gap: 15px; width: 100%; padding: 15px 0; position: fixed; bottom: 0; left: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); border-top: 1px solid rgba(255, 255, 255, 0.1); z-index: 1000; }
+        .btn-report { background: #ffcc00; color: #003087; border: none; padding: 12px 25px; border-radius: 20px; font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 14px; cursor: pointer; flex: 1; max-width: 250px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s, filter 0.3s; }
         .btn-report:hover { transform: translateY(-3px); filter: brightness(1.1); box-shadow: #ffcc00 0px 0px 15px; }
         
-        .container-2 { display: flex; flex-direction: column; gap: 30px; width: 98%;}
+        .container-2 { display: flex; flex-direction: column; gap: 30px; width: 100%;}
 
         /* ------------------------------------------------------------------ */
         /* MEDIA QUERIES SOLO PER MOBILE (Fino a 768px)                       */
@@ -206,24 +144,16 @@
             .boxInfo { flex-direction: column; width: 100%; gap: 10px; margin: 10px 0 0 0; }
             .testoRiepilogo, .percentualeNC { width: 90%; text-align: center; font-size: 0.9rem; }
 
-            /* 1. Tabella Confronto Mesi (Colonna Singola + Scroll Orizzontale) */
             .dashboard-grid { grid-template-columns: 1fr; gap: 10px; }
-            .label-main, .label-sub { text-align: center; }
-            .data-row-mesi, .data-row {
-                justify-content: flex-start;
-                overflow-x: auto;
-                padding-bottom: 10px;
-                gap: 8px;
-            }
+            .label-main, .label-sub { text-align: center; font-size: 0.85rem;}
+            .data-row-mesi, .data-row { justify-content: flex-start; overflow-x: auto; padding-bottom: 10px; gap: 8px; }
             .data-row-mesi li, .data-row li { min-width: 60px; font-size: 0.9rem; }
-            .value-span { font-size: 1.1rem; }
+            .value-span { font-size: 1rem; }
 
-       
             .container-grafici-doppi { flex-direction: column !important; gap: 20px; width: 100%; }
             .glass-chart-box { height: 450px; width: 100%; padding: 15px; }
             .title-chart { width: 95%; font-size: 0.9rem; }
 
-            /* Barra pulsanti su mobile */
             .container-button { flex-wrap: wrap; padding: 10px; gap: 10px; }
             .btn-report { flex: 1 1 40%; max-width: 100%; font-size: 0.7rem; padding: 10px 5px; }
         }
@@ -247,21 +177,13 @@
 
     <div class="filter-bar">
         <span class="filter-label">ANNO:</span>
-        <select id="selectAnno" onchange="processaDati()">
+        <select id="selectAnno" onchange="processaDatiGlobale()">
             <option value="2024">2024</option>
             <option value="2025">2025</option>
             <option value="2026" selected>2026</option>
         </select>
         
-        <span id="elencoMesi" class="filter-label" style="display: none;">MESE:</span>
-        <select id="selectMese" onchange="" style="display: none;">
-            <option value="1">Gennaio</option><option value="2">Febbraio</option><option value="3">Marzo</option>
-            <option value="4">Aprile</option><option value="5">Maggio</option><option value="6">Giugno</option>
-            <option value="7">Luglio</option><option value="8">Agosto</option><option value="9">Settembre</option>
-            <option value="10">Ottobre</option><option value="11">Novembre</option><option value="12">Dicembre</option>
-        </select>
-        
-        <div class="boxInfo">
+        <div class="boxInfo" id="box-info-main">
             <span class="testoRiepilogo" id="descrizioneAnno">Riepilogo Anno: </span>    
             <span class="percentualeNC" id="counter-display"></span>
             <span class="percentualeNC" id="counter-displayC"></span>
@@ -272,59 +194,119 @@
 
     <div class="main-container">
    
-        <div class="box_lato" id="boxConteggi">
-            <div class="dashboard-grid">
-                <div class="label-main">MESI</div>
-                <ul class="data-row-mesi">
-                    <li>GEN</li><li>FEB</li><li>MAR</li><li>APR</li><li>MAG</li><li>GIU</li>
-                    <li>LUG</li><li>AGO</li><li>SET</li><li>OTT</li><li>NOV</li><li>DIC</li>
-                </ul>
+        <div id="container-1" style="display:flex; flex-direction:column; gap:30px; width:100%;">
+            <div class="box_lato" id="boxConteggi">
+                <div class="dashboard-grid">
+                    <div class="label-main">MESI</div>
+                    <ul class="data-row-mesi">
+                        <li>GEN</li><li>FEB</li><li>MAR</li><li>APR</li><li>MAG</li><li>GIU</li>
+                        <li>LUG</li><li>AGO</li><li>SET</li><li>OTT</li><li>NOV</li><li>DIC</li>
+                    </ul>
 
-                <div class="separator"></div>
+                    <div class="separator"></div>
 
-                <div class="label-sub">TOTALI CONTROLLI</div>
-                <ul class="data-row" id="row-totali"></ul>
+                    <div class="label-sub">TOTALI CONTROLLI</div>
+                    <ul class="data-row" id="row-totali"></ul>
 
-                <div class="separator"></div>
+                    <div class="separator"></div>
 
-                <div class="label-sub" style="color:#8ecae6; background: rgba(0, 48, 135, 0.5);">CONFORMI (OK)</div>
-                <ul class="data-row" id="row-ok"></ul>
+                    <div class="label-sub" style="color:#8ecae6; background: rgba(0, 48, 135, 0.5);">CONFORMI (OK)</div>
+                    <ul class="data-row" id="row-ok"></ul>
 
-                <div class="separator"></div>
+                    <div class="separator"></div>
 
-                <div class="label-sub" style="color:#ff6b6b; background: rgba(0, 48, 135, 0.5);">NON CONFORMI (NC)</div>
-                <ul class="data-row" id="row-nc"></ul>
+                    <div class="label-sub" style="color:#ff6b6b; background: rgba(0, 48, 135, 0.5);">NON CONFORMI (NC)</div>
+                    <ul class="data-row" id="row-nc"></ul>
 
-                <div class="separator"></div>
+                    <div class="separator"></div>
 
-                <div class="label-sub" style="color:#003087; background: #ffcc00;">INCIDENZA %</div>
-                <ul class="data-row" id="row-incidenza"></ul>
-            </div>
-        </div>
-
-        <div class="container-grafici-doppi" id="boxGrafici">
-            <div class="glass-chart-box">
-                <h4 class="title-chart">ANDAMENTO CONTROLLI ANNUALI</h4>
-                <div class="canvas-wrapper">
-                    <canvas id="annualChart"></canvas>
+                    <div class="label-sub" style="color:#003087; background: #ffcc00;">INCIDENZA %</div>
+                    <ul class="data-row" id="row-incidenza"></ul>
                 </div>
             </div>
-            
-            <div class="glass-chart-box">
-                <h4 class="title-chart" id="titoloTorta">DETTAGLIO CAUSALI NON CONFORMITÀ</h4>
-                <div class="pie-wrapper">
-                    <canvas id="pieChart"></canvas>
+
+            <div class="container-grafici-doppi" id="boxGrafici">
+                <div class="glass-chart-box">
+                    <h4 class="title-chart">ANDAMENTO CONTROLLI ANNUALI</h4>
+                    <div class="canvas-wrapper">
+                        <canvas id="annualChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="glass-chart-box">
+                    <h4 class="title-chart" id="titoloTorta">DETTAGLIO CAUSALI NON CONFORMITÀ</h4>
+                    <div class="pie-wrapper">
+                        <canvas id="pieChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="container-2" id="container-2" style="display:none;">
-            <div class="box_lato">
-                <h2>REPORT 2</h2>
-                <div id="report2Content">Contenuto Report 2...</div>
-            </div>
-        </div>
+            
+            <div class="box_lato-ricevimenti">
+                <h4 class="title-ricev">ANALISI INCIDENZE SU RICEVIMENTI</h4>
+                <div class="dashboard-grid">
+                    <div class="label-main">MESI</div>
+                    <ul class="data-row-mesi">
+                        <li>GEN</li><li>FEB</li><li>MAR</li><li>APR</li><li>MAG</li><li>GIU</li>
+                        <li>LUG</li><li>AGO</li><li>SET</li><li>OTT</li><li>NOV</li><li>DIC</li>
+                    </ul>
 
+                    <div class="separator"></div>
+                    <div class="label-sub">ARTICOLI RICEVUTI</div>
+                    <ul class="data-row" id="row-ricev-art"></ul>
+
+                    <div class="separator"></div>
+                    <div class="label-sub" style="color:#ffcc00; background:#003087;">COLLI RICEVUTI</div>
+                    <ul class="data-row" id="row-ricev-colli"></ul>
+
+                    <div class="separator"></div>
+                    <div class="label-sub" style="color:#ffcc00; background:#003087;">CONTROLLI ESEGUITI</div>
+                    <ul class="data-row" id="row-ricev-ctrl"></ul>
+
+                    <div class="separator"></div>
+                    <div class="label-sub" style="color:#ffcc00; background:#003087;">NC RILEVATE</div>
+                    <ul class="data-row" id="row-ricev-nc"></ul>
+
+                    <div class="separator"></div>
+                    <div class="label-sub" style="color:#003087; background: #ffcc00;">% CONTROLLI SU ARTICOLI</div>
+                    <ul class="data-row" id="row-incid-art"></ul>
+
+                    <div class="separator"></div>
+                    <div class="label-sub" style="color:#003087; background: #ffcc00;">% CONTROLLI SU COLLI</div>
+                    <ul class="data-row" id="row-incid-colli"></ul>
+
+                    <div class="separator"></div>
+                    <div class="label-sub" style="color:white; background: #ff6b6b;">INCIDENZA NC SU ARTICOLI %</div>
+                    <ul class="data-row" id="row-incid-nc-art"></ul>
+                </div>
+            </div>
+            
+            <div class="box_lato-blocchi">
+                <h4 class="title-ricev">RESI E BLOCCHI MENSILI</h4>
+                <div class="dashboard-grid">
+                    <div class="label-main">MESI</div>
+                    <ul class="data-row-mesi">
+                        <li>GEN</li><li>FEB</li><li>MAR</li><li>APR</li><li>MAG</li><li>GIU</li>
+                        <li>LUG</li><li>AGO</li><li>SET</li><li>OTT</li><li>NOV</li><li>DIC</li>
+                    </ul>
+
+                    <div class="separator"></div>
+                    <div class="label-sub">COLLI RESI EFFETTIVI</div>
+                    <ul class="data-row" id="row-mesi-resi"></ul>
+
+                    <div class="separator"></div>
+                    <div class="label-sub" style="color:#003087; background: #ffcc00;">BLOCCO LOTTO INTERO</div>
+                    <ul class="data-row" id="row-mesi-blocco-intero"></ul>
+
+                    <div class="separator"></div>
+                    <div class="label-sub" style="color:#003087; background: #ffcc00;">BLOCCO PARZIALE</div>
+                    <ul class="data-row" id="row-mesi-blocco-parziale"></ul>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <div class="container-button">
@@ -338,19 +320,35 @@
     <script>
         Chart.register(ChartDataLabels);
 
-        let datiOriginali = [];
+        let datiQualita = [];
+        let datiRicevimenti = [];
         let mioGrafico, mioPie;
         const nomiMesi = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
         
-        const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSEU_jF9mbvM3Md2lTz9A67HYiYFWkmoVV9oTKPRWweb_-DaVWg_yEFEyYXj2l2w9s0LT2i54OZq3AA/pub?gid=0&single=true&output=csv'; 
+        const sheetUrlQualita = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSEU_jF9mbvM3Md2lTz9A67HYiYFWkmoVV9oTKPRWweb_-DaVWg_yEFEyYXj2l2w9s0LT2i54OZq3AA/pub?gid=0&single=true&output=csv';
+        const sheetUrlRicevimenti = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSQ5u3Y7KoxXBdPcJO8pXN21YftqmE_6XlpELXIiOaFu5kgAIhsrWVYZeUN7iHxCWZx8wREfiVbXjTi/pub?output=csv';
 
         async function caricaDati() {
             try {
-                const response = await fetch(sheetUrl + '&t=' + new Date().getTime());
-                const rawData = await response.text();
-                const lines = rawData.split(/\r?\n/).filter(l => l.trim().length > 10);
+                const [resQualita, resRicevimenti] = await Promise.all([
+                    fetch(sheetUrlQualita + '&t=' + new Date().getTime()),
+                    fetch(sheetUrlRicevimenti + '&t=' + new Date().getTime())
+                ]);
+
+                const csvQualita = await resQualita.text();
+                const csvRicevimenti = await resRicevimenti.text();
+
+              
+                const linesQ = csvQualita.split(/\r?\n/).filter(l => l.trim().length > 10);
+                const headersQ = linesQ[0].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(h => h.replace(/"/g, "").trim().toUpperCase());
                 
-                datiOriginali = lines.slice(1).map(line => {
+                let idxBlocco = headersQ.findIndex(h => h.includes("BLOCCO") || h.includes("AZIONE") || h.includes("STATO"));
+                let idxResi = headersQ.findIndex(h => h.includes("RESI") || h.includes("RESTITUIT") || h.includes("EFFETTIVI") || h === "Q.TA'");
+                
+                if(idxBlocco === -1) idxBlocco = 74; 
+                if(idxResi === -1) idxResi = 75;
+
+                datiQualita = linesQ.slice(1).map(line => {
                     const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                     return {
                         esito: cols[72] ? cols[72].replace(/"/g, "").trim().toLowerCase() : "",
@@ -359,16 +357,55 @@
                         corpo: cols[69] ? cols[69].replace(/"/g, "").trim() : "",
                         paras: cols[56] ? cols[56].replace(/"/g, "").trim() : "",
                         etich: cols[15] ? cols[15].replace(/"/g, "").trim() : "",
-                        conf: cols[12] ? cols[12].replace(/"/g, "").trim() : ""
+                        conf: cols[12] ? cols[12].replace(/"/g, "").trim() : "",
+                        blocco: cols[idxBlocco] ? cols[idxBlocco].replace(/"/g, "").trim().toUpperCase() : "",
+                        resi: cols[idxResi] ? parseFloat(cols[idxResi].replace(/"/g, "").replace(",", ".").trim()) : 0
                     };
                 });
-                processaDati();
+
+                // Parsing Database Ricevimenti
+                const linesR = csvRicevimenti.split(/\r?\n/).filter(l => l.trim().length > 0);
+                const headersR = linesR[0].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(h => h.replace(/"/g, "").trim().toUpperCase());
+                const idxData = headersR.findIndex(h => h.includes("DATA"));
+                const idxColli = headersR.findIndex(h => h === "COLLI" || h.includes("QUANTIT") || h === "QTA");
+
+                datiRicevimenti = linesR.slice(1).map(line => {
+                    const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                    const dataStr = cols[idxData] ? cols[idxData].replace(/"/g, "").trim() : "";
+                    let anno = "", mese = -1;
+                    if(dataStr) {
+                        if(dataStr.includes("/")) {
+                            const p = dataStr.split("/");
+                            mese = parseInt(p[1]) - 1;
+                            anno = p[2];
+                        } else if(dataStr.includes("-")) {
+                            const p = dataStr.split("-");
+                            anno = p[0];
+                            mese = parseInt(p[1]) - 1;
+                        }
+                    }
+                    const colli = cols[idxColli] ? parseFloat(cols[idxColli].replace(/"/g, "").replace(",", ".")) : 0;
+                    return { anno, mese, colli: isNaN(colli) ? 0 : colli };
+                });
+
+                processaDatiGlobale();
                 document.getElementById('loader-overlay').style.display = 'none';
-            } catch (e) { console.error(e); }
+
+            } catch (e) { 
+                console.error(e); 
+                alert("Errore durante il caricamento dei dati.");
+                document.getElementById('loader-overlay').style.display = 'none';
+            }
         }
 
-        function processaDati() {
+        function processaDatiGlobale() {
             const annoScelto = document.getElementById('selectAnno').value;
+            processaSezione1(annoScelto);
+            processaSezione2(annoScelto);
+        }
+
+        // ==================== LOGICA SEZIONE 1 ====================
+        function processaSezione1(annoScelto) {
             document.getElementById('titoloTorta').innerText = "CAUSALI NON CONFORMITÀ " + annoScelto;
             document.getElementById('descrizioneAnno').innerText = "Riepilogo " + annoScelto + ": ";
 
@@ -377,7 +414,7 @@
             let validi = 0;
             let conteggioNC = 0;
 
-            datiOriginali.forEach(r => {
+            datiQualita.forEach(r => {
                 const cleanAnno = r.anno.replace(/\D/g, "");
                 const cleanMese = parseInt(r.mese.replace(/\D/g, ""), 10);
 
@@ -412,51 +449,44 @@
             document.getElementById('counter-displayNC').innerText = "NC: " + conteggioNC;
             document.getElementById('counter-display%NC').innerText = "% NC: " + percentualeNC + "%";
 
-            aggiornaUI(mensili, causaliFiltrate);
-        }
-
-        function aggiornaUI(dati, causali) {
-            // Aggiorna le righe della tabella in alto
-            document.getElementById('row-totali').innerHTML = dati.map(d => `<li><span class="value-span">${d.tot}</span></li>`).join('');
-            document.getElementById('row-ok').innerHTML = dati.map(d => `<li><span class="value-span ok">${d.ok}</span></li>`).join('');
-            document.getElementById('row-nc').innerHTML = dati.map(d => `<li><span class="value-span no">${d.no}</span></li>`).join('');
-            document.getElementById('row-incidenza').innerHTML = dati.map(d => {
+            // Aggiorna Tabelle e Grafici Sezione 1
+            document.getElementById('row-totali').innerHTML = mensili.map(d => `<li><span class="value-span">${d.tot}</span></li>`).join('');
+            document.getElementById('row-ok').innerHTML = mensili.map(d => `<li><span class="value-span ok">${d.ok}</span></li>`).join('');
+            document.getElementById('row-nc').innerHTML = mensili.map(d => `<li><span class="value-span no">${d.no}</span></li>`).join('');
+            document.getElementById('row-incidenza').innerHTML = mensili.map(d => {
                 const incid = d.tot > 0 ? ((d.no / d.tot) * 100).toFixed(1) : 0;
                 return `<li><span class="value-span perc">${incid}%</span></li>`;
             }).join('');
 
-           
             const ctxBar = document.getElementById('annualChart').getContext('2d');
             if (mioGrafico) mioGrafico.destroy();
             mioGrafico = new Chart(ctxBar, {
                 data: {
-                    labels: dati.map(d => d.nome.substring(0,3)),
+                    labels: mensili.map(d => d.nome.substring(0,3)),
                     datasets: [
-                        { type: 'line', label: 'Incidenza NC %', data: dati.map(d => d.tot > 0 ? (d.no/d.tot*100).toFixed(1) : 0), borderColor: 'white', backgroundColor: 'white', borderWidth: 3, pointRadius: null, yAxisID: 'y1', datalabels: { display: true, align:'top', color:'white', font:{weight:'bold', size:12}, formatter: (v) => v > 0 ? v + '%' : '' }},
-                        { type: 'bar', label: 'Totale Controlli', data: dati.map(d => d.tot), backgroundColor: 'rgba(255, 204, 0, 0.8)', borderRadius: 5, datalabels: { display: true, anchor:'start', align:'end', font:{weight:'bold', size:14}, color:'#003087' }}
+                        { type: 'line', label: 'Incidenza NC %', data: mensili.map(d => d.tot > 0 ? (d.no/d.tot*100).toFixed(1) : 0), borderColor: 'white', backgroundColor: 'white', borderWidth: 3, pointRadius: null, yAxisID: 'y1', datalabels: { display: true, align:'top', color:'white', font:{weight:'bold', size:12}, formatter: (v) => v > 0 ? v + '%' : '' }},
+                        { type: 'bar', label: 'Totale Controlli', data: mensili.map(d => d.tot), backgroundColor: 'rgba(255, 204, 0, 0.8)', borderRadius: 5, datalabels: { display: true, anchor:'start', align:'end', font:{weight:'bold', size:14}, color:'#003087' }}
                     ]
                 },
                 options: { 
-                    animation: { duration: 1500, easing: 'easeInOutQuart'},
-                    responsive: true, maintainAspectRatio: false, 
-                   scales: {
-                                x: { display: true, ticks: { color: 'white', font: { family:'Montserrat', size: 12 } } }, 
-                                y: { display: true, min: 0, ticks: { color: 'white', font: { family:'Montserrat', size: 12 } }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
-                                y1: { position: 'right', display: true, min: -3, max: 25, ticks: { color: 'white', font: { family:'Montserrat', size: 12 }, callback: (v) => v + '%' }, grid: { drawOnChartArea: false } }
-                            },
+                    animation: { duration: 1500, easing: 'easeInOutQuart'}, responsive: true, maintainAspectRatio: false, 
+                    scales: {
+                        x: { display: true, ticks: { color: 'white', font: { family:'Montserrat', size: 12 } } }, 
+                        y: { display: true, min: 0, ticks: { color: 'white', font: { family:'Montserrat', size: 12 } }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
+                        y1: { position: 'right', display: false, min: -10, max: 120 } 
+                    },
                     plugins: { legend: { display: false } }
                 }
             });
 
-            // Aggiorna Grafico a Torta
             const ctxPie = document.getElementById('pieChart').getContext('2d');
             if (mioPie) mioPie.destroy();
             mioPie = new Chart(ctxPie, {
                 type: 'pie',
                 data: {
-                    labels: Object.keys(causali),
+                    labels: Object.keys(causaliFiltrate),
                     datasets: [{
-                        data: Object.values(causali),
+                        data: Object.values(causaliFiltrate),
                         backgroundColor: ['#ffcc00', '#ff6b6b', '#8ecae6', '#2b75ee', '#a0861d', '#ffffff'],
                         borderWidth: 0, hoverOffset: 15
                     }]
@@ -477,6 +507,59 @@
                     }
                 }
             });
+        }
+
+        // ==================== LOGICA SEZIONE 2 ====================
+        function processaSezione2(annoScelto) {
+            
+            let mesiData = Array.from({length: 12}, () => ({ 
+                art: 0, colli: 0, ctrl: 0, nc: 0,
+                resi: 0, bloccoIntero: 0, bloccoParziale: 0 
+            }));
+
+            datiRicevimenti.forEach(r => {
+                if (r.anno === annoScelto && r.mese >= 0 && r.mese < 12) {
+                    mesiData[r.mese].art += 1;
+                    mesiData[r.mese].colli += r.colli;
+                }
+            });
+
+       
+            datiQualita.forEach(r => {
+                const cleanAnno = r.anno.replace(/\D/g, "");
+                const cleanMese = parseInt(r.mese.replace(/\D/g, ""), 10) - 1;
+
+                if (cleanAnno === annoScelto) {
+                    if (cleanMese >= 0 && cleanMese < 12) {
+                        mesiData[cleanMese].ctrl += 1;
+                        if (r.esito.includes("neg") || r.esito.includes("non") || r.esito === "no") {
+                            mesiData[cleanMese].nc += 1;
+                        }
+                        
+                  
+                        mesiData[cleanMese].resi += (isNaN(r.resi) ? 0 : r.resi);
+                        if (r.blocco.includes("INTERO")) mesiData[cleanMese].bloccoIntero++;
+                        if (r.blocco.includes("PARZIALE")) mesiData[cleanMese].bloccoParziale++;
+                    }
+                }
+            });
+
+            const formatPerc = (num, den) => den > 0 ? ((num/den)*100).toFixed(1) + '%' : '0%';
+
+            // Popola Prima Tabella (Ricevimenti)
+            document.getElementById('row-ricev-art').innerHTML = mesiData.map(d => `<li><span class="value-span">${d.art}</span></li>`).join('');
+            document.getElementById('row-ricev-colli').innerHTML = mesiData.map(d => `<li><span class="value-span">${Math.round(d.colli)}</span></li>`).join('');
+            document.getElementById('row-ricev-ctrl').innerHTML = mesiData.map(d => `<li><span class="value-span ok">${d.ctrl}</span></li>`).join('');
+            document.getElementById('row-ricev-nc').innerHTML = mesiData.map(d => `<li><span class="value-span no">${d.nc}</span></li>`).join('');
+            
+            document.getElementById('row-incid-art').innerHTML = mesiData.map(d => `<li><span class="value-span perc">${formatPerc(d.ctrl, d.art)}</span></li>`).join('');
+            document.getElementById('row-incid-colli').innerHTML = mesiData.map(d => `<li><span class="value-span perc">${formatPerc(d.ctrl, d.colli)}</span></li>`).join('');
+            document.getElementById('row-incid-nc-art').innerHTML = mesiData.map(d => `<li><span class="value-span" style="background:#ff6b6b; color:white; font-weight:900;">${formatPerc(d.nc, d.art)}</span></li>`).join('');
+
+            
+            document.getElementById('row-mesi-resi').innerHTML = mesiData.map(d => `<li><span class="value-span ok">${Math.round(d.resi)}</span></li>`).join('');
+            document.getElementById('row-mesi-blocco-intero').innerHTML = mesiData.map(d => `<li><span class="value-span no">${d.bloccoIntero}</span></li>`).join('');
+            document.getElementById('row-mesi-blocco-parziale').innerHTML = mesiData.map(d => `<li><span class="value-span no">${d.bloccoParziale}</span></li>`).join('');
         }
 
         async function esportaPDF() {
@@ -500,23 +583,19 @@
             loader.style.display = 'none';
         }
 
-        caricaDati();
+        function controlliCausaliNC(){
+            document.getElementById('container-1').style.display = 'flex';
+            document.getElementById('container-2').style.display = 'none';
+            document.getElementById('box-info-main').style.display = 'flex'; 
+        }
 
         function analisiNC(){
-            document.getElementById('boxConteggi').style.display = 'none';
-            document.getElementById('boxGrafici').style.display = 'none';
+            document.getElementById('container-1').style.display = 'none';
             document.getElementById('container-2').style.display = 'flex';
-            document.getElementById('selectMese').style.display = 'inline-block';
-            document.getElementById('elencoMesi').style.display = 'inline-block';
+            document.getElementById('box-info-main').style.display = 'none'; 
         }
 
-        function controlliCausaliNC(){
-            document.getElementById('boxConteggi').style.display = 'block';
-            document.getElementById('boxGrafici').style.display = 'flex';
-            document.getElementById('container-2').style.display = 'none';
-            document.getElementById('selectMese').style.display = 'none';
-            document.getElementById('elencoMesi').style.display = 'none';
-        }
+        caricaDati();
 
     </script>
 </body>
