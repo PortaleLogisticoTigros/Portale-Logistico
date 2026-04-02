@@ -10,7 +10,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
 
-        /* --- STRUTTURA FONDAMENTALE --- */
+
         body {
             margin: 0;
             background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%) !important;
@@ -25,7 +25,6 @@
             color: white;
         }
 
-        /* --- NAVIGAZIONE --- */
         nav {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -49,6 +48,7 @@
             padding: 5px 12px;
             border-radius: 50px;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
         }
 
         .user-initials {
@@ -114,7 +114,6 @@
             animation: welcomeSequence 3s ease-in-out forwards;
         }
 
-        /* --- CONTENITORE BOX (GLASS) --- */
         .container-glass {
             flex: 1;
             display: flex;
@@ -295,7 +294,7 @@
 
     <nav>
         <div class="nav-left">
-            <div class="user-badge">
+            <div class="user-badge" onclick="location.href='info_utente.html'">
                 <div class="user-initials" id="userInitials">??</div>
                 <span class="user-fullname" id="userFullname">Utente</span>
             </div>
