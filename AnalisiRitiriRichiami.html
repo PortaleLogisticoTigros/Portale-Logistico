@@ -40,6 +40,7 @@
             background: rgba(255, 255, 255, 0.15);
             padding: 5px 12px; border-radius: 50px;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
         }
         .user-initials {
             width: 30px; height: 30px;
@@ -740,7 +741,7 @@
 <body>
 
     <nav>
-        <div class="nav-left"><div class="user-badge"><div class="user-initials" id="userInitials">??</div><span class="user-fullname" id="userFullname">Utente</span></div></div>
+        <div class="nav-left"><div class="user-badge" onclick="location.href='info_utente.html'"><div class="user-initials" id="userInitials">??</div><span class="user-fullname" id="userFullname">Utente</span></div></div>
         <ul>
             <li><a href="Home_new.html">HOME</a></li>
             <li><a onclick="confermaEsci()" class="logout">ESCI</a></li>
@@ -1129,7 +1130,7 @@
                     
                         const filtrati = tuttiIDati.filter(d => {
                             const annoOk = d.ANNO == annoSel;
-                            if (marchio === 'PRIMIA') return annoOk && d.MACROMARCHIO && d.MACROMARCHIO.includes('PRIMIA');
+                            if (marchio === 'PRIMIA') return annoOk && d.MACROMARCHIO && d.MACROMARCHIO.includes('PRIMIA-');
                             return annoOk && d.MACROMARCHIO === marchio;
                         });
 

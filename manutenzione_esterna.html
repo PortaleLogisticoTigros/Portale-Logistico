@@ -42,6 +42,7 @@
             background: rgba(255, 255, 255, 0.15);
             padding: 5px 12px; border-radius: 50px;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
         }
         .user-initials {
             width: 30px; height: 30px;
@@ -136,6 +137,15 @@
         }
 
         .reparti-container {
+            display: flex; 
+            flex-direction: column;
+            gap: 20px; 
+            width: calc(100% - 210px); 
+            margin-left: 200px; 
+            box-sizing: border-box;
+        }
+
+        .report-container {
             display: flex; 
             flex-direction: column;
             gap: 20px; 
@@ -330,6 +340,68 @@
                 .btn-toggle:hover:not(.active) {
                     background: rgba(255, 255, 255, 0.1);
                 }
+                .title-report-container{
+                    text-align: center; 
+                    color: #003087; 
+                    background-color: #ffcc00; 
+                    border-radius: 20px; 
+                    padding: 5px; 
+                    margin-top: -5px;
+                }
+
+                .btn-report {
+                    width: 20%;
+                    max-width: 20%;
+                    height: 70%;
+                    margin-top: -50px;
+                    padding: 10px 20px; 
+                    background: #ffcc00; 
+                    color: #003087; 
+                    border: none; 
+                    border-radius: 10px; 
+                    font-weight: bold; 
+                    cursor:pointer;
+                    transition: all 0.3s ease;
+                }
+
+               .tendina-azienda-report {
+                        width: 30%;
+                        border-radius: 15px;
+                        transition: transform 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+                    }
+                .dati-report-selezionato{
+                    display: grid;
+                    margin: -60px 0 0 0;
+                    justify-content: center;
+                    flex-direction: column;
+                    text-align: center;
+                    align-self: center;
+                    
+                    
+                }
+                .dati-report-selezionato h4{
+                    display: inline-block;
+                   grid-row: auto;
+                    background-color: #003087;
+                    border: 1px solid rgba(255, 204, 0, 0.3);
+                    width: fit-content;
+                     min-width: 550px;
+                    padding: 10px;
+                    border-radius: 20px;
+                    color: #ffcc00;
+                    margin: 5px 0;
+                    margin-left: 50px;
+                    text-align: left;
+                    
+                }
+                .dati-report-selezionato span{
+                    background-color: #ffcc00;
+                    color: #003087;
+                    
+                    padding: 5px 10px;
+                    border-radius: 15px;
+                    margin-left: 70px;
+                }   
 
     </style>
 </head>
@@ -337,7 +409,7 @@
 
      <nav>
         <div class="nav-left">
-            <div class="user-badge"><div class="user-initials" id="userInitials">??</div><span class="user-fullname" id="userFullname">Utente</span></div>
+            <div class="user-badge" onclick="location.href='info_utente.html'"><div class="user-initials" id="userInitials">??</div><span class="user-fullname" id="userFullname">Utente</span></div>
             <div style="font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: bold; color: #ffcc00; margin-left: 30px;">
                 TIGROS PIATTAFORMA LOGISTICA - REPORT MANUTENZIONI
             </div>
@@ -502,6 +574,36 @@
             </div>
         </div>
 
+        <div class="report-container" id="report-container" style="display: none;">
+            <h3 class="title-report-container" style="width: fit-content; padding: 5px 25px;">INVIO REPORT MENSILE</h3>
+             <div style="background: rgba(255,255,255,0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255,204,0,0.3); display: flex; flex-direction: column; gap: 20px;">
+                    <div class="selezione-azienda-report">
+                    <small class="titoletto-menu">SELEZIONA FORNITORE</small>
+                    <select class="tendina-azienda-report" id="tendina-azienda-report" onchange="selezioneAzienda()"> 
+                        <option value="E.B. Di Bicciato Emanuele" selected>E.B. Di Bicciato Emanuele</option>
+                        <option value="Roberto Ruggeri">Roberto Ruggeri</option>
+                        <option value="Bertuetti SPA">Bertuetti SPA</option>
+                        <option value="Bizerba SPA">Bizerba SPA</option>
+                        <option value="Fast Service SAS">Fast Service SAS</option>
+                        <option value="Gerosa Achille SRL">Gerosa Achille SRL</option>
+                        <option value="Mondial Pack Group">Mondial Pack Group</option>
+                        <option value="CAD Project SRL">CAD Project SRL</option>
+                        <option value="Fabbri Group SPA">Fabbri Group SPA</option>
+                        <option value="Carpeggiani SRL (Elettricista)">Carpeggiani SRL (Elettricista)</option>
+                        <option value="Carpeggiani SRL (Idraulico)">Carpeggiani SRL (Idraulico)</option>
+                        <option value="Gumiero Ambiente SRL">Gumiero Ambiente SRL</option>
+                        <option value="Cagnoni Enrico">Cagnoni Enrico</option>
+                    </select>
+                </div>
+                <div class="dati-report-selezionato" id="dati-report-selezionato">
+                    <h4>ANNO DA GENERARE: <span id="anno-genera">Da selezionare...</span></h4>
+                    <h4>MESE DA GENERARE: <span id="mese-genera">Da selezionare...</span></h4>
+                    <h4>AZIENDA: <span id="azienda-genera">Da selezionare...</span></h4>
+                </div>
+
+                <button class="btn-report" id="btn-report" onclick="generaReport()">Genera Report PDF</button>
+        </div>
+
 
 
         <div class="acquisti-container" id="acquisti-container" style="display: none;"><h3>ACQUISTI</h3></div>
@@ -524,7 +626,7 @@
         let iniziali = (parti.length > 1) ? parti[0][0] + parti[1][0] : parti[0][0] + (parti[0][1] || "");
         document.getElementById('userInitials').innerText = iniziali.toUpperCase();
         caricaDatiCSV();
-        reparti();
+        report();
         
 
     };
@@ -540,7 +642,7 @@
             
             const attuale = localStorage.getItem("schermataAttuale") || "spese";
             if(attuale === "aziende") aziende();
-            else reparti();
+            else report();
 
         } catch (e) { console.error("Errore fetch:", e); }
         finally { if(mainSpinner) mainSpinner.style.display = 'none'; }
@@ -832,7 +934,7 @@ function popolaDettaglioReparto() {
     }
 
     function nascondiTuttomanutenzione() {
-        ['chart-container', 'container-right', 'reparti-container', 'report-container', 'aziende-container', 'acquisti-container'].forEach(id => {
+        ['chart-container', 'container-right', 'reparti-container', 'report-container', 'aziende-container', 'acquisti-container','report-container'].forEach(id => {
             const el = document.getElementById(id);
             if(el) el.style.display = 'none';
         });
@@ -886,6 +988,20 @@ function popolaDettaglioReparto() {
             console.log("Schermata attuale: ",schermata);
         document.getElementById('report-container').style.display='flex';
     }
+
+    function selezioneAzienda() {
+        const aziendaSel = document.getElementById('tendina-azienda-report').value.trim().toUpperCase();
+        const annoSel = document.getElementById('selectAnno').value;
+        const meseSel = document.getElementById('selectMese').value;
+
+        const btn = document.getElementById('btn-report');
+        btn.innerText ="Genera report per " + aziendaSel;
+
+        document.getElementById('azienda-genera').innerText = aziendaSel;
+        document.getElementById('anno-genera').innerText = annoSel;
+        document.getElementById('mese-genera').innerText = meseSel;
+    }
+
     </script>
 
 
