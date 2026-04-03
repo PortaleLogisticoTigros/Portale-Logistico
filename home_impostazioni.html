@@ -299,13 +299,13 @@
                 <span class="user-fullname" id="userFullname">Utente</span>
             </div>
         </div>
+
         <ul>
-            <li><a href="Home_new.html" style="color: #ffcc00;">HOME</a></li>
-            <li><a href="Viaggi.html">DASHBOARD VIAGGI</a></li>
-            <li><a href="Ordini.html">DASHBOARD ORDINI</a></li>
-            <li><a href="Ricevimenti.html">DASHBOARD RICEVIMENTI</a></li>
+            <li><a href="Home_new.html">HOME</a></li>
+           
             <li><a onclick="confermaEsci()" class="logout">ESCI</a></li>
         </ul>
+       
         <div class="nav-right">
             <div class="nav-logo">
                 <img src="LOGO_TIGROS_VERTICALE.jpg" alt="Logo Tigros">
@@ -313,99 +313,20 @@
         </div>
     </nav>
 
-    <div id="welcomeBox" class="welcome-section">
-        <h1 class="welcome-title">BENVENUTO NELLA PIATTAFORMA LOGISTICA TIGROS</h1>
-    </div>
-
     <div class="container-glass">
         
-        <div class="glass-box-container" id="box-book">
-            <div class="book-glass-box" onclick="vaiBook()">
-                <h2 class="book-title">BOOK LOGISTICO</h2>
-                <div class="book">
-                    <div class="cover"></div>
-                    <div class="pages">
-                        <div class="chart-line"></div>
-                        <div class="chart-line yellow"></div>
-                        <div class="chart-line"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="glass-box-container" id="box-accessi">
-            <div class="accessi-glass-box" onclick="location.href='accessi.html'">
-                <h2 class="accessi-title">ACCESSI PIATTAFORMA</h2>
-                <div class="accessi">
-                    <div class="accessi_before"><span>Accessi</span></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="glass-box-container" id="box-haccp">
-            <div class="haccp-glass-box" onclick="location.href='home_qualita.html'">
-                <h2 class="haccp-title">UFFICIO QUALITA'</h2>
-                <div class="haccp">
-                    <div class="haccp_before"><span>Qualità</span></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="glass-box-container" id="box-manutenzione">
-            <div class="manutenzione-glass-box" onclick="location.href='manutenzione_esterna.html'">
-                <h2 class="manutenzione-title">MANUTENZIONE</h2>
-                <div class="manutenzione">
-                    <div class="manutenzione_before"><span>Magazzino</span></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="glass-box-container" id="box-trasporti">
-            <div class="trasporti-glass-box" onclick="sviluppo()">
-                <h2 class="trasporti-title">UFFICIO TRAFFICO</h2>
-                <div class="trasporti">
-                    <div class="trasporti_before"><span>Trasporti</span></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="glass-box-container" id="box-freschi">
-            <div class="freschi-glass-box" onclick="window.location.href='home_freschi.html'">
-                <h2 class="freschi-title">CEDI 21 - FRESCHI</h2>
-                <div class="freschi">
-                    <div class="freschi_before"><span>Freschi</span></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="glass-box-container" id="box-pescheria">
-            <div class="report-glass-box" onclick="vaiReport()">
-                <h2 class="report-title">CEDI 29 - PESCHERIA</h2>
-                <div class="report">
-                    <div class="report_before"><span>Pescheria</span></div>
-                </div>
-            </div>
-        </div>
-
+       
         <div class="glass-box-container" id="box-frutta">
             <div class="frutta-glass-box" onclick="sviluppo()">
-                <h2 class="frutta-title">CEDI 23 - ORTOFRUTTA</h2>
+                <h2 class="frutta-title">UTENTI REGISTRATI</h2>
                 <div class="frutta">
-                    <div class="frutta_before"><span>Ortofrutta</span></div>
+                    <div class="frutta_before"><span>Anagrafica</span></div>
                 </div>
             </div>
         </div>
 
-        <div class="glass-box-container" id="box-impostazioni">
-            <div class="impost-glass-box" onclick="location.href='home_impostazioni.html'">
-                <h2 class="impost-title">IMPOSTAZIONI</h2>
-                <div class="impostazioni">
-                    <div class="impost_before"><span>Opzioni</span></div>
-                </div>
-            </div>
-        </div>
 
-        <p class="feed" id="feedRic" onclick="aprifeed(event)">FeedBack e Richieste</p>
+        
     </div>
 
     <div class="modal-overlay" id="modalOverlay">
