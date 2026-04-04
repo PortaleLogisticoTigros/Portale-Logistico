@@ -138,7 +138,7 @@
 
         .book-glass-box, .report-glass-box, .accessi-glass-box, .frutta-glass-box, 
         .manutenzione-glass-box, .haccp-glass-box, .trasporti-glass-box, 
-        .freschi-glass-box, .impost-glass-box {
+        .freschi-glass-box, .impost-glass-box, .prep-glass-box {
             background: rgba(255, 255, 255, 0.1) !important;
             backdrop-filter: blur(15px);
             padding: 20px; 
@@ -164,7 +164,7 @@
         /* --- TITOLI E ICONE INTERNE --- */
         .book-title, .report-title, .accessi-title, .frutta-title, 
         .manutenzione-title, .haccp-title, .trasporti-title, 
-        .freschi-title, .impost-title {
+        .freschi-title, .impost-title, .prep-title {
             color: #ecb40c;
             font-size: 20px;
             margin-bottom: 20px;
@@ -173,7 +173,7 @@
         }
 
         .report_before, .frutta_before, .accessi_before, .manutenzione_before, 
-        .haccp_before, .trasporti_before, .freschi_before, .impost_before {
+        .haccp_before, .trasporti_before, .freschi_before, .impost_before, .prep_before {
             width: 130px; height: 130px;
             background: #efba0a;
             border-radius: 50%;
@@ -188,7 +188,7 @@
         .impost_before { background: #003087; color: #ffcc00; }
 
         .report_before span, .accessi_before span, .frutta_before span, 
-        .manutenzione_before span, .haccp_before span, .trasporti_before span, .freschi_before span, .impost_before span {
+        .manutenzione_before span, .haccp_before span, .trasporti_before span, .freschi_before span, .impost_before span, .prep_before span {
             font-size: 18px;
             font-weight: bold;
         }
@@ -271,7 +271,7 @@
             .container-glass { padding: 20px 10px; gap: 20px; }
             
             .report_before, .frutta_before, .accessi_before, .manutenzione_before, 
-            .haccp_before, .trasporti_before, .freschi_before, .impost_before {
+            .haccp_before, .trasporti_before, .freschi_before, .impost_before, .prep_before {
                 width: 110px; height: 110px;
             }
         }
@@ -332,6 +332,16 @@
                 </div>
             </div>
         </div>
+
+        <div class="glass-box-container" id="box-prep">
+            <div class="prep-glass-box" onclick="location.href='preparazione_live.html'">
+                <h2 class="prep-title">PREPARAZIONE LIVE</h2>
+                <div class="prep">
+                    <div class="prep_before"><span>Preparazione Merce</span></div>
+                </div>
+            </div>
+        </div>
+
 
         <div class="glass-box-container" id="box-accessi">
             <div class="accessi-glass-box" onclick="location.href='accessi.html'">
@@ -425,11 +435,11 @@
             "Qualita.Pesce": ["pescheria", "book"],
             "User.Ortofrutta": ["frutta", "book"],
             "Test": ["pescheria"],
-            "giacomo bardelli": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni"],
-            "Giacomo Gardelli": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni"],
+            "giacomo bardelli": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep"],
+            "Giacomo Gardelli": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep"],
             "Ospite": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi"],
-            "ermanno lamperti": ["book","accessi", "pescheria", "manutenzione", "haccp", "impostazioni"],
-            "Ermanno Lamperti": ["book","accessi", "pescheria", "manutenzione", "haccp", "impostazioni"]
+            "ermanno lamperti": ["book","accessi", "pescheria", "manutenzione", "haccp", "impostazioni", "prep"],
+            "Ermanno Lamperti": ["book","accessi", "pescheria", "manutenzione", "haccp", "impostazioni", "prep"],
         };
 
         window.onload = function() {
@@ -447,7 +457,7 @@
             document.getElementById('userInitials').innerText = iniziali.toUpperCase();
 
             const repartiConsentiti = autorizzazioni[nomeUtente] || ["book"]; 
-            const tuttiIBox = ["book", "pescheria", "accessi", "frutta","manutenzione", "haccp", "trasporti", "freschi", "impostazioni"];
+            const tuttiIBox = ["book", "pescheria", "accessi", "frutta","manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep"];
 
             tuttiIBox.forEach(reparto => {
                 const boxWrapper = document.getElementById('box-' + reparto);
