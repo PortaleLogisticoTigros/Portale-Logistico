@@ -17,7 +17,7 @@
             overflow: hidden;
         }
 
-        /* --- NAVIGATION OTTIMIZZATA MOBILE --- */
+        /* --- NAVIGATION LAYOUT FISSO --- */
         nav {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -29,7 +29,11 @@
             z-index: 100;
         }
 
-        .nav-left { display: flex; align-items: center; flex: 1; }
+        .nav-left { 
+            display: flex; 
+            align-items: center; 
+            flex: 1; /* Occupa lo spazio a sinistra */
+        }
         
         .user-badge {
             display: flex; align-items: center; gap: 6px;
@@ -46,14 +50,26 @@
 
         .user-fullname { color: white; font-size: 0.8rem; font-weight: 600; margin-left: 5px; }
 
-        .nav-center { flex: 2; display: flex; justify-content: center; }
+        .nav-center { 
+            flex: 2; /* Più largo per stare al centro */
+            display: flex; 
+            justify-content: center; 
+        }
+        
         .nav-center ul { list-style: none; display: flex; gap: 15px; margin: 0; padding: 0; }
         .nav-center ul li a { 
             text-decoration: none; color: white; font-size: 0.8rem; font-weight: 700; 
             text-transform: uppercase;
         }
 
-        .nav-right { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+        .nav-right { 
+            flex: 1; /* Occupa lo spazio a destra */
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-end; 
+            gap: 10px; 
+        }
+        
         .btn-refresh { 
             background: #ffcc00; border: none; width: 32px; height: 32px; 
             border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; 
@@ -70,7 +86,7 @@
             background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
             padding: 20px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2);
             width: 95%; max-width: 1400px; 
-            margin: 30px 0 60px 0; /* Margine bottom ampio per scroll */
+            margin: 30px 0 80px 0; /* Spazio per scroll riga totale */
         }
 
         .container-dashboard h4 {
@@ -98,12 +114,17 @@
 
         /* --- MOBILE OPTIMIZATION --- */
         @media (max-width: 850px) {
-            nav { padding: 10px; }
-            .nav-center { order: 2; }
-            .nav-center ul { gap: 12px; }
-            .nav-center ul li a { font-size: 0.75rem; }
-            .user-fullname { display: none; }
+            nav { padding: 10px 8px; }
+            .nav-left { flex: 0 0 auto; } /* Badge stretto a sinistra */
+            .nav-center { flex: 1; } /* Menu espanso al centro */
+            .nav-center ul { gap: 10px; }
+            .nav-center ul li a { font-size: 0.7rem; }
+            .nav-right { flex: 0 0 auto; gap: 6px; } /* Logo e refresh stretti a destra */
             
+            .user-fullname { display: none; } /* Solo iniziali su mobile */
+            .nav-logo img { height: 22px; }
+            .btn-refresh { width: 28px; height: 28px; }
+
             thead { display: none; }
             tr { display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); margin-bottom: 15px; padding: 12px; border-radius: 15px; }
             td { display: flex; justify-content: space-between; border: none; padding: 8px 0; font-size: 0.9rem; }
@@ -113,7 +134,7 @@
             td:nth-child(5)::before { content: "RIMASTI:"; }
             td:nth-child(6) { flex-direction: column; align-items: center; padding-top: 10px; }
             
-            .container-dashboard { margin-bottom: 100px; } /* Evita che la scrollbar copra il totale */
+            .container-dashboard { margin-bottom: 120px; } /* Più spazio per la card totale su mobile */
         }
     </style>
 </head>
@@ -137,7 +158,7 @@
 
         <div class="nav-right">
             <button class="btn-refresh" onclick="caricaDati()">
-                <svg viewBox="0 0 24 24" style="width:18px; fill:#003087;"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                <svg viewBox="0 0 24 24" style="width:16px; fill:#003087;"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
             </button>
             <div class="nav-logo"><img src="LOGO_TIGROS_VERTICALE.jpg" alt="Tigros"></div>
         </div>
@@ -266,15 +287,13 @@
         window.onload = () => {
             let userRaw = (localStorage.getItem("utenteLoggato") || "Ospite").trim();
             
-            // --- LOGICA MAIUSCOLE NOME ESTESO ---
-            // Trasforma "gianluca bianchi" in "Gianluca Bianchi"
+            // Format Camel Case per nome affianco badge
             let userFormattato = userRaw.split(/[ ._-]+/)
                 .map(parola => parola.charAt(0).toUpperCase() + parola.slice(1).toLowerCase())
                 .join(" ");
-            
             document.getElementById('userFullname').innerText = userFormattato;
             
-            // --- LOGICA INIZIALI BADGE (GB) ---
+            // Iniziali per Badge
             const parti = userRaw.split(/[ ._-]+/);
             let inits = "";
             if (parti.length >= 2 && parti[1].length > 0) {
