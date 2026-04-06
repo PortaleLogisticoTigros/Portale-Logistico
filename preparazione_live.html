@@ -17,84 +17,103 @@
             overflow: hidden;
         }
 
-        /* --- NAVIGATION AGGIORNATA --- */
+        /* --- NAVIGATION OTTIMIZZATA MOBILE --- */
         nav {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            padding: 10px 15px;
+            padding: 8px 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            z-index: 10;
+            z-index: 100;
         }
 
-        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-left { display: flex; align-items: center; flex: 1; }
         
         .user-badge {
-            display: flex; align-items: center; gap: 8px;
+            display: flex; align-items: center; gap: 6px;
             background: rgba(255, 255, 255, 0.15);
-            padding: 5px 12px; border-radius: 50px;
+            padding: 4px 10px; border-radius: 50px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .user-initials {
             width: 30px; height: 30px; background: #ffcc00; color: #003087;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 0.85rem;
+            font-weight: 900; font-size: 0.8rem;
         }
 
-        .user-fullname { color: white; font-size: 0.85rem; font-weight: 600; text-transform: capitalize; }
+        .user-fullname { color: white; font-size: 0.8rem; font-weight: 600; margin-left: 5px; }
 
-        nav ul { list-style: none; display: flex; gap: 12px; margin: 0; padding: 0; }
-        nav ul li a { text-decoration: none; color: white; font-size: 0.85rem; font-weight: 700; }
+        .nav-center { flex: 2; display: flex; justify-content: center; }
+        .nav-center ul { list-style: none; display: flex; gap: 15px; margin: 0; padding: 0; }
+        .nav-center ul li a { 
+            text-decoration: none; color: white; font-size: 0.8rem; font-weight: 700; 
+            text-transform: uppercase;
+        }
 
-        .nav-right { display: flex; align-items: center; gap: 10px; }
-        .btn-refresh { background: #ffcc00; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .nav-logo img { height: 32px; width: auto; }
+        .nav-right { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+        .btn-refresh { 
+            background: #ffcc00; border: none; width: 32px; height: 32px; 
+            border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; 
+        }
+        .nav-logo img { height: 28px; width: auto; }
 
-        /* --- CONTAINER --- */
-        .container-main { flex: 1; padding: 15px; display: flex; justify-content: center; overflow-y: auto; }
+        /* --- CONTAINER PRINCIPALE --- */
+        .container-main { 
+            flex: 1; padding: 10px; overflow-y: auto; 
+            display: flex; flex-direction: column; align-items: center;
+        }
+
         .container-dashboard {
             background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
             padding: 20px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2);
-            width: 100%; max-width: 1400px; height: fit-content; margin-top: 20px;
+            width: 95%; max-width: 1400px; 
+            margin: 30px 0 60px 0; /* Margine bottom ampio per scroll */
         }
 
         .container-dashboard h4 {
             color: #ffcc00; background: #003087; padding: 10px 20px;
             border-radius: 12px; width: fit-content; margin: -40px auto 20px;
-            font-size: 1rem; text-align: center;
+            font-size: 0.9rem; text-align: center;
         }
 
         /* --- TABELLA --- */
         table { width: 100%; border-collapse: collapse; color: white; }
-        th { background: rgba(0, 48, 135, 0.8); color: #ffcc00; padding: 12px; font-size: 0.8rem; text-transform: uppercase; border-bottom: 2px solid #ffcc00; }
-        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 0.95rem; }
+        th { background: rgba(0, 48, 135, 0.8); color: #ffcc00; padding: 12px; font-size: 0.75rem; text-transform: uppercase; border-bottom: 2px solid #ffcc00; }
+        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 0.9rem; }
         td:nth-child(2) { text-align: left; color: #ffcc00; font-weight: 700; }
 
         /* --- PROGRESS BAR --- */
-        .progress-bg { background: rgba(255,255,255,0.15); border-radius: 15px; height: 22px; width: 100%; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); }
+        .progress-bg { background: rgba(255,255,255,0.15); border-radius: 15px; height: 20px; width: 100%; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); }
         .progress-fill { background: linear-gradient(90deg, #ffcc00, #ff9900); height: 100%; transition: width 1s ease; position: absolute; left: 0; z-index: 1; }
-        .progress-text { position: absolute; width: 100%; text-align: center; z-index: 2; color: #003087; font-weight: 900; font-size: 0.75rem; line-height: 22px; }
-        .riga-totale { background: rgba(0, 48, 135, 0.6); font-weight: 900; border-top: 2px solid #ffcc00; }
+        .progress-text { position: absolute; width: 100%; text-align: center; z-index: 2; color: #003087; font-weight: 900; font-size: 0.75rem; line-height: 20px; }
+        
+        .riga-totale { 
+            background: rgba(0, 48, 135, 0.7) !important; 
+            font-weight: 900; 
+            border-top: 2px solid #ffcc00;
+        }
 
         /* --- MOBILE OPTIMIZATION --- */
         @media (max-width: 850px) {
-            nav { flex-wrap: wrap; justify-content: space-between; }
-            .nav-left { order: 1; }
-            .nav-right { order: 2; }
-            .nav-center { order: 3; width: 100%; margin-top: 10px; display: flex; justify-content: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; }
-            .user-fullname { display: none; } /* Solo iniziali su mobile */
+            nav { padding: 10px; }
+            .nav-center { order: 2; }
+            .nav-center ul { gap: 12px; }
+            .nav-center ul li a { font-size: 0.75rem; }
+            .user-fullname { display: none; }
             
             thead { display: none; }
-            tr { display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); margin-bottom: 15px; padding: 15px; border-radius: 15px; }
-            td { display: flex; justify-content: space-between; border: none; padding: 8px 0; }
+            tr { display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); margin-bottom: 15px; padding: 12px; border-radius: 15px; }
+            td { display: flex; justify-content: space-between; border: none; padding: 8px 0; font-size: 0.9rem; }
             td:nth-child(1)::before { content: "CEDI:"; color: rgba(255,255,255,0.5); }
             td:nth-child(3)::before { content: "ORDINATI:"; }
             td:nth-child(4)::before { content: "PREPARATI:"; }
             td:nth-child(5)::before { content: "RIMASTI:"; }
             td:nth-child(6) { flex-direction: column; align-items: center; padding-top: 10px; }
+            
+            .container-dashboard { margin-bottom: 100px; } /* Evita che la scrollbar copra il totale */
         }
     </style>
 </head>
@@ -103,7 +122,7 @@
     <nav>
         <div class="nav-left">
             <div class="user-badge">
-                <div class="user-initials" id="userInitials">??</div>
+                <div class="user-initials" id="userInitials">--</div>
                 <span class="user-fullname" id="userFullname">Utente</span>
             </div>
         </div>
@@ -112,7 +131,6 @@
             <ul>
                 <li><a href="Home_new.html">HOME</a></li>
                 <li><a href="Viaggi.html">VIAGGI</a></li>
-                <li><a href="Ordini.html">ORDINI</a></li>
                 <li><a onclick="confermaEsci()" style="color:#ff4444; cursor:pointer">ESCI</a></li>
             </ul>
         </div>
@@ -128,7 +146,7 @@
     <div class="container-main">
         <div class="container-dashboard">
             <h4>PREPARAZIONE MERCI CASSANO</h4>
-            <div id="loader" style="text-align:center; color:#ffcc00;">Caricamento dati...</div>
+            <div id="loader" style="text-align:center; color:#ffcc00; font-weight: bold; padding: 20px;">Sincronizzazione...</div>
             <table id="tabella-merce" style="display:none;">
                 <thead>
                     <tr>
@@ -137,35 +155,44 @@
                         <th>ORDINATI</th>
                         <th>PREPARATI</th>
                         <th>RIMASTI</th>
-                        <th style="width:180px;">PROGRESSO</th>
+                        <th style="width:170px;">PROGRESSO</th>
                     </tr>
                 </thead>
                 <tbody id="corpo-tabella-merce"></tbody>
             </table>
-            <div id="ultimo-aggiornamento" style="font-size:0.7rem; color:white; text-align:right; margin-top:10px;"></div>
+            <div id="ultimo-aggiornamento" style="font-size:0.7rem; color:rgba(255,255,255,0.5); text-align:right; margin-top:15px;"></div>
         </div>
     </div>
 
     <script>
         const linkCSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1HEv87Esyv53CeLeDtM5sI0FGXvbjWtDsA1_GY3gin3GBMBQ7SdS31rR8C1l2o0eUGwjIQYrvJxuW/pub?output=csv';
 
-        // Pulizia numeri estrema
-        function pulisciNumero(v) {
-            if (!v) return 0;
-            // Rimuove tutto ciò che non è numero
-            let p = v.toString().replace(/[^0-9]/g, '');
-            return parseInt(p) || 0;
+        function parseCSVLine(line, separator) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            for (let char of line) {
+                if (char === '"') inQuotes = !inQuotes;
+                else if (char === separator && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current.trim());
+            return result;
         }
 
         async function caricaDati() {
             try {
-                // ANTI-CACHE: aggiunge un timestamp per forzare il download di un file nuovo
                 const response = await fetch(`${linkCSV}&nocache=${new Date().getTime()}`);
                 const dataText = await response.text();
-                
                 const righeRaw = dataText.split('\n').filter(r => r.trim() !== '');
+                if (righeRaw.length === 0) return;
+
                 const sep = righeRaw[0].includes(';') ? ';' : ',';
-                const headers = righeRaw[0].split(sep).map(h => h.trim().toUpperCase());
+                const headers = parseCSVLine(righeRaw[0], sep).map(h => h.trim().toUpperCase());
 
                 const idx = {
                     cedi: headers.indexOf("CEDI"),
@@ -177,37 +204,44 @@
                 };
 
                 const tbody = document.getElementById('corpo-tabella-merce');
-                tbody.innerHTML = ''; // SVUOTA SEMPRE PRIMA DI SCRIVERE
+                tbody.innerHTML = ''; 
 
                 for (let i = 1; i < righeRaw.length; i++) {
-                    const col = righeRaw[i].split(sep).map(c => c.replace(/"/g, '').trim());
+                    const col = parseCSVLine(righeRaw[i], sep);
+                    if (col.length < headers.length) continue;
+
+                    let cedi = col[idx.cedi] || "";
+                    let area = col[idx.area] || "";
+                    let desc = col[idx.desc] || "";
                     let nomeMag = "";
                     let isTot = false;
 
-                    // Mappatura nomi (tua logica precedente)
-                    if (col[idx.cedi] === "21" && col[idx.area] === "VENTILA") nomeMag = "Freschi - Ventilazione";
-                    else if (col[idx.cedi] === "21" && col[idx.area] === "PICKING") nomeMag = "Freschi - PICKING";
-                    else if (col[idx.cedi] === "23" && col[idx.area] === "FRUTTA") nomeMag = "Ortofrutta - Frutta";
-                    else if (col[idx.cedi] === "23" && col[idx.area] === "4 GAMMA") nomeMag = "Ortofrutta - IV Gamma";
-                    else if (col[idx.cedi] === "24" && col[idx.area] === "VENTILA") nomeMag = "Cameri - Ventilazione";
-                    else if (col[idx.cedi] === "24" && col[idx.area] === "CASS PICK") nomeMag = "Cameri - Picking";
-                    else if (col[idx.cedi] === "24" && col[idx.area] === "EXPO PICK") nomeMag = "Cameri - Expo";
-                    else if (col[idx.cedi] === "25" && col[idx.area] === "PICKING") nomeMag = "Cameri - Consumo interno";
-                    else if (col[idx.cedi] === "35" && col[idx.area] === "CASS PICK") nomeMag = "Cassano - Omogenei";
-                    else if (col[idx.cedi] === "28" && col[idx.area] === "VENTILA") nomeMag = "Macelleria - Ventilazione";
-                    else if (col[idx.cedi] === "29" && col[idx.area] === "VENTILA") nomeMag = "Pescheria - Ventilazione";
-                    else if (col[idx.cedi] === "" && col[idx.desc] === "TOTALE") { nomeMag = "TOTALE PIATTAFORMA"; isTot = true; }
-                    else continue;
+                    if (cedi === "21" && area === "VENTILA") nomeMag = "Freschi - Ventilazione";
+                    else if (cedi === "21" && area === "PICKING") nomeMag = "Freschi - PICKING";
+                    else if (cedi === "23" && area === "FRUTTA") nomeMag = "Ortofrutta - Frutta";
+                    else if (cedi === "23" && area === "4 GAMMA") nomeMag = "Ortofrutta - IV Gamma";
+                    else if (cedi === "24" && area === "VENTILA") nomeMag = "Cameri - Ventilazione";
+                    else if (cedi === "24" && area === "CASS PICK") nomeMag = "Cameri - Picking";
+                    else if (cedi === "24" && area === "EXPO PICK") nomeMag = "Cameri - Expo";
+                    else if (cedi === "25" && area === "PICKING") nomeMag = "Cameri - Consumo interno";
+                    else if (cedi === "35" && area === "CASS PICK") nomeMag = "Cassano - Omogenei";
+                    else if (cedi === "28" && area === "VENTILA") nomeMag = "Macelleria - Ventilazione";
+                    else if (cedi === "29" && area === "VENTILA") nomeMag = "Pescheria - Ventilazione";
+                    else if (cedi === "" && desc === "TOTALE") { 
+                        nomeMag = "TOTALE PIATTAFORMA"; 
+                        isTot = true; 
+                    } else continue;
 
-                    let o = pulisciNumero(col[idx.ord]);
-                    let p = pulisciNumero(col[idx.prep]);
-                    let r = pulisciNumero(col[idx.rim]);
-                    let perc = o > 0 ? Math.min(100, Math.round((p/o)*100)) : 0;
+                    let o = Number(col[idx.ord]) || 0;
+                    let p = Number(col[idx.prep]) || 0;
+                    let r = Number(col[idx.rim]) || 0;
+                    let perc = o > 0 ? Math.min(100, Math.round((p / o) * 100)) : 0;
 
                     const tr = document.createElement('tr');
-                    if(isTot) tr.className = "riga-totale";
+                    if (isTot) tr.classList.add("riga-totale");
+                    
                     tr.innerHTML = `
-                        <td>${col[idx.cedi]}</td>
+                        <td>${cedi}</td>
                         <td>${nomeMag}</td>
                         <td>${o.toLocaleString('it-IT')}</td>
                         <td>${p.toLocaleString('it-IT')}</td>
@@ -224,20 +258,37 @@
 
                 document.getElementById('loader').style.display = 'none';
                 document.getElementById('tabella-merce').style.display = 'table';
-                document.getElementById('ultimo-aggiornamento').innerText = "Aggiornato: " + new Date().toLocaleTimeString();
+                document.getElementById('ultimo-aggiornamento').innerText = "Aggiornato: " + new Date().toLocaleTimeString('it-IT');
 
             } catch (err) { console.error(err); }
         }
 
         window.onload = () => {
-            const user = localStorage.getItem("utenteLoggato") || "Ospite";
-            document.getElementById('userFullname').innerText = user;
-            document.getElementById('userInitials').innerText = user.substring(0,2).toUpperCase();
+            let userRaw = (localStorage.getItem("utenteLoggato") || "Ospite").trim();
+            
+            // --- LOGICA MAIUSCOLE NOME ESTESO ---
+            // Trasforma "gianluca bianchi" in "Gianluca Bianchi"
+            let userFormattato = userRaw.split(/[ ._-]+/)
+                .map(parola => parola.charAt(0).toUpperCase() + parola.slice(1).toLowerCase())
+                .join(" ");
+            
+            document.getElementById('userFullname').innerText = userFormattato;
+            
+            // --- LOGICA INIZIALI BADGE (GB) ---
+            const parti = userRaw.split(/[ ._-]+/);
+            let inits = "";
+            if (parti.length >= 2 && parti[1].length > 0) {
+                inits = parti[0][0] + parti[1][0];
+            } else {
+                inits = parti[0].substring(0, 2);
+            }
+            document.getElementById('userInitials').innerText = inits.toUpperCase();
+            
             caricaDati();
             setInterval(caricaDati, 30000);
         };
 
-        function confermaEsci() { if(confirm("Esci?")) { localStorage.clear(); window.location.href="index.html"; } }
+        function confermaEsci() { if(confirm("Chiudere sessione?")) { localStorage.clear(); window.location.href="index.html"; } }
     </script>
 </body>
 </html>
