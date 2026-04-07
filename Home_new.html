@@ -138,7 +138,7 @@
 
         .book-glass-box, .report-glass-box, .accessi-glass-box, .frutta-glass-box, 
         .manutenzione-glass-box, .haccp-glass-box, .trasporti-glass-box, 
-        .freschi-glass-box, .impost-glass-box, .prep-glass-box {
+        .freschi-glass-box, .impost-glass-box, .prep-glass-box, .ric-glass-box {
             background: rgba(255, 255, 255, 0.1) !important;
             backdrop-filter: blur(15px);
             padding: 20px; 
@@ -164,7 +164,7 @@
         /* --- TITOLI E ICONE INTERNE --- */
         .book-title, .report-title, .accessi-title, .frutta-title, 
         .manutenzione-title, .haccp-title, .trasporti-title, 
-        .freschi-title, .impost-title, .prep-title {
+        .freschi-title, .impost-title, .prep-title, .ric-title {
             color: #ecb40c;
             font-size: 20px;
             margin-bottom: 20px;
@@ -173,7 +173,7 @@
         }
 
         .report_before, .frutta_before, .accessi_before, .manutenzione_before, 
-        .haccp_before, .trasporti_before, .freschi_before, .impost_before, .prep_before {
+        .haccp_before, .trasporti_before, .freschi_before, .impost_before, .prep_before, .ric_before {
             width: 130px; height: 130px;
             background: #efba0a;
             border-radius: 50%;
@@ -188,7 +188,7 @@
         .impost_before { background: #003087; color: #ffcc00; }
 
         .report_before span, .accessi_before span, .frutta_before span, 
-        .manutenzione_before span, .haccp_before span, .trasporti_before span, .freschi_before span, .impost_before span, .prep_before span {
+        .manutenzione_before span, .haccp_before span, .trasporti_before span, .freschi_before span, .impost_before span, .prep_before span, .ric_before span {
             font-size: 18px;
             font-weight: bold;
         }
@@ -271,7 +271,7 @@
             .container-glass { padding: 20px 10px; gap: 20px; }
             
             .report_before, .frutta_before, .accessi_before, .manutenzione_before, 
-            .haccp_before, .trasporti_before, .freschi_before, .impost_before, .prep_before {
+            .haccp_before, .trasporti_before, .freschi_before, .impost_before, .prep_before, .ric_before {
                 width: 110px; height: 110px;
             }
         }
@@ -337,7 +337,16 @@
             <div class="prep-glass-box" onclick="location.href='preparazione_live.html'">
                 <h2 class="prep-title">PREPARAZIONE LIVE</h2>
                 <div class="prep">
-                    <div class="prep_before"><span>Preparazione Merce</span></div>
+                    <div class="prep_before"><span><i class="fa-solid fa-headset" style="font-size: 60px;"></i></span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-box-container" id="box-ric">
+            <div class="ric-glass-box" onclick="sviluppo()">
+                <h2 class="ric-title">RICEVIMENTI LIVE</h2>
+                <div class="ric">
+                    <div class="ric_before"><span><i class="fa-solid fa-boxes-stacked" style="font-size: 60px;"></i></span></div>
                 </div>
             </div>
         </div>
@@ -347,7 +356,7 @@
             <div class="accessi-glass-box" onclick="location.href='accessi.html'">
                 <h2 class="accessi-title">ACCESSI PIATTAFORMA</h2>
                 <div class="accessi">
-                    <div class="accessi_before"><span>Accessi</span></div>
+                    <div class="accessi_before"><span><i class="fa-solid fa-dolly" style="font-size: 60px;"></i></span></div>
                 </div>
             </div>
         </div>
@@ -356,7 +365,7 @@
             <div class="haccp-glass-box" onclick="location.href='home_qualita.html'">
                 <h2 class="haccp-title">UFFICIO QUALITA'</h2>
                 <div class="haccp">
-                    <div class="haccp_before"><span>Qualità</span></div>
+                    <div class="haccp_before"><span><i class="fa-solid fa-hand-sparkles" style="font-size: 60px;"></i></span></div>
                 </div>
             </div>
         </div>
@@ -365,7 +374,7 @@
             <div class="manutenzione-glass-box" onclick="location.href='manutenzione_esterna.html'">
                 <h2 class="manutenzione-title">MANUTENZIONE</h2>
                 <div class="manutenzione">
-                    <div class="manutenzione_before"><span>Magazzino</span></div>
+                    <div class="manutenzione_before"><span><i class="fa-solid fa-gears" style="font-size: 60px;"></i></span></div>
                 </div>
             </div>
         </div>
@@ -374,7 +383,7 @@
             <div class="trasporti-glass-box" onclick="sviluppo()">
                 <h2 class="trasporti-title">UFFICIO TRAFFICO</h2>
                 <div class="trasporti">
-                    <div class="trasporti_before"><span>Trasporti</span></div>
+                    <div class="trasporti_before"><span><i class="fa-solid fa-truck-fast" style="font-size: 60px;"></i></span></div>
                 </div>
             </div>
         </div>
@@ -383,7 +392,7 @@
             <div class="freschi-glass-box" onclick="window.location.href='home_freschi.html'">
                 <h2 class="freschi-title">CEDI 21 - FRESCHI</h2>
                 <div class="freschi">
-                    <div class="freschi_before"><span>Freschi</span></div>
+                    <div class="freschi_before"><span><i class="fa-solid fa-apple-whole" style="font-size: 60px;"></i></span></div>
                 </div>
             </div>
         </div>
@@ -392,7 +401,7 @@
             <div class="report-glass-box" onclick="vaiReport()">
                 <h2 class="report-title">CEDI 29 - PESCHERIA</h2>
                 <div class="report">
-                    <div class="report_before"><span>Pescheria</span></div>
+                    <div class="report_before"><span><i class="fa-solid fa-fish" style="font-size: 60px;"></i></span></div>
                 </div>
             </div>
         </div>
@@ -401,7 +410,7 @@
             <div class="frutta-glass-box" onclick="sviluppo()">
                 <h2 class="frutta-title">CEDI 23 - ORTOFRUTTA</h2>
                 <div class="frutta">
-                    <div class="frutta_before"><span>Ortofrutta</span></div>
+                    <div class="frutta_before"><span><i class="fa-solid fa-leaf" style="font-size: 60px;"></i></span></div>
                 </div>
             </div>
         </div>
@@ -410,7 +419,7 @@
             <div class="impost-glass-box" onclick="location.href='home_impostazioni.html'">
                 <h2 class="impost-title">IMPOSTAZIONI</h2>
                 <div class="impostazioni">
-                    <div class="impost_before"><span>Opzioni</span></div>
+                    <div class="impost_before"><span><i class="fa-solid fa-gear" style="font-size: 60px;"></i></span></div>
                 </div>
             </div>
         </div>
@@ -435,13 +444,13 @@
             "Qualita.Pesce": ["pescheria", "book"],
             "User.Ortofrutta": ["frutta", "book"],
             "Test": ["pescheria"],
-            "giacomo bardelli": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep"],
-            "Giacomo Gardelli": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep"],
+            "giacomo bardelli": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"],
+            "Giacomo Gardelli": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"],
             "Ospite": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi"],
-            "ermanno lamperti": ["book","accessi", "pescheria", "manutenzione", "haccp", "impostazioni", "prep"],
-            "Ermanno Lamperti": ["book","accessi", "pescheria", "manutenzione", "haccp", "impostazioni", "prep"],
-            "Cedi Cassano": ["prep"],
-            "cedi cassano": ["prep"],
+            "ermanno lamperti": ["book","accessi", "pescheria", "manutenzione", "haccp", "impostazioni", "prep", "ric"],
+            "Ermanno Lamperti": ["book","accessi", "pescheria", "manutenzione", "haccp", "impostazioni", "prep", "ric"],
+            "Cedi Cassano": ["prep", "ric"],
+            "cedi cassano": ["prep", "ric"],
         };
 
         window.onload = function() {
@@ -459,7 +468,7 @@
             document.getElementById('userInitials').innerText = iniziali.toUpperCase();
 
             const repartiConsentiti = autorizzazioni[nomeUtente] || ["book"]; 
-            const tuttiIBox = ["book", "pescheria", "accessi", "frutta","manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep"];
+            const tuttiIBox = ["book", "pescheria", "accessi", "frutta","manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"];
 
             tuttiIBox.forEach(reparto => {
                 const boxWrapper = document.getElementById('box-' + reparto);
