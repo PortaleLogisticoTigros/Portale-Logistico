@@ -132,7 +132,7 @@
 </head>
 <body>
 
-    <nav>
+    <nav id="barra-nav">
         <div class="nav-left">
             <div class="user-badge" onclick="location.href='info_utente.html'">
                 <div class="user-initials" id="userInitials">??</div>
@@ -267,7 +267,10 @@
             "Cedi Cassano": ["prep", "ric"]
         };
 
-        const pagineLoop = ["preparazione_live.html", "ricevimenti_live.html"];
+        const pagineLoop = [
+                "preparazione_live.html?mode=monitor", 
+                "ricevimenti_live.html?mode=monitor"
+            ];
         let loopTimer;
         let indexLoop = 0;
 
@@ -299,25 +302,37 @@
             });
         };
 
+
+
         function apriCarosello() {
             document.getElementById('overlay-carosello').style.display = 'flex';
             cambiaPagina();
         }
 
-        function cambiaPagina() {
-            const frame = document.getElementById('frame-carosello');
-            frame.src = pagineLoop[indexLoop];
-            document.getElementById('info-loop').innerHTML = `<i class="fa-solid fa-sync fa-spin"></i> LIVE MONITOR: VISTA ${indexLoop + 1} / ${pagineLoop.length}`;
-            indexLoop = (indexLoop + 1) % pagineLoop.length;
-            loopTimer = setTimeout(cambiaPagina, 60000);
-        }
+            function cambiaPagina() {
+                    const frame = document.getElementById('frame-carosello');
+                    // Carica la pagina con il parametro ?mode=monitor
+                    frame.src = pagineLoop[indexLoop];
+                    
+                    document.getElementById('info-loop').innerHTML = `<i class="fa-solid fa-sync fa-spin"></i> LIVE MONITOR: VISTA ${indexLoop + 1} / ${pagineLoop.length}`;
+                    
+                    indexLoop = (indexLoop + 1) % pagineLoop.length;
+                    loopTimer = setTimeout(cambiaPagina, 60000);
+                }
 
-        function chiudiCarosello() {
-            clearTimeout(loopTimer);
-            document.getElementById('overlay-carosello').style.display = 'none';
-            document.getElementById('frame-carosello').src = "";
-            indexLoop = 0;
-        }
+                function chiudiCarosello() {
+                clearTimeout(loopTimer);
+                document.getElementById('overlay-carosello').style.display = 'none';
+                
+                // Ripristina la nav bar
+                const nav = document.getElementById('barra-nav');
+                if (nav) nav.style.display = 'flex';
+                
+                // Ferma il caricamento della pagina nell'iframe per risparmiare risorse
+                document.getElementById('frame-carosello').src = "about:blank"; 
+                
+                indexLoop = 0;
+            }
 
         function aprifeed() {
             document.getElementById('feedUser').value = document.getElementById('userFullname').innerText;

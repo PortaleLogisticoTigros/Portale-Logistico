@@ -240,6 +240,28 @@
         };
 
         function confermaEsci() { if(confirm("Chiudere sessione?")) { localStorage.clear(); window.location.href="index.html"; } }
+
+            window.addEventListener('load', function() {
+                // Controlla se l'URL contiene "mode=monitor"
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('mode') === 'monitor') {
+                    // Cerca la barra di navigazione (assicurati che abbia l'id "barra-nav" o usa il tag nav)
+                    const nav = document.querySelector('nav'); 
+                    if (nav) {
+                        nav.style.display = 'none';
+                    }
+                    
+                    // Opzionale: espandi il contenitore principale per occupare lo spazio vuoto
+                    const container = document.querySelector('.container-main');
+                    if (container) {
+                        container.style.paddingTop = '10px'; 
+                        container.style.marginTop = '0';
+                    }
+                }
+            });
+
+
+
     </script>
 </body>
 </html>
