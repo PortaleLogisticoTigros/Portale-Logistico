@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piattaforma Tigros - Preparazione Merci</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%);
+            font-family: 'Montserrat', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 100;
+        }
+
+        .nav-left { display: flex; align-items: center; flex: 1; }
+        .user-badge {
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 10px; border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer; transition: background 0.3s ease;
+        }
+        .user-initials {
+            width: 30px; height: 30px; background: #ffcc00; color: #003087;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 0.8rem;
+        }
+        .user-fullname { color: white; font-size: 0.8rem; font-weight: 100; margin-left: 5px; }
+
+        .nav-center { flex: 2; display: flex; justify-content: center; }
+        .nav-center ul { list-style: none; display: flex; gap: 15px; margin: 0; padding: 0; }
+        .nav-center ul li a { text-decoration: none; color: white; font-size: 1.15rem; font-weight: 100; text-transform: uppercase; }
+        nav ul:hover li a { filter: blur(2px); opacity: 0.5; transform: scale(0.95); }
+        nav ul li a:hover { filter: blur(0px); opacity: 1; transform: scale(1.15); color: #ffcc00; }
+
+        .nav-right { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+        .btn-refresh { background: #ffcc00; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .nav-logo img { height: 28px; width: auto; }
+
+        .container-main { flex: 1; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
+
+        .container-dashboard {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
+            padding: 20px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 98%; max-width: 1800px; 
+            margin: 50px 0 20px 0;
+         
+        }
+
+        .container-dashboard h4 {
+            color: #ffcc00; background: #003087; padding: 10px 20px;
+            border-radius: 12px; width: fit-content; margin: -40px auto 20px;
+            font-size: 0.9rem; text-align: center;
+        }
+
+        table { width: 100%; border-collapse: collapse; color: white; }
+        th { background: rgba(0, 48, 135, 0.8); color: #ffcc00; padding: 5px; font-size: 1.25rem; text-transform: uppercase; border-bottom: 2px solid #ffcc00; font-weight: 100;}
+        td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 1.25rem; }
+        td:nth-child(2) { text-align: left; color: #ffcc00; font-weight: 700; }
+
+        .progress-bg { background: rgba(255,255,255,0.15); border-radius: 15px; height: 25px; width: 100%; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); }
+        .progress-fill { background: linear-gradient(90deg, #ffcc00, #ff9900); height: 100%; transition: width 1s ease; position: absolute; left: 0; z-index: 1; }
+        .progress-text { position: absolute; width: 100%; text-align: center; z-index: 2; color: #003087; font-weight: 900; font-size: 0.75rem; line-height: 20px; }
+        
+        .riga-totale { background: rgba(0, 48, 135, 0.7) !important; font-weight: 900; border-top: 2px solid #ffcc00; }
+
+        @media (max-width: 850px) {
+            thead { display: none; }
+            tr { display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); margin-bottom: 15px; padding: 12px; border-radius: 15px; }
+            td { display: flex; justify-content: space-between; border: none; padding: 8px 0; font-size: 0.9rem; }
+            td:nth-child(1)::before { content: "CEDI:"; color: rgba(255,255,255,0.5); }
+            td:nth-child(3)::before { content: "ORDINATI:"; }
+            td:nth-child(4)::before { content: "PREPARATI:"; }
+            td:nth-child(5)::before { content: "RIMASTI:"; }
+            td:nth-child(6) { flex-direction: column; align-items: center; padding-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <div class="user-badge" onclick="window.location.href='info_utente.html'">
+                <div class="user-initials" id="userInitials">--</div>
+                <span class="user-fullname" id="userFullname">Utente</span>
+            </div>
+        </div>
+        <div class="nav-center">
+            <ul>
+                <li><a href="Home_new.html">HOME</a></li>
+                <li><a href="Viaggi.html">VIAGGI</a></li>
+                <li><a onclick="confermaEsci()" style="color:#ffcc00; cursor:pointer">ESCI</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <button class="btn-refresh" onclick="caricaTutto()">
+                <svg viewBox="0 0 24 24" style="width:16px; fill:#003087;"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+            </button>
+            <div class="nav-logo"><img src="LOGO_TIGROS_VERTICALE.jpg" alt="Tigros"></div>
+        </div>
+    </nav>
+
+    <div class="container-main">
+        <div class="container-dashboard">
+            <h4>RICEVIMENTO MERCI MAGAZZINI CASSANO</h4>
+            <div id="loader-mag" style="text-align:center; color:#ffcc00;">Sincronizzazione...</div>
+            <table id="tabella-merce" style="display:none;">
+                <thead>
+                    <tr><th>CEDI</th><th>MAGAZZINO</th><th>ORDINATI</th><th>RICEVUTI</th><th>MANCANTI</th><th style="width:170px;">PROGRESSO</th></tr>
+                </thead>
+                <tbody id="corpo-tabella-merce"></tbody>
+            </table>
+        </div>
+        
+        
+        <div id="ultimo-aggiornamento" style="font-size:0.7rem; color:rgba(255,255,255,0.5); text-align:center; margin-bottom: -10px; width: 100%;"></div>
+    </div>
+
+    <script>
+        const linkCSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCD2u3-ErC6NQWjRERPsojHNqDOyOcmAT46HIHIrscoY9wC6ljoajpv8sqN0HEQ_m0P2f4ggXjkWtY/pub?output=csv';
+      
+
+        function parseCSVLine(line, separator) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            for (let char of line) {
+                if (char === '"') inQuotes = !inQuotes;
+                else if (char === separator && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current.trim());
+            return result;
+        }
+
+        async function processaTabella(url, tbodyId, loaderId, tableId, isLab) {
+            try {
+                const response = await fetch(`${url}&nocache=${new Date().getTime()}`);
+                const dataText = await response.text();
+                const righeRaw = dataText.split('\n').filter(r => r.trim() !== '');
+                if (righeRaw.length === 0) return;
+
+                const sep = righeRaw[0].includes(';') ? ';' : ',';
+                const headers = parseCSVLine(righeRaw[0], sep).map(h => h.trim().toUpperCase());
+                const idx = {
+                    cedi: headers.indexOf("CEDI"),
+                    desc: headers.indexOf("MAGAZZINO"),
+                    area: headers.indexOf("AREA_PREPARAZIONE"),
+                    ord: headers.indexOf("COLLI_ORDINATI"),
+                    prep: headers.indexOf("COLLI_RICEVUTI"),
+                    rim: headers.indexOf("COLLI_RIMANENTI")
+                };
+
+                const tbody = document.getElementById(tbodyId);
+                tbody.innerHTML = ''; 
+
+                for (let i = 1; i < righeRaw.length; i++) {
+                    const col = parseCSVLine(righeRaw[i], sep);
+                    if (col.length < headers.length) continue;
+
+                    let cedi = col[idx.cedi] || "";
+                    let area = col[idx.area] || "";
+                    let desc = col[idx.desc] || "";
+                    let nomeDisplay = "";
+                    let isTot = false;
+
+                    if (!isLab) {
+                        // LOGICA MAGAZZINI
+                        if (cedi === "21" && area === "CASSANO SAFO") nomeDisplay = "Cassano - Reparto Freschi";
+                        else if (cedi === "23" && area === "EM ORTOFRUTTA ARTICOLI A PESO VARIABILE") nomeDisplay = "Cassano - Ortofrutta - Peso Variabile";
+                        else if (cedi === "23" && area === "EM ORTOFRUTTA ARTICOLI A PESO FISSO") nomeDisplay = "Cassano - Ortofrutta - Peso Fisso";
+                        else if (cedi === "24" && area === "CASSANO GROCERY") nomeDisplay = "Cassano - Grocery - Cameri";
+                        else if (cedi === "25" && area === "MATERIALI DI CONSUMO") nomeDisplay = "Cassano - Materiali di Consumo - Cameri";
+                        else if (cedi === "35" && area === "GRO_CASSANO CATASTA") nomeDisplay = "Cassano - Grocery Acque e Pellet";
+                        else if (cedi === "28" && area === "EM MACELLERIA") nomeDisplay = "Cassano - Reparto Macelleria";
+                        else if (cedi === "29" && area === "EM ITTICO") nomeDisplay = "Cassano - Reparto Pescheria";
+                        else if (cedi === "30" && area === "FORNO - ENTRATA MERCE") nomeDisplay = "Cassano - Reparto Forno";
+                        else if (cedi === "31" && area === "PASTICCERIA - ENTRATA MERCE") nomeDisplay = "Cassano - Reparto Pasticceria";
+                        else if (cedi === "" && desc === "Totale") { nomeDisplay = "TOTALE PIATTAFORMA"; isTot = true; }
+                        else continue;
+                    } 
+
+                    let o = Number(col[idx.ord]) || 0;
+                    let p = Number(col[idx.prep]) || 0;
+                    let r = Number(col[idx.rim]) || 0;
+                    let perc = o > 0 ? Math.min(100, Math.round((p / o) * 100)) : 0;
+
+                    const tr = document.createElement('tr');
+                    if (isTot) tr.classList.add("riga-totale");
+                    tr.innerHTML = `
+                        <td>${cedi}</td><td>${nomeDisplay}</td>
+                        <td>${o.toLocaleString('it-IT')}</td><td>${p.toLocaleString('it-IT')}</td><td>${r.toLocaleString('it-IT')}</td>
+                        <td><div class="progress-bg"><div class="progress-fill" style="width:${perc}%"></div><div class="progress-text">${perc}%</div></div></td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+                document.getElementById(loaderId).style.display = 'none';
+                document.getElementById(tableId).style.display = 'table';
+            } catch (err) { console.error(err); }
+        }
+
+        async function caricaTutto() {
+            await Promise.all([
+                processaTabella(linkCSV, 'corpo-tabella-merce', 'loader-mag', 'tabella-merce', false),
+                
+            ]);
+            document.getElementById('ultimo-aggiornamento').innerText = "Ultimo Aggiornamento: " + new Date().toLocaleTimeString('it-IT');
+        }
+
+        window.onload = () => {
+            let userRaw = (localStorage.getItem("utenteLoggato") || "Ospite").trim();
+            let userFormattato = userRaw.split(/[ ._-]+/).map(parola => parola.charAt(0).toUpperCase() + parola.slice(1).toLowerCase()).join(" ");
+            document.getElementById('userFullname').innerText = userFormattato;
+            const parti = userRaw.split(/[ ._-]+/);
+            let inits = (parti.length >= 2 && parti[1].length > 0) ? (parti[0][0] + parti[1][0]) : userRaw.substring(0, 2);
+            document.getElementById('userInitials').innerText = inits.toUpperCase();
+            caricaTutto();
+            setInterval(caricaTutto, 1200000);
+        };
+
+        function confermaEsci() { if(confirm("Chiudere sessione?")) { localStorage.clear(); window.location.href="index.html"; } }
+    </script>
+</body>
+</html>
