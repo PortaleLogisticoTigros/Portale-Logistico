@@ -12,9 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
 
         body { 
@@ -28,7 +26,7 @@
             overflow: hidden; 
         }
 
-       nav {
+        nav {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             padding: 10px 20px; 
@@ -63,8 +61,6 @@
         .nav-right { flex: 1; display: flex; justify-content: flex-end; align-items: center; gap:15px; }
         .nav-logo img { height: 38px; border-radius: 5px; }
 
-        .btn-prev { background: #ffcc00; color: #003087; border: none; padding: 8px 18px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-
         .btn-nav {
             border: none;
             padding: 8px 30px;
@@ -78,13 +74,10 @@
             text-align: center;
             font-size: 15px;
         }
-
-        .btn-pdf { background: #ffffff; color: #003087; }
         .btn-home { background: #ffcc00; color: #003087; }
         .btn-nav:hover { transform: scale(1.05); filter: brightness(1.1); }
 
         .filter-bar { position: relative; justify-content: flex-start; background: rgba(255, 255, 255, 0.05); padding: 15px 15px; display: flex; gap: 20px; align-items: center; }
-        
         select { 
             background: rgba(0, 48, 135, 0.8); 
             color: white; 
@@ -96,170 +89,6 @@
         }
         
         .container { display: flex; gap: 20px; padding: 20px; flex-grow: 1; overflow: auto;}
-
-        .sidebar { overflow-y: auto; padding-right: 10px; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
-        
-        .card, .chart-container, .chart-container-right, .report-container, .report-grafico, .aziende-container, .container-grafici-acquisti, .container-dati-acquisti, .reparti-container{ 
-            background: rgba(255, 255, 255, 0.1); 
-            backdrop-filter: blur(15px); 
-            border-radius: 20px; 
-            padding: 20px; 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .chart-container { 
-            display: flex; 
-            flex-direction: column;
-            gap: 30px; 
-            overflow-y: auto;
-            width: 45%;
-            margin-left: 190px;
-        }
-
-        .chart-container::-webkit-scrollbar { width: 10px; }
-        .chart-container::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
-        .chart-container::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; border: 2px solid rgba(0, 48, 135, 0.5); }
-
-        .chart-container-right { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 30px; 
-            overflow-y: auto;
-            width: 45%;
-        }
-
-        .aziende-container {
-            display: flex; 
-            flex-direction: column;
-            gap: 20px; 
-            width: calc(100% - 210px); 
-            margin-left: 200px; 
-            box-sizing: border-box;
-        }
-
-        .reparti-container {
-            display: flex; 
-            flex-direction: column;
-            gap: 20px; 
-            width: calc(100% - 210px); 
-            margin-left: 200px; 
-            box-sizing: border-box;
-        }
-
-        .report-container {
-            display: flex; 
-            flex-direction: column;
-            gap: 20px; 
-            width: calc(100% - 210px); 
-            margin-left: 200px; 
-            box-sizing: border-box;
-        }
-
-        .manutenzioni-aziende{
-            display: flex;
-            flex-direction: row;
-            align-items: stretch;
-            gap: 0; 
-            width: 100%;
-            height: 65vh; 
-            margin-top: 10px;
-        }
-        
-
-        .manutenzioni-reparto{
-            display: flex;
-            flex-direction: row;
-            align-items: stretch;
-            gap: 0; 
-            width: 98%;
-            height: 65vh; 
-            margin-top: 10px;
-        }
-
-
-        .selezione-azienda {
-            display: flex;
-            flex-direction: column;
-            flex: 0 0 350px; 
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border: 2px solid #ffcc00;
-            border-radius: 20px 0 0 20px; 
-            border-right: none; 
-        }
-
-        .selezione-reparto {
-            display: flex;
-            flex-direction: column;
-            flex: 70px 0 350px; 
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border: 2px solid #ffcc00;
-            border-radius: 20px 0 0 20px; 
-            border-right: none;
-            width: 50%;
-        }
-
-        .wrapper-attivita {
-            flex: 1;
-            background: rgba(0, 48, 135, 0.2);
-            border: 2px solid #ffcc00;
-            border-radius: 0 20px 20px 0; 
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .tabella-attivita, .tabella-attivita-reparti {
-            list-style: none;
-            padding: 0 5px 0 0;
-            margin: 0;
-            overflow-y: auto;
-            flex-grow: 1;
-            overflow-x: hidden;
-        }
-
-        .tabella-attivita::-webkit-scrollbar, .tabella-attivita-reparti::-webkit-scrollbar { width: 10px; }
-        .tabella-attivita::-webkit-scrollbar-track, .tabella-attivita-reparti::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
-        .tabella-attivita::-webkit-scrollbar-thumb, .tabella-attivita-reparti::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; border: 2px solid rgba(0, 48, 135, 0.5); }
-
-
-
-        .tabella-attivita li, .tabella-attivita-reparti li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 15px;
-            background-color: #003087;
-            color: #ffcc00;
-            border-radius: 15px;
-            margin-bottom: 8px;
-            transition: transform 0.2s;
-            font-size: 15px;
-        }
-
-        .tabella-attivita li:hover { transform: scale(1.01); box-shadow: 0 0 10px #ffcc00; }
-
-        .dati-destra { display: flex; align-items: center; gap: 15px; }
-        
-        .importo-attivita { font-weight: 700; color: white; min-width: 100px; text-align: right;}
-        .inc-attivita { background: #ffcc00; color: #003087; padding: 2px 10px; border-radius: 10px; font-weight: 900; font-style: italic; min-width: 60px; text-align: center;}
-
-        .spinner-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            z-index: 10;
-        }
 
         .sidebar {
             position: fixed;
@@ -274,143 +103,104 @@
             height: 85%;
             overflow-y: auto;
         }
-
         .sidebar ul { list-style: none; padding: 0; margin: 30px 0 0 -10px; flex-grow: 1; }
         .sidebar ul li a { display: flex; align-items: center; padding: 25px 15px; color: white; text-decoration: none; font-size: 0.9rem; transition: all 0.3s; cursor: pointer; }
         .sidebar ul li a i { width: 40px; font-size: 1.3rem; color: #ffcc00; text-align: center; }
         .sidebar ul li a:hover { background: rgba(255, 204, 0, 0.15); color: #ffcc00; transform: scale(1.1) translateX(10px); font-weight: 600; }
 
-        .title-chart-container { text-align: center; color: #003087; background-color: #ffcc00; border-radius: 20px; padding: 5px; margin-top: -5px; }
+        .chart-container, .chart-container-right, .aziende-container, .reparti-container, .report-container, .acquisti-container { 
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(15px); 
+            border-radius: 20px; 
+            padding: 20px; 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            font-family: 'Montserrat', sans-serif;
+            display: none;
+        }
+
+        .chart-container, .chart-container-right { width: 45%; margin-left: 190px; flex-direction: column; gap: 30px; overflow-y: auto; }
+        .chart-container-right { margin-left: 20px; }
+        
+        .aziende-container, .reparti-container, .report-container { 
+            width: calc(100% - 210px); 
+            margin-left: 200px; 
+            flex-direction: column;
+            gap: 20px;
+            box-sizing: border-box;
+        }
+
+        .title-chart-container, .title-report-container { text-align: center; color: #003087; background-color: #ffcc00; border-radius: 20px; padding: 5px; margin-top: -5px; }
+
         .lista-reparti, .lista-aziende { display: flex; flex-direction: column; list-style: none; gap: 5px; padding: 0; margin-top: -20px;}
         .lista-reparti li, .lista-aziende li { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; color: #ffcc00; background-color: #003087; border-radius: 20px; margin-bottom: 5px; transition: transform 0.2s; }
         .nome-totale { font-weight: 900 !important; background: #ffcc00 !important; color: #003087 !important; border-radius: 40px !important; margin-top: 10px;}
 
+        /* --- AZIENDE & REPARTI DETTAGLIO --- */
+        .manutenzioni-aziende, .manutenzioni-reparto { display: flex; flex-direction: row; align-items: stretch; gap: 0; width: 100%; height: 65vh; margin-top: 10px; }
+        
+        /* LOGICA PER GRAFICO GRANDE E WRAPPER STRETTO */
+        .selezione-azienda { flex: 0 0 350px; display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); padding: 20px; border: 2px solid #ffcc00; border-radius: 20px 0 0 20px; border-right: none; }
+        
+        /* REPARTI: GRAFICO OCCUPA PIÙ SPAZIO */
+        .selezione-reparto { 
+            flex: 1.8; /* Aumentato per dare più spazio al grafico */
+            display: flex; 
+            flex-direction: column; 
+            background: rgba(255, 255, 255, 0.05); 
+            padding: 20px; 
+            border: 2px solid #ffcc00; 
+            border-radius: 20px 0 0 20px; 
+            border-right: none; 
+        }
+
+        /* WRAPPER PIÙ STRETTO NELLA SCHEDA REPARTI */
+        .wrapper-attivita { 
+            flex: 1; /* Più stretto rispetto alla selezione */
+            background: rgba(0, 48, 135, 0.2); 
+            border: 2px solid #ffcc00; 
+            border-radius: 0 20px 20px 0; 
+            display: flex; 
+            flex-direction: column; 
+            padding: 20px; 
+            position: relative; 
+            overflow: hidden; 
+        }
+
+        .tabella-attivita, .tabella-attivita-reparti { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1; }
+        .tabella-attivita li, .tabella-attivita-reparti li { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background-color: #003087; color: #ffcc00; border-radius: 15px; margin-bottom: 8px; font-size: 15px; }
+
+        .dati-report-selezionato { margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .dati-report-selezionato h4 { 
+            background-color: #003087; border: 1px solid rgba(255, 204, 0, 0.3); 
+            min-width: 550px; padding: 15px; border-radius: 20px; color: #ffcc00; text-align: left; margin: 0;
+        }
+        .dati-report-selezionato span { background-color: #ffcc00; color: #003087; padding: 3px 12px; border-radius: 10px; margin-left: 15px; font-weight: 900; } 
+        .btn-report { width: 300px; padding: 15px; background: #ffcc00; color: #003087; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; align-self: center; margin-top: 20px; font-size: 16px; }
+
+        .titoletto-menu { color: #ffcc00; font-weight: 700; margin-bottom: 10px; display: block; text-transform: uppercase; font-size: 12px;}
+        .toggle-container { background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 50px; display: flex; gap: 5px; border: 1px solid rgba(255, 255, 255, 0.1); width: fit-content; }
+        .btn-toggle { background: transparent; color: white; border: none; padding: 8px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 11px; transition: 0.3s; text-transform: uppercase; }
+        .btn-toggle.active { background: #ffcc00 !important; color: #003087 !important; }
         .mini-spinner { width: 25px; height: 25px; border: 4px solid rgba(255, 255, 255, 0.3); border-top-color: #ffcc00; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none; flex-direction: column; align-items: center; gap: 10px; z-index: 10; }
+        .dati-destra { display: flex; align-items: center; gap: 15px; }
+        .inc-spese { background-color: #ffcc00; color: #003087; border-radius: 20px; padding: 2px 10px; font-weight: 550; font-style: italic; }
 
 
-        .inc-spese{
-            background-color: #ffcc00;
-            color: #003087;
-            border-radius: 20px;
-            padding: 2px 10px;
-            font-weight: 550;
-            font-style: italic;
-            margin-left: 25px;
+        .tabella-attivita-reparti::-webkit-scrollbar{
+            width: 2px;
+            color: #ffcc00;
         }
 
-        .importo-azienda{
-            font-weight: 550;
 
-        }
-
-       
-        .titoletto-menu { color: #ffcc00; font-weight: 700; margin-bottom: 10px; display: block; text-transform: uppercase; font-size: 12px;}
-
-                .toggle-container { 
-                    background: rgba(0, 0, 0, 0.3); /* Sfondo scuro semitrasparente */
-                    padding: 5px; 
-                    border-radius: 50px; 
-                    display: flex; 
-                    gap: 5px; 
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    width: fit-content;
-                }
-
-
-                .btn-toggle { 
-                    background: transparent; 
-                    color: white; 
-                    border: none; 
-                    padding: 8px 20px; 
-                    border-radius: 50px; 
-                    cursor: pointer; 
-                    font-weight: bold; 
-                    font-size: 11px; 
-                    transition: all 0.3s ease; 
-                    text-transform: uppercase; 
-                    outline: none;
-                }
-
-
-                .btn-toggle.active { 
-                    background: #ffcc00 !important; 
-                    color: #003087 !important; 
-                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
-                }
-
-
-                .btn-toggle:hover:not(.active) {
-                    background: rgba(255, 255, 255, 0.1);
-                }
-                .title-report-container{
-                    text-align: center; 
-                    color: #003087; 
-                    background-color: #ffcc00; 
-                    border-radius: 20px; 
-                    padding: 5px; 
-                    margin-top: -5px;
-                }
-
-                .btn-report {
-                    width: 20%;
-                    max-width: 20%;
-                    height: 70%;
-                    margin-top: -50px;
-                    padding: 10px 20px; 
-                    background: #ffcc00; 
-                    color: #003087; 
-                    border: none; 
-                    border-radius: 10px; 
-                    font-weight: bold; 
-                    cursor:pointer;
-                    transition: all 0.3s ease;
-                }
-
-               .tendina-azienda-report {
-                        width: 30%;
-                        border-radius: 15px;
-                        transition: transform 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
-                    }
-                .dati-report-selezionato{
-                    display: grid;
-                    margin: -60px 0 0 0;
-                    justify-content: center;
-                    flex-direction: column;
-                    text-align: center;
-                    align-self: center;
-                    
-                    
-                }
-                .dati-report-selezionato h4{
-                    display: inline-block;
-                   grid-row: auto;
-                    background-color: #003087;
-                    border: 1px solid rgba(255, 204, 0, 0.3);
-                    width: fit-content;
-                     min-width: 550px;
-                    padding: 10px;
-                    border-radius: 20px;
-                    color: #ffcc00;
-                    margin: 5px 0;
-                    margin-left: 50px;
-                    text-align: left;
-                    
-                }
-                .dati-report-selezionato span{
-                    background-color: #ffcc00;
-                    color: #003087;
-                    
-                    padding: 5px 10px;
-                    border-radius: 15px;
-                    margin-left: 70px;
-                }   
 
     </style>
 </head>
 <body>
 
-     <nav>
+    <nav>
         <div class="nav-left">
             <div class="user-badge" onclick="location.href='info_utente.html'"><div class="user-initials" id="userInitials">??</div><span class="user-fullname" id="userFullname">Utente</span></div>
             <div style="font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: bold; color: #ffcc00; margin-left: 30px;">
@@ -419,7 +209,7 @@
         </div>
         <div class="nav-right">
             <button onclick="location.href='Home_new.html'" class="btn-nav btn-home">HOME</button>
-            <div class="nav-logo"><img src="LOGO_TIGROS_VERTICALE.jpg" alt="Logo Tigros"></div>
+            <div class="nav-logo"><img src="LOGO_TIGROS_VERTICALE.jpg" alt="Logo"></div>
         </div>
     </nav>
 
@@ -446,7 +236,7 @@
             <option value="12-dicembre">Dicembre</option>
         </select>
 
-        <div class="toggle-container" id="bottone-toggle">
+        <div class="toggle-container">
             <button class="btn-toggle active" id="btnMese" onclick="setVista('MESE')">MESE</button>
             <button class="btn-toggle" id="btnAnno" onclick="setVista('ANNO')">ANNO</button>
         </div>
@@ -468,7 +258,7 @@
             </ul>
         </div>
 
-        <div class="chart-container" id="chart-container" style="display: none;">
+        <div class="chart-container" id="chart-container">
             <h3 class="title-chart-container" id="title-chart">SPESE REPARTO</h3>
             <ul class="lista-reparti">
                 <li><span class="nome-azienda">Forno</span><div class="dati-destra"><span class="importo-azienda">0 €</span><span class="inc-spese">0 %</span></div></li>
@@ -490,7 +280,7 @@
             </ul>
         </div>
 
-        <div class="chart-container-right" id="container-right" style="display: none;">
+        <div class="chart-container-right" id="container-right">
             <h3 class="title-chart-container" id="title-container-right">SPESE AZIENDE</h3>
             <ul class="lista-aziende">
                 <li><span class="nome-azienda">E.B. Di Bicciato Emanuele</span><div class="dati-destra"><span class="importo-azienda">0 €</span><span class="inc-spese">0 %</span></div></li>
@@ -510,12 +300,12 @@
             </ul>
         </div>
 
-        <div class="aziende-container" id="aziende-container" style="display: none;">
+        <div class="aziende-container" id="aziende-container">
             <h3 class="title-chart-container" style="width: fit-content; padding: 5px 20px;">ATTIVITA' ESEGUITE AZIENDE ESTERNE</h3>
             <div class="manutenzioni-aziende">
                 <div class="selezione-azienda">
                     <small class="titoletto-menu">SELEZIONA FORNITORE</small>
-                    <select class="tendina-azienda" id="tendina-azienda" onchange="popolaDettaglioAzienda()"> 
+                    <select id="tendina-azienda" onchange="popolaDettaglioAzienda()"> 
                         <option value="E.B. Di Bicciato Emanuele" selected>E.B. Di Bicciato Emanuele</option>
                         <option value="Roberto Ruggeri">Roberto Ruggeri</option>
                         <option value="Bertuetti SPA">Bertuetti SPA</option>
@@ -537,19 +327,17 @@
                         <span style="color: #ffcc00; font-weight: bold;">Elaborazione interventi...</span>
                     </div>
                     <small class="titoletto-menu" style="margin-bottom: 20px; background: #ffcc00; color: #003087; padding: 5px 15px; border-radius: 10px;">RIEPILOGO ATTIVITÀ</small>
-                    <ul class="tabella-attivita" id="lista-attivita-dinamica">
-                        </ul>
+                    <ul class="tabella-attivita" id="lista-attivita-dinamica"></ul>
                 </div>
             </div>
         </div>
 
-       <div class="reparti-container" id="reparti-container" style="display: none;">
+        <div class="reparti-container" id="reparti-container">
             <h3 class="title-chart-container" style="width: fit-content; padding: 5px 25px; margin-bottom: 10px;">ANALISI REPARTI PIATTAFORMA</h3>
-
             <div class="manutenzioni-reparto">
                 <div class="selezione-reparto">
                     <small class="titoletto-menu">SELEZIONA IL REPARTO</small>
-                    <select class="tendina-reparto" id="tendina-reparto" onchange="popolaDettaglioReparto()"> 
+                    <select id="tendina-reparto" onchange="popolaDettaglioReparto()"> 
                         <option value="Forno" selected>Reparto Forno</option>
                         <option value="Pasticceria">Reparto Pasticceria</option>
                         <option value="Laboratorio Formaggi">Laboratorio Formaggi</option>
@@ -559,13 +347,15 @@
                         <option value="Piattaforma Logistica">Piattaforma Logistica</option>
                         <option value="Uffici">Uffici</option>
                         <option value="Macelleria">Macelleria</option>
+                        <option value="Ortofrutta">Ortofrutta</option>
+                        <option value="Pescheria">Pescheria</option>
+                        <option value="Freschi">Freschi</option>
+                        <option value="Grocery">Grocery</option>
                     </select>
-
-                    <div style="flex: 1; margin-top: 20px; background: rgba(255,255,255,0.05); border-radius: 15px; padding: 10px; border: 1px solid rgba(255,204,0,0.3);">
+                    <div style="flex: 1; min-height: 350px; margin-top: 20px; background: rgba(255,255,255,0.05); border-radius: 15px; padding: 15px; border: 1px solid rgba(255,204,0,0.3);">
                         <canvas id="chartAndamentoReparto"></canvas>
                     </div>
                 </div>
-
                 <div class="wrapper-attivita">
                     <div id="spinner-attivita-reparti" class="spinner-container">
                         <div class="mini-spinner" style="width:40px; height:40px;"></div>
@@ -577,41 +367,39 @@
             </div>
         </div>
 
-        <div class="report-container" id="report-container" style="display: none;">
-            <h3 class="title-report-container" style="width: fit-content; padding: 5px 25px;">INVIO REPORT MENSILE</h3>
-             <div style="background: rgba(255,255,255,0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255,204,0,0.3); display: flex; flex-direction: column; gap: 20px;">
-                    <div class="selezione-azienda-report">
-                    <small class="titoletto-menu">SELEZIONA FORNITORE</small>
-                    <select class="tendina-azienda-report" id="tendina-azienda-report" onchange="selezioneAzienda()"> 
-                        <option value="E.B. Di Bicciato Emanuele" selected>E.B. Di Bicciato Emanuele</option>
-                        <option value="Roberto Ruggeri">Roberto Ruggeri</option>
-                        <option value="Bertuetti SPA">Bertuetti SPA</option>
-                        <option value="Bizerba SPA">Bizerba SPA</option>
-                        <option value="Fast Service SAS">Fast Service SAS</option>
-                        <option value="Gerosa Achille SRL">Gerosa Achille SRL</option>
-                        <option value="Mondial Pack Group">Mondial Pack Group</option>
-                        <option value="CAD Project SRL">CAD Project SRL</option>
-                        <option value="Fabbri Group SPA">Fabbri Group SPA</option>
-                        <option value="Carpeggiani SRL (Elettricista)">Carpeggiani SRL (Elettricista)</option>
-                        <option value="Carpeggiani SRL (Idraulico)">Carpeggiani SRL (Idraulico)</option>
-                        <option value="Gumiero Ambiente SRL">Gumiero Ambiente SRL</option>
-                        <option value="Cagnoni Enrico">Cagnoni Enrico</option>
-                    </select>
-                </div>
+        <div class="report-container" id="report-container">
+            <h3 class="title-report-container" style="width: fit-content; padding: 5px 25px; margin-bottom: 20px;">INVIO REPORT MENSILE</h3>
+            <div style="background: rgba(255,255,255,0.05); border-radius: 15px; padding: 30px; border: 1px solid rgba(255,204,0,0.3); display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%;">
+                
+                <small class="titoletto-menu">SELEZIONA FORNITORE PER IL REPORT</small>
+                <select class="tendina-azienda-report" id="tendina-azienda-report" onchange="selezioneAzienda()" style="width: 50%; padding: 12px;"> 
+                    <option value="" disabled selected>Scegli un'azienda...</option>
+                    <option value="E.B. Di Bicciato Emanuele">E.B. Di Bicciato Emanuele</option>
+                    <option value="Roberto Ruggeri">Roberto Ruggeri</option>
+                    <option value="Bertuetti SPA">Bertuetti SPA</option>
+                    <option value="Bizerba SPA">Bizerba SPA</option>
+                    <option value="Fast Service SAS">Fast Service SAS</option>
+                    <option value="Gerosa Achille SRL">Gerosa Achille SRL</option>
+                    <option value="Mondial Pack Group">Mondial Pack Group</option>
+                    <option value="CAD Project SRL">CAD Project SRL</option>
+                    <option value="Fabbri Group SPA">Fabbri Group SPA</option>
+                    <option value="Carpeggiani SRL (Elettricista)">Carpeggiani SRL (Elettricista)</option>
+                    <option value="Carpeggiani SRL (Idraulico)">Carpeggiani SRL (Idraulico)</option>
+                    <option value="Gumiero Ambiente SRL">Gumiero Ambiente SRL</option>
+                    <option value="Cagnoni Enrico">Cagnoni Enrico</option>
+                </select>
+
                 <div class="dati-report-selezionato" id="dati-report-selezionato">
-                    <h4>ANNO DA GENERARE: <span id="anno-genera">Da selezionare...</span></h4>
-                    <h4>MESE DA GENERARE: <span id="mese-genera">Da selezionare...</span></h4>
-                    <h4>AZIENDA: <span id="azienda-genera">Da selezionare...</span></h4>
+                    <h4>ANNO DI RIFERIMENTO: <span id="anno-genera">---</span></h4>
+                    <h4>MESE DI RIFERIMENTO: <span id="mese-genera">---</span></h4>
+                    <h4>AZIENDA SELEZIONATA: <span id="azienda-genera">---</span></h4>
                 </div>
 
-                <button class="btn-report" id="btn-report" onclick="generaReport()">Genera Report PDF</button>
+                <button class="btn-report" id="btn-report" onclick="generaReport()">GENERA REPORT PDF</button>
+            </div>
         </div>
 
-
-
-        <div class="acquisti-container" id="acquisti-container" style="display: none;"><h3>ACQUISTI</h3></div>
-        <div class="report-container" id="report-container" style="display: none;"><h3>REPORT</h3></div>
-
+        <div class="acquisti-container" id="acquisti-container"><h3>ACQUISTI - SCHEDA IN SVILUPPO</h3></div>
     </div>
 
     <script>
@@ -629,24 +417,17 @@
         let iniziali = (parti.length > 1) ? parti[0][0] + parti[1][0] : parti[0][0] + (parti[0][1] || "");
         document.getElementById('userInitials').innerText = iniziali.toUpperCase();
         caricaDatiCSV();
-        report();
-        
-
+        spese(); 
     };
 
     async function caricaDatiCSV() {
         const mainSpinner = document.getElementById('loading-spinner');
         if(mainSpinner) mainSpinner.style.display = 'flex';
-
         try {
             const response = await fetch(sheetUrl);
             const csvData = await response.text();
             tuttiIDati = csvToJSON(csvData);
-            
-            const attuale = localStorage.getItem("schermataAttuale") || "spese";
-            if(attuale === "aziende") aziende();
-            else report();
-
+            aggiornaTitoli();
         } catch (e) { console.error("Errore fetch:", e); }
         finally { if(mainSpinner) mainSpinner.style.display = 'none'; }
     }
@@ -664,248 +445,181 @@
     }
 
     function popolazioneTabellaSpese() {
-
-            if (tuttiIDati.length === 0) return;
-
+        if (tuttiIDati.length === 0) return;
         const annoSel = document.getElementById('selectAnno').value;
         const meseSel = document.getElementById('selectMese').value;
-
         const datiFiltrati = tuttiIDati.filter(d => {
             const matchAnno = d.ANNO == annoSel;
             return vistaAttuale === 'MESE' ? (matchAnno && d.MESE === meseSel) : matchAnno;
         });
-
-        const speseReparti = {};
-        const speseAziende = {};
-        let totaleGenerale = 0;
-
+        const speseReparti = {}; const speseAziende = {}; let totaleGenerale = 0;
         datiFiltrati.forEach(d => {
-
             const reparto = (d.REPARTO || "ALTRO").trim().toUpperCase();
             const azienda = (d.AZIENDA || "ALTRO").trim().toUpperCase();
             let importo = parseFloat((d.TOTALE_SPESA || "0").replace('€', '').replace(/\./g, '').replace(',', '.').trim()) || 0;
-
             speseReparti[reparto] = (speseReparti[reparto] || 0) + importo;
             speseAziende[azienda] = (speseAziende[azienda] || 0) + importo;
             totaleGenerale += importo;
         });
-
-
         document.querySelectorAll('.lista-reparti li:not(.nome-totale)').forEach(li => {
             const nomeHTML = li.querySelector('.nome-azienda')?.innerText.trim().toUpperCase();
             const val = speseReparti[nomeHTML] || 0;
             li.querySelector('.importo-azienda').innerText = val.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' });
             li.querySelector('.inc-spese').innerText = totaleGenerale > 0 ? ((val / totaleGenerale) * 100).toFixed(2) + " %" : "0 %";
         });
-
         document.querySelectorAll('.lista-aziende li:not(.nome-totale)').forEach(li => {
             const nomeHTML = li.querySelector('.nome-azienda')?.innerText.trim().toUpperCase();
             const val = speseAziende[nomeHTML] || 0;
             li.querySelector('.importo-azienda').innerText = val.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' });
             li.querySelector('.inc-spese').innerText = totaleGenerale > 0 ? ((val / totaleGenerale) * 100).toFixed(2) + " %" : "0 %";
         });
-
         document.querySelectorAll('.importo-Totale').forEach(el => el.innerText = totaleGenerale.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }));
     }
-
 
     function popolaDettaglioAzienda() {
         const listContainer = document.getElementById('lista-attivita-dinamica');
         const internalSpinner = document.getElementById('spinner-attivita');
         if (tuttiIDati.length === 0) return;
-        
         listContainer.style.opacity = "0.3";
         if(internalSpinner) internalSpinner.style.display = 'flex';
-
         setTimeout(() => {
             const annoSel = document.getElementById('selectAnno').value;
             const meseSel = document.getElementById('selectMese').value;
             const aziendaSel = document.getElementById('tendina-azienda').value.trim().toUpperCase();
-
             const datiFiltrati = tuttiIDati.filter(d => {
                 const matchAnno = d.ANNO == annoSel;
                 const matchAzienda = d.AZIENDA.trim().toUpperCase() === aziendaSel;
                 return vistaAttuale === 'MESE' ? (matchAnno && d.MESE === meseSel && matchAzienda) : (matchAnno && matchAzienda);
             });
-
-            const riepilogo = {};
-            let spesaTotAzienda = 0;
-
+            const riepilogo = {}; let spesaTotAzienda = 0;
             datiFiltrati.forEach(d => {
-                let desc = (d.ATTIVITÀ_SVOLTE || d.DESCRIZIONE_INTERVENTO || d.NOTE || "INTERVENTO").trim().toUpperCase();
+                let desc = (d.ATTIVITÀ_SVOLTE || d.DESCRIZIONE_INTERVENTO || "INTERVENTO").trim().toUpperCase();
                 let imp = parseFloat((d.TOTALE_SPESA || "0").replace('€', '').replace(/\./g, '').replace(',', '.').trim()) || 0;
                 riepilogo[desc] = (riepilogo[desc] || 0) + imp;
                 spesaTotAzienda += imp;
             });
-
             listContainer.innerHTML = "";
-            const ordinate = Object.keys(riepilogo).sort((a,b) => riepilogo[b] - riepilogo[a]);
-
-            if (ordinate.length === 0) {
-                listContainer.innerHTML = `<li style="background:none; color:white; justify-content:center;">Nessun intervento trovato</li>`;
-            } else {
-                ordinate.forEach(desc => {
-                    const costo = riepilogo[desc];
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <span class="nome-attivita" style="font-weight:700;">${desc}</span>
-                        <div class="dati-destra">
-                            <span class="importo-attivita">${costo.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' })}</span>
-                            <span class="inc-attivita">${spesaTotAzienda > 0 ? ((costo / spesaTotAzienda) * 100).toFixed(1) : 0}%</span>
-                        </div>`;
-                    listContainer.appendChild(li);
-                });
-            }
+            Object.keys(riepilogo).sort((a,b) => riepilogo[b] - riepilogo[a]).forEach(desc => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span style="font-weight:700;">${desc}</span><div class="dati-destra"><span class="importo-attivita">${riepilogo[desc].toLocaleString('it-IT', { style: 'currency', currency: 'EUR' })}</span><span class="inc-attivita">${((riepilogo[desc]/spesaTotAzienda)*100).toFixed(1)}%</span></div>`;
+                listContainer.appendChild(li);
+            });
             listContainer.style.opacity = "1";
             if(internalSpinner) internalSpinner.style.display = 'none';
         }, 400);
     }
 
-function popolaDettaglioReparto() {
+    function popolaDettaglioReparto() {
         const listContainer = document.getElementById('lista-attivita-dinamica-reparti');
         const internalSpinner = document.getElementById('spinner-attivita-reparti');
         if (tuttiIDati.length === 0) return;
-        
         listContainer.style.opacity = "0.3";
         if(internalSpinner) internalSpinner.style.display = 'flex';
-
         setTimeout(() => {
             const annoSel = document.getElementById('selectAnno').value;
             const meseSel = document.getElementById('selectMese').value;
             const repartoSel = document.getElementById('tendina-reparto').value.trim().toUpperCase();
-
-            // 1. FILTRO DATI PER LISTA (MESE/ANNO CORRENTE)
             const datiFiltratiLista = tuttiIDati.filter(d => {
                 const matchAnno = d.ANNO == annoSel;
                 const matchReparto = d.REPARTO.trim().toUpperCase() === repartoSel;
                 return vistaAttuale === 'MESE' ? (matchAnno && d.MESE === meseSel && matchReparto) : (matchAnno && matchReparto);
             });
-
-            // 2. FILTRO DATI PER GRAFICO (TUTTO L'ANNO PER IL REPARTO SELEZIONATO)
             const datiAnnoReparto = tuttiIDati.filter(d => d.ANNO == annoSel && d.REPARTO.trim().toUpperCase() === repartoSel);
-            
-            // Calcolo volumi mensili
             let conteggiMensili = nomiMesi.map(m => datiAnnoReparto.filter(d => d.MESE === m).length);
             let totaleInterventiAnno = datiAnnoReparto.length;
-            
-            // Calcolo incidenza (linea)
             let incidenzeMensili = conteggiMensili.map(c => totaleInterventiAnno > 0 ? ((c / totaleInterventiAnno) * 100).toFixed(1) : 0);
-
-            // AGGIORNAMENTO GRAFICO
+            
             const ctx = document.getElementById('chartAndamentoReparto').getContext('2d');
             if (chartRepartoInstance) chartRepartoInstance.destroy();
-            
-            chartRepartoInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['GEN', 'FEB', 'MAR', 'APR', 'MAG', 'GIU', 'LUG', 'AGO', 'SET', 'OTT', 'NOV', 'DIC'],
-                    datasets: [
-                            {
-                                label: 'N° Interventi',
-                                data: conteggiMensili,
-                                backgroundColor: '#ffcc00',
-                                borderRadius: 5,
-                                yAxisID: 'y',
-                                order: 2,
-
-                                datalabels: {
-                                    display: true,
-                                    anchor: 'start',
-                                    align: 'top',
-                                    color: 'black',
-                                    font: { weight: 'bold', size: 11 },
-                                    formatter: (value) => value > 0 ? value : '' 
-                                }
-                            },
-                            {
-                                label: '% Incidenza su Anno',
-                                data: incidenzeMensili,
-                                type: 'line',
-                                borderColor: '#ffffff',
-                                borderWidth: 3,
-                                pointRadius: null,
-                                pointBackgroundColor: '#ffffff',
-                                tension: 0.4,
-                                yAxisID: 'y1',
-                                order: 1,
-                                datalabels: {
-                                    display: true,
-                                    align: 'end', 
-                                    color: 'black',
-                                    font: { weight: 'bold', size: 12 },
-                                    formatter: (value) => value > 0 ? value + '%' : ''
-                                }
-                            }
-]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { 
-                        legend: { display: true},
-                        datalabels: { font: { weight: 'bold', size: 10 } }
-                    },
-                    scales: {
-                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: 'white' } },
-                        y1: { position: 'right', min: -10, max: 100, grid: { display: false }, ticks: { color: '#ffcc00', callback: v => v + '%' } },
-                        x: { ticks: { color: 'white' } }
-                    }
+           chartRepartoInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['GEN', 'FEB', 'MAR', 'APR', 'MAG', 'GIU', 'LUG', 'AGO', 'SET', 'OTT', 'NOV', 'DIC'],
+        datasets: [
+            { 
+                label: '% Incidenza', 
+                data: incidenzeMensili, 
+                type: 'line', 
+                borderColor: 'white', 
+                tension: 0.4, 
+                yAxisID: 'y1',
+                // POSIZIONAMENTO SOPRA LA LINEA
+                datalabels: {
+                    display: true,
+                    align: 'top',
+                    anchor: 'end',
+                    color: 'white',
+                    font: { weight: 'bold' },
+                    formatter: (value) => value > 0 ? value + '%' : ''
                 }
-            });
-
-            // AGGIORNAMENTO LISTA ATTIVITÀ
-            const riepilogo = {};
-            let spesaTotReparto = 0;
-
+            },      
+            { 
+                label: 'N° Interventi', 
+                data: conteggiMensili, 
+                backgroundColor: '#ffcc00', 
+                borderRadius: 5, 
+                yAxisID: 'y',
+                // POSIZIONAMENTO ALLA BASE DELLE BARRE
+                datalabels: {
+                    display: true,
+                    align: 'top',      // Direzione del testo
+                    anchor: 'start',   // Ancoraggio alla base della barra
+                    color: '#003087',  // Colore scuro per contrasto sul giallo
+                    offset: 5,         // Distanza dalla base
+                    font: { weight: '900', size: 11 },
+                    formatter: (value) => value > 0 ? value : ''
+                }
+            },
+        ]
+    },
+    options: { 
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { 
+            y: { 
+                beginAtZero: true, 
+                ticks: { color: 'white' },
+                grid: { color: 'rgba(255,255,255,0.1)' } 
+            }, 
+            y1: { 
+                position: 'right', 
+                max: 100, 
+                ticks: { color: '#ffcc00' },
+                grid: { display: false } // Nascondi griglia doppia
+            },
+            x: { ticks: { color: 'white' } }
+        },
+        plugins: { 
+            legend: { labels: { color: 'white' } },
+            // Disabilita il datalabels globale per gestirlo nei singoli dataset sopra
+            datalabels: {
+                display: false 
+            }
+        }
+    }
+});
+            const riepilogo = {}; let spesaTotReparto = 0;
             datiFiltratiLista.forEach(d => {
-                let desc = (d.ATTIVITÀ_SVOLTE || d.DESCRIZIONE_INTERVENTO || d.NOTE || "INTERVENTO").trim().toUpperCase();
+                let desc = (d.ATTIVITÀ_SVOLTE || d.DESCRIZIONE_INTERVENTO || "INTERVENTO").trim().toUpperCase();
                 let imp = parseFloat((d.TOTALE_SPESA || "0").replace('€', '').replace(/\./g, '').replace(',', '.').trim()) || 0;
                 riepilogo[desc] = (riepilogo[desc] || 0) + imp;
                 spesaTotReparto += imp;
             });
-
             listContainer.innerHTML = "";
-            const ordinate = Object.keys(riepilogo).sort((a,b) => riepilogo[b] - riepilogo[a]);
-
-            if (ordinate.length === 0) {
-                listContainer.innerHTML = `<li style="background:none; color:white; justify-content:center;">Nessun intervento trovato</li>`;
-            } else {
-                ordinate.forEach(desc => {
-                    const costo = riepilogo[desc];
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <span class="nome-attivita" style="font-weight:700;">${desc}</span>
-                        <div class="dati-destra">
-                            <span class="importo-attivita">${costo.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' })}</span>
-                            <span class="inc-attivita">${spesaTotReparto > 0 ? ((costo / spesaTotReparto) * 100).toFixed(1) : 0}%</span>
-                        </div>`;
-                    listContainer.appendChild(li);
-                });
-            }
+            Object.keys(riepilogo).sort((a,b) => riepilogo[b] - riepilogo[a]).forEach(desc => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span style="font-weight:700;">${desc}</span><div class="dati-destra"><span class="importo-attivita">${riepilogo[desc].toLocaleString('it-IT', { style: 'currency', currency: 'EUR' })}</span><span class="inc-attivita">${((riepilogo[desc]/spesaTotReparto)*100).toFixed(1)}%</span></div>`;
+                listContainer.appendChild(li);
+            });
             listContainer.style.opacity = "1";
             if(internalSpinner) internalSpinner.style.display = 'none';
         }, 400);
     }
 
-
-
     function setVista(tipo) {
         vistaAttuale = tipo;
-        const bottoneMese = document.getElementById('selectMese');
         document.getElementById('btnMese').classList.toggle('active', tipo === 'MESE');
         document.getElementById('btnAnno').classList.toggle('active', tipo === 'ANNO');
-
-        /*if(tipo==='ANNO'){
-            bottoneMese.disabled='true';
-            bottoneMese.style.opacity = "0.5";
-            bottoneMese.style.cursor = "not-allowed";
-        }
-        else{
-             bottoneMese.disabled='false';
-             bottoneMese.style.opacity = "1";
-             bottoneMese.style.cursor = "pointer";
-        }*/
-
         aggiornaTitoli();
     }
 
@@ -914,99 +628,49 @@ function popolaDettaglioReparto() {
         const mese = document.getElementById('selectMese').value;
         const meseT = mese.includes('-') ? mese.split('-')[1] : mese;
         const periodo = (vistaAttuale === 'MESE') ? meseT.toUpperCase() + " " + anno : "ANNO " + anno;
-
         const schermata = localStorage.getItem("schermataAttuale");
-            console.log("Schermata attuale: ",schermata);
         if(schermata === 'spese'){
             document.getElementById('title-chart').innerText = 'SPESE REPARTO ' + periodo;
             document.getElementById('title-container-right').innerText = 'SPESE AZIENDE ' + periodo;
             popolazioneTabellaSpese();
-        } else if(schermata === 'aziende'){
-            popolaDettaglioAzienda();
-        } else if(schermata === 'reparti'){
-            popolaDettaglioReparto();
-        }
-        
-    }
-
-    function abilitaFiltri() {
-        ['selectAnno', 'selectMese', 'btnMese', 'btnAnno'].forEach(id => {
-            const el = document.getElementById(id);
-            if(el) { el.disabled = false; el.style.opacity = "1"; el.style.cursor = "pointer"; }
-        });
+        } else if(schermata === 'aziende'){ popolaDettaglioAzienda(); }
+        else if(schermata === 'reparti'){ popolaDettaglioReparto(); }
+        else if(schermata === 'report'){ selezioneAzienda(); }
     }
 
     function nascondiTuttomanutenzione() {
-        ['chart-container', 'container-right', 'reparti-container', 'report-container', 'aziende-container', 'acquisti-container','report-container'].forEach(id => {
-            const el = document.getElementById(id);
-            if(el) el.style.display = 'none';
+        ['chart-container', 'container-right', 'reparti-container', 'report-container', 'aziende-container', 'acquisti-container'].forEach(id => {
+            if(document.getElementById(id)) document.getElementById(id).style.display = 'none';
         });
-        abilitaFiltri();
     }
 
-    function spese(){
-        nascondiTuttomanutenzione();
-        localStorage.setItem("schermataAttuale", "spese");
-        let schermata = localStorage.getItem("schermataAttuale");
-            console.log("Schermata attuale: ",schermata);
-        document.getElementById('chart-container').style.display='flex';
-        document.getElementById('container-right').style.display='flex';
-        aggiornaTitoli();
-    }
-
-    function aziende() {
-        nascondiTuttomanutenzione();
-        localStorage.setItem("schermataAttuale", "aziende");
-        let schermata = localStorage.getItem("schermataAttuale");
-            console.log("Schermata attuale: ",schermata);
-        document.getElementById('aziende-container').style.display='flex';
-        aggiornaTitoli();
-    }
-
-    function acquisti(){
-        nascondiTuttomanutenzione();
-        localStorage.setItem("schermataAttuale", "acquisti");
-        let schermata = localStorage.getItem("schermataAttuale");
-            console.log("Schermata attuale: ",schermata);
-        ['selectAnno', 'selectMese', 'btnMese', 'btnAnno'].forEach(id => {
-            const el = document.getElementById(id);
-            if(el) { el.disabled = true; el.style.opacity = "0.5"; el.style.cursor = "not-allowed"; }
-        });
-        document.getElementById('acquisti-container').style.display = 'flex';
-    }
-
-    function reparti(){
-        nascondiTuttomanutenzione();
-        localStorage.setItem("schermataAttuale", "reparti");
-        let schermata = localStorage.getItem("schermataAttuale");
-            console.log("Schermata attuale: ",schermata);
-        document.getElementById('reparti-container').style.display='flex';
-        popolaDettaglioReparto();
-    }
-
-    function report(){
-        nascondiTuttomanutenzione();
-        localStorage.setItem("schermataAttuale", "report");
-        let schermata = localStorage.getItem("schermataAttuale");
-            console.log("Schermata attuale: ",schermata);
-        document.getElementById('report-container').style.display='flex';
-    }
+    function spese(){ nascondiTuttomanutenzione(); localStorage.setItem("schermataAttuale", "spese"); document.getElementById('chart-container').style.display='flex'; document.getElementById('container-right').style.display='flex'; aggiornaTitoli(); }
+    function aziende() { nascondiTuttomanutenzione(); localStorage.setItem("schermataAttuale", "aziende"); document.getElementById('aziende-container').style.display='flex'; aggiornaTitoli(); }
+    function reparti(){ nascondiTuttomanutenzione(); localStorage.setItem("schermataAttuale", "reparti"); document.getElementById('reparti-container').style.display='flex'; popolaDettaglioReparto(); }
+    function report(){ nascondiTuttomanutenzione(); localStorage.setItem("schermataAttuale", "report"); document.getElementById('report-container').style.display='flex'; selezioneAzienda(); }
+    function acquisti(){ nascondiTuttomanutenzione(); localStorage.setItem("schermataAttuale", "acquisti"); document.getElementById('acquisti-container').style.display = 'block'; }
 
     function selezioneAzienda() {
-        const aziendaSel = document.getElementById('tendina-azienda-report').value.trim().toUpperCase();
+        const select = document.getElementById('tendina-azienda-report');
+        const aziendaSel = select.value;
         const annoSel = document.getElementById('selectAnno').value;
-        const meseSel = document.getElementById('selectMese').value;
-
+        const meseRaw = document.getElementById('selectMese').value;
+        const meseNome = meseRaw.includes('-') ? meseRaw.split('-')[1].toUpperCase() : meseRaw.toUpperCase();
+        
+        document.getElementById('azienda-genera').innerHTML = aziendaSel ? `<span>${aziendaSel.toUpperCase()}</span>` : "---";
+        document.getElementById('anno-genera').innerHTML = `<span>${annoSel}</span>`;
+        document.getElementById('mese-genera').innerHTML = `<span>${meseNome}</span>`;
+        
         const btn = document.getElementById('btn-report');
-        btn.innerText ="Genera report per " + aziendaSel;
-
-        document.getElementById('azienda-genera').innerText = aziendaSel;
-        document.getElementById('anno-genera').innerText = annoSel;
-        document.getElementById('mese-genera').innerText = meseSel;
+        if(aziendaSel) { btn.innerText = "GENERA REPORT PER " + aziendaSel.toUpperCase(); btn.style.opacity = "1"; }
+        else { btn.innerText = "SELEZIONA AZIENDA"; btn.style.opacity = "0.5"; }
     }
 
+    function generaReport() {
+        const azienda = document.getElementById('tendina-azienda-report').value;
+        if(!azienda) return alert("Seleziona un'azienda!");
+        alert("Generazione PDF per " + azienda + " in corso...");
+    }
     </script>
-
-
 </body>
 </html>
