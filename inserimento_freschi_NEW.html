@@ -4,118 +4,210 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Piattaforma Tigros - Dashboard Inevasi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap');
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* --- STRUTTURA FONDAMENTALE --- */
         body {
             margin: 0;
-            background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%);
-            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%) !important;
+            background-attachment: fixed;
             height: 100vh;
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            color: white;
         }
 
-       nav {
-                background: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(10px);
-                padding: 5px 20px; 
-                height: 60px;     
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-                position: relative;
-                z-index: 100;
-            }
-
-            .nav-right .nav-logo img {
-                height: 45px;     
-                width: auto;      
-                display: block;
-                margin-right: 10px;
-            }
-
-        .nav-left { flex: 1; display: flex; justify-content: flex-start; }
+        /* --- NAVBAR --- */
+        nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 5px 20px; 
+            min-height: 60px;     
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 100;
+        }
+        .nav-left { flex: 1; display: flex; align-items: center; gap: 20px;}
         .user-badge {
             display: flex; align-items: center; gap: 10px;
             background: rgba(255, 255, 255, 0.15);
             padding: 5px 12px; border-radius: 50px;
         }
         .user-initials {
-            width: 30px; height: 30px;
-            background: #ffcc00; color: #003087;
+            width: 30px; height: 30px; background: #ffcc00; color: #003087;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-family: Impact;
+            font-weight: 900;
         }
-        .user-fullname { color: white; font-size: 0.85rem; font-weight: 600; }
+        .user-fullname { font-size: 0.85rem; font-weight: 600; }
+        
+        .selector-box { display: flex; align-items: center; gap: 10px; background: rgba(0,48,135,0.6); padding: 6px 15px; border-radius: 8px; border: 1px solid #ffcc00;}
+        .selector-box label { font-weight: 900; color: #ffcc00; }
+        .selector-box select { background: transparent; color: white; border: none; outline: none; font-weight: 700; cursor: pointer; font-size: 1rem;}
+        .selector-box select option { background: #003087; color: white; }
 
-        nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; flex: 2; justify-content: center; }
-        li a { text-decoration: none; color: white; font-family: Impact; font-size: 1.15rem; cursor: pointer; }
+        nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; flex: 1; justify-content: center; }
+        li a { text-decoration: none; color: white; font-weight: 900; font-size: 1.15rem; cursor: pointer; transition: 0.2s;}
+        li a:hover { color: #ffcc00;}
 
-        .container-glass {
-            position: absolute;
-            top : 8%; left: 1%;
-            width: 98%; height: 90%;
-            z-index: 10;
+        .nav-right { flex: 1; display: flex; justify-content: flex-end; align-items: center; gap: 15px;}
+        .nav-logo img { height: 35px; display: block; margin-right: 10px; }
+        
+        .btn-action {
+            background: #ffcc00; color: #003087; font-weight: 900;
+            padding: 8px 20px; border-radius: 8px; border: none; cursor: pointer; transition: 0.2s;
         }
+        .btn-action:hover { transform: scale(1.05); }
 
- 
-        .laterale-glass-box {
-            position: absolute;
-            width: 400px; height: 950px; padding: 30px;
+        /* --- LAYOUT MAIN --- */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 15px 25px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        
+        /* Scrollbar personalizzata globale */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; }
+
+        .glass-panel {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
-            border-radius: 20px;
+            border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
 
-        .elementi_lato {
-            font-family: Impact; color: #ffcc00; font-size: 25px;
-            list-style: circle; display: flex; flex-direction: column; gap: 50px;
-        }
-
-
-        .centrale-glass-box {
-            position: absolute;
-            display: flex; flex-direction: column; gap: 20px; padding: 40px;
-            width: 450px; height: 320px; top: 1px; left: 500px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px); border-radius: 20px;
-        }
-
-        .input-group { display: flex; align-items: center; justify-content: space-between; width: 100%; }
-        .input-group label { font-family: Impact; color: #ffcc00; font-size: 1rem; }
-        .input-group input { width: 200px; height: 35px; border-radius: 8px; border: none; padding: 0 10px; }
-
-
-        .week-glass-box {
-            position: absolute; width: 1200px; height: 317px; top: 1px; left: 1050px; padding: 30px;
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
-            border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .gruppoWeek { display: flex; justify-content: space-around; width: 100%; }
-        .gruppoWeek label { display: flex; flex-direction: column; align-items: center; font-family: Impact; font-size: 20px; gap: 10px; color: #ffcc00; }
-        .gruppoWeek span { color: white; font-size: 18px; font-family: Verdana; background: rgba(255, 204, 0, 0.15); padding: 2px 10px; border-radius: 5px; min-width: 50px; text-align: center; }
+        /* --- TABELLA SETTIMANA --- */
+        .table-container { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; text-align: center; border-radius: 10px; overflow: hidden; }
+        th { background: #ffcc00; color: #003087; font-weight: 900; padding: 12px 10px; position: sticky; top: 0; z-index: 5; }
+        td { padding: 12px 10px; background: rgba(0, 48, 135, 0.4); border-bottom: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.2s; font-weight: 600;}
+        tr:hover td { background: rgba(255,204,0,0.3); }
+        .th-day { border-right: 1px solid rgba(0, 48, 135, 0.2); }
+        .td-day { font-weight: 900; background: rgba(0,48,135,0.7); color: #ffcc00; border-right: 1px solid rgba(255,204,0,0.2); }
+        .val-alert { color: #ff4d4d !important; font-weight: 900; }
         
+        .row-totale td { 
+            background: #003087 !important; 
+            color: white; 
+            font-weight: 900; 
+            border-top: 2px solid #ffcc00; 
+            border-bottom: none;
+            cursor: default;
+        }
+        .row-totale .td-day { color: #ffcc00; }
 
-        .riepilogo-glass-box {
-            position: absolute; width: 1750px; height: 530px; padding: 20px; top: 420px; left: 500px;
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
-            border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2);
-            display: block !important; overflow: hidden;
+        /* --- GRAFICI --- */
+        .charts-row {
+            display: flex;
+            gap: 20px;
+            flex-grow: 1;
+            min-height: 320px;
+            margin-top: 15px;
         }
+        .chart-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            width: 33%;
+        }
+        .chart-title {
+            font-weight: 900; color: #ffcc00; text-align: center; margin-top: 0; margin-bottom: 15px; font-size: 1.1rem;
+        }
+        .canvas-wrapper { position: relative; flex-grow: 1; width: 100%; height: 100%; }
 
-        .bnt_aggiorna {
-            background: #ffcc00; color: #003087; font-family: Impact;
-            padding: 5px 15px; border-radius: 8px; border: none; cursor: pointer;
+        /* --- MODAL DETTAGLIO (SOBRIO E LARGO) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000;
         }
-        .btn-prev{
-            background: #ffcc00; color: #003087; font-family: Impact;
-            padding: 5px 15px; border-radius: 8px; border: none; cursor: pointer;
+        .modal-content {
+            background: #1e293b; /* Colore più sobrio, grigio-blu scuro */
+            width: 95%; max-width: 1400px; /* Molto più largo */
+            max-height: 85%; border-radius: 12px;
+            border: 1px solid rgba(255, 204, 0, 0.4); 
+            display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 25px; 
+            background: rgba(0,0,0,0.2); /* Sfondo delicato */
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .modal-header h2 { font-weight: 700; margin: 0; font-size: 1.4rem; color: #ffcc00; }
+        .btn-close { background: none; border: none; font-size: 1.5rem; color: #fff; cursor: pointer; transition: 0.2s;}
+        .btn-close:hover { color: #ff4d4d; transform: scale(1.2); }
+        .modal-body { padding: 0; overflow: auto; background: transparent; }
         
+        .modal-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        .modal-table th { 
+            background: rgba(30, 41, 59, 0.85); /* Leggermente trasparente per l'effetto sfocato */
+            backdrop-filter: blur(8px);
+            color: #a0aec0; /* Grigio chiaro sobrio */
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .modal-table td { 
+            background: transparent; 
+            color: #e2e8f0; /* Testo chiaro, non sgargiante */
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            cursor: default; 
+            padding: 12px 20px;
+            white-space: nowrap; /* Impedisce che il testo vada a capo */
+        }
+        .modal-table tr:hover td { background: rgba(255,255,255,0.03); color: #fff; }
+
+        #spinner { display: none; align-items: center; gap: 8px; color: #ffcc00; font-weight: 900; }
+        .fa-spin { font-size: 1.2rem; }
+
+        /* --- RESPONSIVE MOBILE --- */
+        @media (max-width: 1024px) {
+            .charts-row { flex-direction: column; min-height: auto; }
+            .chart-box { width: 100%; min-height: 300px; }
+            .nav-left, .nav-right { flex: none; }
+        }
+
+        @media (max-width: 768px) {
+            body { height: auto; overflow-y: auto; } 
+            nav { flex-direction: column; gap: 15px; padding: 15px; height: auto;}
+            .nav-left { flex-direction: column; width: 100%; align-items: stretch; gap: 10px;}
+            .nav-right { width: 100%; justify-content: space-between; }
+            .selector-box { justify-content: space-between; }
+            nav ul { flex-wrap: wrap; gap: 10px; width: 100%; justify-content: center;}
+            .main-container { padding: 10px; }
+            .glass-panel { padding: 10px; }
+            th, td { padding: 8px 5px; font-size: 0.85rem; }
+            .modal-content { width: 98%; }
+            .btn-action { padding: 8px 10px; font-size: 0.8rem; }
+            .nav-logo img { height: 30px; margin: 0; }
+        }
     </style>
 </head>
 <body>
@@ -123,173 +215,441 @@
     <nav>
         <div class="nav-left">
             <div class="user-badge">
-                <div class="user-initials" id="userInitials">??</div>
-                <span class="user-fullname" id="userFullname">Utente</span>
+                <div class="user-initials">GB</div>
+                <span class="user-fullname">Giacomo Bardelli</span>
+            </div>
+            <div class="selector-box">
+                <label><i class="fa-solid fa-calendar-week"></i> SETTIMANA:</label>
+                <select id="weekSelector" onchange="aggiornaDashboard()">
+                    <option value="">Caricamento...</option>
+                </select>
+                <div id="spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> Lettura Dati</div>
             </div>
         </div>
         <ul>
-            <li><a href="#" style="color: #ffcc00;">HOME</a></li>
+            <li><a href="Home_new.html" style="color: #ffcc00;">HOME</a></li>
             <li><a onclick="confermaEsci()" style="color: #efba0a;">ESCI</a></li>
-            <li><button class="bnt_aggiorna" onclick="caricaDatiSettimana()">AGGIORNA DATI</button></li>
-            <li><button class="btn-prev"onclick="location.href='home_freschi.html'">INDIETRO</button></li>
         </ul>
         <div class="nav-right">
-            <div class="nav-logo"><img src="LOGO_TIGROS_VERTICALE.jpg" alt="Logo Tigros"></div>
+            <button class="btn-action" onclick="caricaDatiCSV()"><i class="fa-solid fa-rotate"></i> RICARICA DATI</button>
+            <button class="btn-action" style="background: white;" onclick="location.href='home_freschi.html'">INDIETRO</button>
+            <div class="nav-logo"><img src="LOGO_TIGROS_VERTICALE.jpg" alt="Logo"></div>
         </div>
     </nav>
 
-    <div class="container-glass">
-        <div class="laterale-glass-box">
-            <ul class="elementi_lato">
-                <li>Inserimento Inevasi</li>
-                <li>Saturazione</li>
-                <li>Storico</li>
-            </ul>
+    <div class="main-container">
+        
+        <div class="glass-panel table-container">
+            <h3 class="chart-title" style="text-align: left; margin-bottom: 10px;">
+                <i class="fa-solid fa-table-list"></i> RIEPILOGO SETTIMANA <span id="lblWeek"></span>
+            </h3>
+            <table id="tableWeek">
+                <thead>
+                    <tr>
+                        <th class="th-day">GIORNO</th>
+                        <th>COLLI ORDINATI</th>
+                        <th>COLLI EVASI</th>
+                        <th>INEVASO LOGISTICO (Colli)</th>
+                        <th>% INEVASO LOGISTICO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
         </div>
 
-        <div class="week-glass-box">
-            <div class="gruppoWeek">
-                <label>LUN <span id="LunOrd">0</span><span id="LunEva">0</span><span id="LunInev">0</span><span id="LunInevPer">0%</span></label>
-                <label>MAR <span id="MarOrd">0</span><span id="MarEva">0</span><span id="MarInev">0</span><span id="MarInevPer">0%</span></label>
-                <label>MER <span id="MerOrd">0</span><span id="MerEva">0</span><span id="MerInev">0</span><span id="MerInevPer">0%</span></label>
-                <label>GIO <span id="GioOrd">0</span><span id="GioEva">0</span><span id="GioInev">0</span><span id="GioInevPer">0%</span></label>
-                <label>VEN <span id="VenOrd">0</span><span id="VenEva">0</span><span id="VenInev">0</span><span id="VenInevPer">0%</span></label>
-                <label>SAB <span id="SabOrd">0</span><span id="SabEva">0</span><span id="SabInev">0</span><span id="SabInevPer">0%</span></label>
-                <label>DOM <span id="DomOrd">0</span><span id="DomEva">0</span><span id="DomInev">0</span><span id="DomInevPer">0%</span></label>
+        <div class="charts-row">
+            <div class="glass-panel chart-box">
+                <h3 class="chart-title">ANDAMENTO SETTIMANA SELEZIONATA</h3>
+                <div class="canvas-wrapper"><canvas id="chartWeek"></canvas></div>
+            </div>
+            <div class="glass-panel chart-box">
+                <h3 class="chart-title">TREND ULTIME 10 SETTIMANE</h3>
+                <div class="canvas-wrapper"><canvas id="chart10Weeks"></canvas></div>
+            </div>
+            <div class="glass-panel chart-box">
+                <h3 class="chart-title">TREND ULTIMI 10 MESI</h3>
+                <div class="canvas-wrapper"><canvas id="chart10Months"></canvas></div>
             </div>
         </div>
 
-        <div class="centrale-glass-box">
-            <div class="input-group"><label>SELEZIONE DATA</label><input type="date" id="in_giorno"></div>
-            <div class="input-group"><label>COLLI ORDINATI</label><input type="number" id="in_ordinati"></div>
-            <div class="input-group"><label>COLLI EVASI</label><input type="number" id="in_evasi"></div>
-            <div class="input-group"><label>INEVASO LOG.</label><input type="number" id="in_inevaso"></div>
-            <button id="btnSalva" onclick="scriviDati()" style="width: 100%; height: 50px; background: #ffcc00; font-family: Impact; border: none; border-radius: 8px; cursor: pointer; color: #003087; font-size: 1.2rem;">SALVA NEL DATABASE</button>
-        </div>
+    </div>
 
-        <div class="riepilogo-glass-box">
-            <canvas id="chartSettimanale"></canvas>
+    <div class="modal-overlay" id="modalDettaglio">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>DETTAGLIO INEVASI - <span id="modalDateLabel"></span></h2>
+                <button class="btn-close" onclick="chiudiModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body table-container">
+                <table class="modal-table" id="tableModal">
+                    <thead>
+                        <tr>
+                            <th>REFERENZA</th>
+                            <th style="text-align: center;">COLLI ORDINATI</th>
+                            <th style="text-align: center;">COLLI EVASI</th>
+                            <th style="text-align: center;">INEVASO LOG. (Colli)</th>
+                            <th style="text-align: center;">% INEVASO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <script>
-        const webAppUrl = 'https://script.google.com/macros/s/AKfycbwI91Xm_XtjU-OqjFBJ3C9ZAi7M-wVN58fDzI4iHSwNmRaCjmDZilLD0UD8J-9gXdzm/exec';
-        let mioGrafico = null;
+        const linkCSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQcWLZssS9HCfcn3CLtt5oazyEjZLc_g59sDwTbPk0GiMGr_V6GHWkMLmS2c0mawuZzaB-AYCaECnow/pub?output=csv';
+        Chart.register(ChartDataLabels);
+        
+        let datiGlobali = [];
+        let chartWeekInst = null;
+        let chart10wInst = null;
+        let chart10mInst = null;
+
+        const nomiGiorni = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
+        const nomiMesi = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
 
         window.onload = function() {
-            const nomeUtente = localStorage.getItem("utenteLoggato") || "Giacomo Bardelli";
-            document.getElementById('userFullname').innerText = nomeUtente;
-            document.getElementById('userInitials').innerText = "GB";
-            caricaDatiSettimana();
+            caricaDatiCSV();
         };
 
-        async function scriviDati() {
-            const btn = document.getElementById('btnSalva');
-            const giorno = document.getElementById('in_giorno').value;
-            const ordinati = document.getElementById('in_ordinati').value;
-            const evasi = document.getElementById('in_evasi').value;
-            const inevaso = document.getElementById('in_inevaso').value;
-
-            if (!giorno || !ordinati || !evasi) {
-                alert("Compila tutti i campi obbligatori!");
-                return;
+        function parseCSV(testo) {
+            const righe = [];
+            let riga = [], inVirgolette = false, valore = "";
+            for (let char of testo) {
+                if (char === '"') inVirgolette = !inVirgolette;
+                else if (char === ',' && !inVirgolette) { riga.push(valore); valore = ""; }
+                else if (char === '\n' && !inVirgolette) { riga.push(valore); righe.push(riga); riga = []; valore = ""; }
+                else if (char !== '\r') valore += char;
             }
+            if (valore || riga.length > 0) { riga.push(valore); righe.push(riga); }
+            return righe;
+        }
 
-            btn.innerText = "SALVATAGGIO...";
-            btn.disabled = true;
-
-            const payload = {
-                giorno: giorno,
-                ordinati: ordinati,
-                evasi: evasi,
-                inevaso: inevaso,
-                azione: 'salvaInevasiFreschi'
-            };
-
+        async function caricaDatiCSV() {
+            const spinner = document.getElementById('spinner');
+            spinner.style.display = 'flex';
             try {
-                await fetch(webAppUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify(payload)
-                });
+                const response = await fetch(linkCSV + '&nocache=' + new Date().getTime());
+                const csvData = await response.text();
+                const righe = parseCSV(csvData);
                 
-            
-                document.getElementById('in_ordinati').value = "";
-                document.getElementById('in_evasi').value = "";
-                document.getElementById('in_inevaso').value = "";
-               
-                caricaDatiSettimana();
+                datiGlobali = [];
+                const weeksSet = new Set();
+
+                for (let i = 1; i < righe.length; i++) {
+                    const col = righe[i];
+                    if (col.length < 13) continue;
+
+                    let data = col[0].trim();
+                    let ref = col[1].trim();
+                    let cOrd = parseFloat(col[2]) || 0;
+                    let cEva = parseFloat(col[3]) || 0;
+                    let cInev = parseFloat(col[6]) || 0;
+                    let causale = col[9] ? col[9].trim() : "";
+                    let wk = col[10] ? col[10].trim() : "";
+                    let anno = col[11] ? col[11].trim() : "";
+                    let meseStr = col[12] ? col[12].trim() : "";
+
+                    if (!data || !wk || !anno) continue;
+
+                    let wkFormato = `${wk}-${anno}`;
+                    weeksSet.add(wkFormato);
+                    
+                    let meseNum = 0;
+                    if (meseStr.includes('-')) {
+                        meseNum = parseInt(meseStr.split('-')[0], 10);
+                    } else {
+                        let mIndex = nomiMesi.findIndex(m => m.toLowerCase() === meseStr.toLowerCase());
+                        if (mIndex !== -1) meseNum = mIndex + 1;
+                    }
+
+                    datiGlobali.push({
+                        data: data, referenza: ref, ordinati: cOrd, evasi: cEva, inevaso: cInev,
+                        causale: causale, settimana: wkFormato, mese: meseStr, meseNum: meseNum, anno: anno,
+                        sortKey: anno + wk.padStart(2, '0') 
+                    });
+                }
+
+                const select = document.getElementById('weekSelector');
+                select.innerHTML = "";
+                let weeksArr = Array.from(weeksSet).sort((a,b) => {
+                    let pa = a.split('-'); let pb = b.split('-');
+                    let keyA = pa[1] + pa[0].replace('WK','').padStart(2,'0');
+                    let keyB = pb[1] + pb[0].replace('WK','').padStart(2,'0');
+                    return keyB.localeCompare(keyA);
+                });
+
+                weeksArr.forEach(w => {
+                    let opt = document.createElement('option');
+                    opt.value = w; opt.innerText = w;
+                    select.appendChild(opt);
+                });
+
+                aggiornaDashboard();
 
             } catch (e) {
-                alert("Errore durante il salvataggio.");
-                console.error(e);
+                console.error("Errore CSV:", e);
+                alert("Errore nel caricamento dati.");
             } finally {
-                btn.innerText = "SALVA NEL DATABASE";
-                btn.disabled = false;
+                spinner.style.display = 'none';
             }
         }
 
-    -
-        async function caricaDatiSettimana() {
-            let btnAggiorna = (window.event && window.event.target && window.event.target.tagName === 'BUTTON') ? window.event.target : null;
-            if (btnAggiorna) { btnAggiorna.innerText = "SYNC..."; btnAggiorna.disabled = true; }
+        function getGiorniSettimana(dataStr) {
+            let parti = dataStr.split('/');
+            if (parti.length !== 3) return [];
+            let dateObj = new Date(parti[2], parti[1] - 1, parti[0]);
+            
+            let day = dateObj.getDay();
+            let diff = dateObj.getDate() - day + (day === 0 ? -6 : 1);
+            let monday = new Date(dateObj.setDate(diff));
 
-            try {
-                const response = await fetch(webAppUrl);
-                const datiSettimana = await response.json();
-                const mappa = { 1: "Lun", 2: "Mar", 3: "Mer", 4: "Gio", 5: "Ven", 6: "Sab", 0: "Dom" };
-
-                for (let g in datiSettimana) {
-                    let pref = mappa[g];
-                    let info = datiSettimana[g];
-                    if (pref) {
-                        let o = parseFloat(info.ordinati) || 0;
-                        let i = parseFloat(info.inevaso) || 0;
-                        let p = o > 0 ? (i / o * 100).toFixed(2) : 0;
-
-                        document.getElementById(pref + "Ord").innerText = o.toLocaleString('it-IT');
-                        document.getElementById(pref + "Eva").innerText = (parseFloat(info.evasi) || 0).toLocaleString('it-IT');
-                        document.getElementById(pref + "Inev").innerText = i.toLocaleString('it-IT');
-                        let elP = document.getElementById(pref + "InevPer");
-                        elP.innerText = p + "%";
-                        elP.style.color = p > 5 ? "#ff4d4d" : "white";
-                    }
-                }
-                disegnaGrafico(datiSettimana);
-            } catch (e) { console.error("Errore caricamento:", e); }
-            finally { if(btnAggiorna) { btnAggiorna.innerText = "AGGIORNA DATI"; btnAggiorna.disabled = false; } }
+            let giorniWk = [];
+            for (let i = 0; i < 7; i++) {
+                let d = new Date(monday);
+                d.setDate(monday.getDate() + i);
+                let strD = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + d.getFullYear();
+                giorniWk.push({ data: strD, nomeDay: nomiGiorni[d.getDay()] });
+            }
+            return giorniWk;
         }
 
-        function disegnaGrafico(dati) {
-            const ctx = document.getElementById('chartSettimanale').getContext('2d');
-            if (mioGrafico) mioGrafico.destroy();
+        function aggiornaDashboard() {
+            const wkSelezionata = document.getElementById('weekSelector').value;
+            if (!wkSelezionata) return;
+            document.getElementById('lblWeek').innerText = wkSelezionata;
 
-            const labels = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"];
-            const ordine = [1, 2, 3, 4, 5, 6, 0];
-            const datasetBar = ordine.map(g => dati[g]?.ordinati || 0);
-            const datasetLine = ordine.map(g => {
-                let o = dati[g]?.ordinati || 0;
-                return o > 0 ? ((dati[g]?.inevaso || 0) / o * 100).toFixed(2) : 0;
+            const datiWk = datiGlobali.filter(d => d.settimana === wkSelezionata);
+            
+            let giorniCompleti = [];
+            if (datiWk.length > 0) {
+                giorniCompleti = getGiorniSettimana(datiWk[0].data);
+            }
+
+            const riepilogoGiorni = {};
+            giorniCompleti.forEach(g => {
+                riepilogoGiorni[g.data] = { ord: 0, eva: 0, inev: 0, label: g.nomeDay };
+            });
+            
+            datiWk.forEach(d => {
+                if(riepilogoGiorni[d.data]) {
+                    riepilogoGiorni[d.data].ord += d.ordinati;
+                    riepilogoGiorni[d.data].eva += d.evasi;
+                    riepilogoGiorni[d.data].inev += d.inevaso;
+                }
             });
 
-            mioGrafico = new Chart(ctx, {
+            const tbody = document.querySelector('#tableWeek tbody');
+            tbody.innerHTML = '';
+            
+            let chartWeekLabels = [];
+            let chartWeekOrd = [];
+            let chartWeekPerc = [];
+
+            let totOrd = 0, totEva = 0, totInev = 0;
+
+            giorniCompleti.forEach(g => {
+                const r = riepilogoGiorni[g.data];
+                const perc = r.ord > 0 ? (r.inev / r.ord * 100).toFixed(2) : 0;
+                
+                totOrd += r.ord; totEva += r.eva; totInev += r.inev;
+
+                chartWeekLabels.push(g.nomeDay.substring(0,3) + ' ' + g.data.substring(0,5)); 
+                chartWeekOrd.push(r.ord);
+                chartWeekPerc.push(perc);
+
+                const tr = document.createElement('tr');
+                tr.onclick = () => apriDettaglioGiorno(g.data);
+                tr.innerHTML = `
+                    <td class="td-day">${g.nomeDay} ${g.data.substring(0,5)}</td>
+                    <td>${r.ord.toLocaleString('it-IT')}</td>
+                    <td>${r.eva.toLocaleString('it-IT')}</td>
+                    <td>${r.inev.toLocaleString('it-IT')}</td>
+                    <td class="${perc > 5 ? 'val-alert' : ''}">${perc}%</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            let totPerc = totOrd > 0 ? (totInev / totOrd * 100).toFixed(2) : 0;
+            const trTot = document.createElement('tr');
+            trTot.className = 'row-totale';
+            trTot.innerHTML = `
+                <td class="td-day">TOTALE SETTIMANA</td>
+                <td>${totOrd.toLocaleString('it-IT')}</td>
+                <td>${totEva.toLocaleString('it-IT')}</td>
+                <td>${totInev.toLocaleString('it-IT')}</td>
+                <td class="${totPerc > 5 ? 'val-alert' : ''}">${totPerc}%</td>
+            `;
+            tbody.appendChild(trTot);
+
+            disegnaGrafico('chartWeek', chartWeekInst, chartWeekLabels, chartWeekOrd, chartWeekPerc, 'Andamento Settimanale', true);
+
+            // 2. Dati Ultime 10 Settimane
+            const riepilogo10W = {};
+            datiGlobali.forEach(d => {
+                if(!riepilogo10W[d.settimana]) riepilogo10W[d.settimana] = { ord: 0, inev: 0, sort: d.sortKey };
+                riepilogo10W[d.settimana].ord += d.ordinati;
+                riepilogo10W[d.settimana].inev += d.inevaso;
+            });
+
+            let arr10W = Object.keys(riepilogo10W)
+                .sort((a,b) => riepilogo10W[b].sort - riepilogo10W[a].sort) 
+                .slice(0, 10) 
+                .reverse(); 
+
+            let lbl10w = [], ord10w = [], perc10w = [];
+            arr10W.forEach(w => {
+                lbl10w.push(w.split('-')[0]); 
+                let r = riepilogo10W[w];
+                ord10w.push(r.ord);
+                perc10w.push(r.ord > 0 ? (r.inev / r.ord * 100).toFixed(2) : 0);
+            });
+            disegnaGrafico('chart10Weeks', chart10wInst, lbl10w, ord10w, perc10w, 'Ultime 10 Settimane', true);
+
+            // 3. Dati Ultimi 10 Mesi
+            const riepilogo10M = {};
+            datiGlobali.forEach(d => {
+                let keyMese = `${d.meseNum}-${d.anno}`; 
+                let sortMese = `${d.anno}${String(d.meseNum).padStart(2,'0')}`; 
+                
+                if(!riepilogo10M[keyMese]) {
+                    riepilogo10M[keyMese] = { ord: 0, inev: 0, sort: sortMese, meseNome: d.mese, anno: d.anno };
+                }
+                riepilogo10M[keyMese].ord += d.ordinati;
+                riepilogo10M[keyMese].inev += d.inevaso;
+            });
+
+            let arr10M = Object.values(riepilogo10M)
+                .sort((a,b) => b.sort.localeCompare(a.sort))
+                .slice(0, 10)
+                .reverse();
+
+            let lbl10m = [], ord10m = [], perc10m = [];
+            arr10M.forEach(m => {
+                let etichettaPulita = m.meseNome.includes('-') ? m.meseNome.split('-')[1] : m.meseNome;
+                let annoCorto = m.anno.slice(-2);
+                lbl10m.push(etichettaPulita.substring(0,3).toUpperCase() + " '" + annoCorto); 
+                ord10m.push(m.ord);
+                perc10m.push(m.ord > 0 ? (m.inev / m.ord * 100).toFixed(2) : 0);
+            });
+            disegnaGrafico('chart10Months', chart10mInst, lbl10m, ord10m, perc10m, 'Ultimi 10 Mesi', false);
+        }
+
+        // --- GRAFICI GENERATOR ---
+        function disegnaGrafico(canvasId, istanzaObj, labels, dataOrd, dataPerc, titolo, formattaK) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            
+            if (canvasId === 'chartWeek' && chartWeekInst) chartWeekInst.destroy();
+            if (canvasId === 'chart10Weeks' && chart10wInst) chart10wInst.destroy();
+            if (canvasId === 'chart10Months' && chart10mInst) chart10mInst.destroy();
+
+            const newChart = new Chart(ctx, {
                 data: {
                     labels: labels,
                     datasets: [
-                        { type: 'bar', label: 'Colli Ordinati', data: datasetBar, backgroundColor: 'rgba(255, 204, 0, 0.5)', yAxisID: 'y' },
-                        { type: 'line', label: '% Inevaso', data: datasetLine, borderColor: '#ff4d4d', borderWidth: 3, yAxisID: 'y1', tension: 0.3 }
+                        { 
+                            type: 'line', 
+                            label: '% Inevaso', 
+                            data: dataPerc, 
+                            borderColor: '#ffffff', // Linea bianca
+                            borderWidth: 3, 
+                            yAxisID: 'y1', 
+                            tension: 0.3,
+                            datalabels: {
+                                display: true, align: 'top', color: 'white', font: {weight: 'bold'},
+                                formatter: v => v > 0 ? v + '%' : ''
+                            }
+                        },
+                        { 
+                            type: 'bar', 
+                            label: 'Colli Ordinati', 
+                            data: dataOrd, 
+                            backgroundColor: 'rgba(255, 204, 0, 0.7)', 
+                            borderRadius: 5,
+                            yAxisID: 'y',
+                            datalabels: {
+                                display: false 
+                            }
+                        }
                     ]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     scales: {
-                        y: { position: 'left', ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.1)' }, title: { display: true, text: 'Volume Colli', color: '#ffcc00' } },
-                        y1: { position: 'right', ticks: { color: '#ff4d4d', callback: v => v + '%' }, grid: { display: false }, title: { display: true, text: '% Errore', color: '#ff4d4d' } },
-                        x: { ticks: { color: '#fff', font: { family: 'Impact' } } }
+                        y: { 
+                            position: 'left', 
+                            ticks: { 
+                                color: 'white', 
+                                callback: v => formattaK ? (v/1000)+'k' : v.toLocaleString('it-IT'), 
+                                font: {family: 'Montserrat'} 
+                            }, 
+                            grid: { color: 'rgba(255,255,255,0.1)' } 
+                        },
+                        y1: { 
+                            position: 'right', 
+                            min: -1,   
+                            max: 5,    
+                            ticks: { 
+                                stepSize: 1, 
+                                color: '#ffffff', 
+                                callback: v => v + '%', 
+                                font: {family: 'Montserrat', weight: 'bold'} 
+                            }, 
+                            grid: { display: false } 
+                        },
+                        x: { ticks: { color: 'white', font: {family: 'Montserrat', weight: 'bold'} } }
                     },
-                    plugins: { legend: { labels: { color: '#fff', font: { family: 'Impact' } } } }
+                    plugins: { legend: { display: false } } 
                 }
             });
+
+            if (canvasId === 'chartWeek') chartWeekInst = newChart;
+            if (canvasId === 'chart10Weeks') chart10wInst = newChart;
+            if (canvasId === 'chart10Months') chart10mInst = newChart;
+        }
+
+        // --- MODAL DETTAGLIO GIORNO ---
+        function apriDettaglioGiorno(dataStr) {
+            document.getElementById('modalDateLabel').innerText = dataStr;
+            const tbody = document.querySelector('#tableModal tbody');
+            tbody.innerHTML = '';
+
+            const righeGiorno = datiGlobali.filter(d => d.data === dataStr && d.causale.toLowerCase().includes('inevaso logistico'));
+
+            if (righeGiorno.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px; color:#aaa;">Non ci sono dati disponibili per questa data.</td></tr>';
+            } else {
+                const repRef = {};
+                righeGiorno.forEach(d => {
+                    if(!repRef[d.referenza]) repRef[d.referenza] = {ord:0, eva:0, inev:0};
+                    repRef[d.referenza].ord += d.ordinati;
+                    repRef[d.referenza].eva += d.evasi;
+                    repRef[d.referenza].inev += d.inevaso;
+                });
+
+                Object.keys(repRef).sort().forEach(ref => {
+                    let r = repRef[ref];
+                    let perc = r.ord > 0 ? (r.inev / r.ord * 100).toFixed(2) : 0;
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-weight:600; color:#fff;">${ref}</td>
+                        <td style="text-align: center;">${r.ord.toLocaleString('it-IT')}</td>
+                        <td style="text-align: center;">${r.eva.toLocaleString('it-IT')}</td>
+                        <td style="text-align: center;">${r.inev.toLocaleString('it-IT')}</td>
+                        <td style="text-align: center;" class="${perc > 0 ? 'val-alert' : ''}">${perc}%</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            document.getElementById('modalDettaglio').style.display = 'flex';
+        }
+
+        function chiudiModal() {
+            document.getElementById('modalDettaglio').style.display = 'none';
         }
 
         function confermaEsci() { if(confirm("Sei sicuro di voler uscire?")) window.location.href="index.html"; }

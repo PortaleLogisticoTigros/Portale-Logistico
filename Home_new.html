@@ -64,7 +64,7 @@
         }
         .btn-loop:hover { background: #ffcc00; color: #003087; box-shadow: 0 0 15px rgba(255,204,0,0.4); }
 
-        nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; flex: 1; justify-content: center; }
+        nav ul { list-style: none; display: flex; gap: 20px; margin: 0 250px 0 0; padding: 0; flex: 1; justify-content: center; }
         nav ul li a { text-decoration: none; color: white; font-size: 1.15rem; transition: all 0.4s ease; cursor: pointer; white-space: nowrap; }
         nav ul:hover li a { filter: blur(2px); opacity: 0.5; transform: scale(0.95); }
         nav ul li a:hover { filter: blur(0px); opacity: 1; transform: scale(1.15); color: #ffcc00; }
@@ -277,7 +277,7 @@
         <div class="glass-box-container" id="box-freschi">
             <div class="freschi-glass-box" onclick="location.href='home_freschi.html'">
                 <h2 class="freschi-title">CEDI 21 - FRESCHI</h2>
-                <div class="freschi_before"><span><i class="fa-solid fa-cubes-stacked" style="font-size: 60px;"></i></span></div>
+                <div class="freschi_before"><span><i class="fa-solid fa-snowflake" style="font-size: 60px;"></i></span></div>
             </div>
         </div>
 
@@ -380,17 +380,14 @@
                 }
 
                 function chiudiCarosello() {
-                clearTimeout(loopTimer);
-                document.getElementById('overlay-carosello').style.display = 'none';
-                
-                // Ripristina la nav bar
+                    clearTimeout(loopTimer);
+                    document.getElementById('overlay-carosello').style.display = 'none';
+              
                 const nav = document.getElementById('barra-nav');
-                if (nav) nav.style.display = 'flex';
+                    if (nav) nav.style.display = 'flex';
+                        document.getElementById('frame-carosello').src = "about:blank"; 
                 
-                // Ferma il caricamento della pagina nell'iframe per risparmiare risorse
-                document.getElementById('frame-carosello').src = "about:blank"; 
-                
-                indexLoop = 0;
+                    indexLoop = 0;
             }
 
         function aprifeed() {
