@@ -130,7 +130,6 @@
             font-weight: bold; letter-spacing: 1px;
         }
 
-        /* ICONE INTERNE */
         .report_before, .frutta_before, .accessi_before, .manutenzione_before, .haccp_before {
             width: 130px; height: 130px; background: #efba0a;
             border-radius: 50%; margin: 0 auto;
@@ -144,7 +143,7 @@
             padding: 0 10px;
         }
 
-        /* --- MEDIA QUERIES MOBILE --- */
+        /************************************** PARTE DEL CSS PER OTTIMIZZAZIONE TELEFONI ************************************************************/
         @media (max-width: 768px) {
             .user-fullname { display: none; }
             .user-badge { padding: 5px; background: transparent; border: none; }
@@ -209,7 +208,7 @@
     <div class="container-glass">
         
         <div class="glass-box-container" id="box-richiami">
-            <div class="accessi-glass-box" onclick="sviluppo()">
+            <div class="accessi-glass-box" onclick="window.location.href='accessi_live.html'">
                 <h2 class="accessi-title">ACCESSI LIVE</h2>
                 <div class="accessi">
                     <div class="accessi_before">
