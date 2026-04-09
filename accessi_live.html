@@ -129,11 +129,11 @@
             animation: apparizioneIniziale 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
-        .reparto-box:hover {
+        /*.reparto-box:hover {
             box-shadow: #ffcc00 0px 0px 20px;
             border-radius: 20px;
             transform: translateY(-5px);
-        }
+        }*/
 
         .titolo-scarico {
             display: flex; align-items: center; justify-content: space-between;
@@ -142,13 +142,12 @@
             border-bottom: 1px solid rgba(255,204,0,0.3); padding-bottom: 8px;
         }
 
-        /* --- STILE LISTA MEZZI E SCROLLBAR INTERNA --- */
         .lista-mezzi {
             list-style: none; padding: 0; margin: 0;
-            overflow-y: auto; /* Attiva lo scroll interno */
+            overflow-y: auto; 
             flex-grow: 1;
-            min-height: 0; /* Fondamentale per il flex */
-            padding-right: 5px; /* Spazio per la scrollbar */
+            min-height: 0; 
+            padding-right: 5px;
         }
         
         /* Personalizzazione Scrollbar */
@@ -163,6 +162,12 @@
             border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex; justify-content: space-between; align-items: center;
             border-left: 4px solid transparent;
+                transition: 0.3s;
+        }
+        .mezzo-item:hover {
+            background: rgba(0, 48, 135, 0.6);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            /*transform: scale(1.2);*/
         }
         
         .stato-scarico { border-left-color: #4CAF50; }
