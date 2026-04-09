@@ -554,11 +554,13 @@
                             type: 'line', 
                             label: '% Inevaso', 
                             data: dataPerc, 
-                            borderColor: '#ffffff', // Linea bianca
+                            borderColor: '#ffffff',
                             borderWidth: 3, 
                             yAxisID: 'y1', 
                             tension: 0.3,
+                            pointRadius: 0,
                             datalabels: {
+                                
                                 display: true, align: 'top', color: 'white', font: {weight: 'bold'},
                                 formatter: v => v > 0 ? v + '%' : ''
                             }
