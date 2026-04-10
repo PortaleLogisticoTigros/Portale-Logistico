@@ -229,6 +229,72 @@
             transition: all 0.3s ease;
         }
 
+        
+        .toggle-password {
+            margin-left: auto !important; cursor: pointer; font-size: 22px !important;
+            filter: grayscale(1); transition: 0.2s; user-select: none;
+        }
+        .toggle-password:hover { filter: grayscale(0); transform: scale(1.2); }
+
+        /* --- STILI MENU FLOATING E MODALE --- */
+        .fab-container {
+            position: fixed; bottom: 30px; right: 30px; z-index: 1000;
+        }
+        
+        .fab-button {
+            width: 55px; height: 55px; background-color:#ffcc00; color: #003087;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 28px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 2px solid #ffcc00; transition: transform 0.3s;
+        }
+        .fab-button:hover { transform: scale(1.1); }
+        
+        .fab-menu {
+            position: absolute; bottom: 70px; right: 0; background: rgba(0, 48, 135, 0.95);
+            backdrop-filter: blur(10px); border: 1px solid #ffcc00; border-radius: 10px;
+            padding: 10px 0; display: none; flex-direction: column; min-width: 200px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+        .fab-menu.active { display: flex; animation: fadeUp 0.3s ease; }
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+
+        .fab-item {
+            padding: 12px 20px; color: white; font-family: 'Montserrat', sans-serif;
+            font-size: 14px; cursor: pointer; transition: background 0.2s;
+        }
+        .fab-item:hover { background: #ffcc00; color: #003087;}
+
+        /* Modale Password */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px);
+            display: flex; justify-content: center; align-items: center; z-index: 2000;
+            opacity: 0; visibility: hidden; pointer-events: none; transition: all 0.3s;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; pointer-events: auto; }
+        
+        .modal-content {
+            background: rgba(0, 48, 135, 0.9); border: 2px solid #ffcc00; border-radius: 20px;
+            padding: 30px; width: 90%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform: scale(0.8); transition: transform 0.3s; display: flex; flex-direction: column; gap: 15px;
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        
+        .modal-content h3 { color: #ffcc00; margin: 0 0 10px 0; font-family: 'Montserrat', sans-serif; text-align: center; }
+        .modal-content input {
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255, 204, 0, 0.5); 
+            background: rgba(255, 255, 255, 0.1); color: white; font-family: 'Montserrat', sans-serif; 
+            font-size: 16px; box-sizing: border-box; outline: none;
+        }
+        .modal-content input::placeholder { color: rgba(255, 255, 255, 0.6); }
+        .modal-content input:focus { border-color: #ffcc00; background: rgba(255, 255, 255, 0.2); }
+        
+        .modal-buttons { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-modal { flex: 1; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; transition: 0.2s; font-family: 'Montserrat', sans-serif; }
+        .btn-salva { background: #ffcc00; color: #003087; }
+        .btn-salva:hover { filter: brightness(1.1); transform: scale(1.02); }
+        .btn-annulla { background: rgba(255,255,255,0.2); color: white; }
+        .btn-annulla:hover { background: rgba(255,255,255,0.3); }
+
         @keyframes apparizioneIniziale {
             0% { opacity: 0; transform: translateY(10px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -282,6 +348,7 @@
             .info-value { white-space: normal; word-break: break-all; }
             .password-container { justify-content: space-between; width: 100%; }
 
+
             /* Il cestino su mobile si posiziona in alto a destra sulla card */
             .btn-delete {
                 position: absolute;
@@ -290,6 +357,8 @@
                 font-size: 24px;
             }
         }
+
+
         
 
     </style>
@@ -329,8 +398,29 @@
             </div>
     </div>
 
+    <div class="fab-container">
+        <div class="fab-menu" id="fabMenu">
+            <div class="fab-item" onclick="apriModalePassword()"><i class="fa-solid fa-user-plus"></i> Crea Utente</div>
+            </div>
+        <div class="fab-button" onclick="toggleMenu(event)">⋮</div>
+    </div>
+
+    <div class="modal-overlay" id="modalPassword">
+        <div class="modal-content">
+            <h3>Creazione Nuovo Utente</h3>
+            <input type="email" id="email" placeholder="Email">
+            <input type="text" id="id-name" placeholder="Nome">
+            <input type="text" id="id-cognome" placeholder="Cognome" >
+            <input type="password" id="confirmPassword" placeholder="Password">
+            <div class="modal-buttons">
+                <button class="btn-modal btn-salva" id="btnSalvaPwd" onclick="salvaNuovoUtente()">CREA UTENTE</button>
+                <button class="btn-modal btn-annulla" onclick="chiudiModalePassword()">ANNULLA</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        const webAppUrl = "https://script.google.com/macros/s/AKfycbww6k-ZzmO4ybvAUDto2GYOsoJ6vnCnF16cUpdO2ES_bNmmNPMCV0SKHTrti-P4SbzY/exec";
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbylGfOredFlZPng9z9fVyP3D8h0brSBPuz9qfoA_Ro9LKNlXqYDuTaD43cq1-tkMzdH/exec";
         
         let passwordData = {};
 
@@ -363,6 +453,31 @@
                 loader.innerText = "Errore durante il caricamento delle anagrafiche.";
             }
         }
+
+         function toggleMenu(event) {
+            event.stopPropagation(); 
+            document.getElementById('fabMenu').classList.toggle('active');
+        }
+        document.addEventListener('click', function(event) {
+                const menu = document.getElementById('fabMenu');
+                if (menu.classList.contains('active')) {
+                    menu.classList.remove('active');
+                }
+            });
+
+        function apriModalePassword() {
+                document.getElementById('fabMenu').classList.remove('active');
+                document.getElementById('email').value = '';
+                document.getElementById('id-name').value = '';
+                document.getElementById('id-cognome').value = '';
+                document.getElementById('confirmPassword').value = '';
+                document.getElementById('modalPassword').classList.add('active');
+            }
+
+    function chiudiModalePassword() {
+        document.getElementById('modalPassword').classList.remove('active');
+    }
+
 
         function generaCardUtenti(utenti, container) {
             container.innerHTML = ""; 
@@ -455,6 +570,67 @@
                 window.location.href = "index.html";
             }
         }
+
+
+                async function salvaNuovoUtente() {
+                    
+                    const indirizzoMail = document.getElementById('email').value.trim();
+                    const nome = document.getElementById('id-name').value.trim();
+                    const cognome = document.getElementById('id-cognome').value.trim();
+                    const passwordConfermata = document.getElementById('confirmPassword').value;
+
+                            if (!indirizzoMail || !nome || !cognome || !passwordConfermata) {
+                                alert("Tutti i campi sono obbligatori. Per favore, compilali prima di procedere.");
+                                return;
+                            }
+                                const btn = document.getElementById('btnSalvaPwd');
+                                btn.innerText = "CREAZIONE IN CORSO...";
+                                btn.disabled = true;
+
+                                const utenteLoggato = localStorage.getItem("utenteLoggato") || "Ospite";
+
+                                const formData = new URLSearchParams();
+                                formData.append('azione', 'creazioneUtenza');
+                                formData.append('nomeUtente', nome);
+                                formData.append('cognome', cognome);
+                                formData.append('email', indirizzoMail);
+                                formData.append('nuovaPassword', passwordConfermata);
+                                formData.append('creatoDa', utenteLoggato);
+
+                                try {
+
+                                    const response = await fetch(webAppUrl, {
+                                        method: 'POST',
+                                        body: formData
+                                    });
+
+
+                                    const data = await response.json();
+
+                                    console.log("Risposta dal server:", data);
+
+                                    if (data && data.success) {
+                                        alert("Utente aggiunto con successo!");
+
+                                        document.getElementById('email').value = '';
+                                        document.getElementById('id-name').value = '';
+                                        document.getElementById('id-cognome').value = '';
+                                        document.getElementById('confirmPassword').value = '';
+                                    } else {
+                                        alert("Errore dal server: " + (data.error || "Riprova più tardi."));
+                                    }
+
+                                } catch (error) {
+                                    console.error("Errore salvataggio:", error);
+                                    alert("Errore di connessione o CORS. Verifica che la Web App sia pubblicata correttamente.");
+                                } finally {
+                                    btn.innerText = "CREA UTENTE";
+                                    btn.disabled = false;
+                                    await caricaTuttiGliUtenti(); 
+                                }
+                            }
+
+
     </script>
 
 </body>
