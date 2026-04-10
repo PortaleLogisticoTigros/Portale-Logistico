@@ -269,13 +269,11 @@
 
     <script>
         const autorizzazioni = {
-            "Admin": ["richiami", "report", "check", "laboratori","fornitori"],
-            "Qualita.Pesce": ["richiami", "report"],
-            "User.Ortofrutta": ["richiami"],
-            "giacomo bardelli": ["richiami", "report", "check", "laboratori","fornitori"],
-            "ermanno lamperti": ["richiami", "report", "check", "laboratori","fornitori"],
-            "Ermanno Lamperti": ["richiami", "report", "check", "laboratori","fornitori"],
-            "Ospite": ["richiami", "report", "check", "laboratori","fornitori"],
+          
+            "GIACOMO BARDELLI": ["richiami", "report", "check", "laboratori","fornitori"],
+            "ERMANNO LAMPERTI": ["richiami", "report", "check", "laboratori","fornitori"],
+            "ELABORAZIONI CEDI": ["richiami", "report", "check", "laboratori","fornitori"],
+          
         };
 
         window.onload = function() {
@@ -293,7 +291,11 @@
             let iniziali = (parti.length > 1) ? parti[0][0] + parti[1][0] : parti[0][0] + (parti[0][1] || "");
             document.getElementById('userInitials').innerText = iniziali.toUpperCase();
 
-            const repartiConsentiti = autorizzazioni[nomeUtente] || ["richiami"]; 
+                let utenteFormattato = nomeUtente.toUpperCase();
+
+                    console.log("Utente loggato formattato:", utenteFormattato);    
+
+            const repartiConsentiti = autorizzazioni[utenteFormattato] || ["richiami"]; 
             const tuttiIBox = [ "richiami", "report", "check", "laboratori","fornitori" ];
 
             tuttiIBox.forEach(reparto => {

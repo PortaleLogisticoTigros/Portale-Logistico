@@ -318,12 +318,11 @@
 
     <script>
         const autorizzazioni = {
-            "Admin": ["book", "pescheria", "accessi", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"],
-            "giacomo bardelli": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"],
-            "Ospite": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi"],
-            "ermanno lamperti":  ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"],
-            "Ermanno Lamperti":  ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"],
-            "Cedi Cassano": ["prep", "ric"]
+            "GIACOMO BARDELLI": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"],
+            "OSPITE": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi"],
+            "ERMANNO LAMPERTI":  ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"],
+            "ELABORAZIONI CEDI":  ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"],
+            "CEDI CASSANO": ["prep", "ric"]
         };
 
         const pagineLoop = [
@@ -340,7 +339,7 @@
                 setTimeout(() => { document.getElementById('welcomeBox').classList.remove('mostra-benvenuto'); }, 3000);
             }
 
-            let userRaw = (localStorage.getItem("utenteLoggato") || "Ospite").trim();
+            let userRaw = (localStorage.getItem("utenteLoggato") || "Ospite").trim().toUpperCase();
             // Iniziali e Nome Camel Case
             let userFormattato = userRaw.split(/[ ._-]+/).map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(" ");
             document.getElementById('userFullname').innerText = userFormattato;

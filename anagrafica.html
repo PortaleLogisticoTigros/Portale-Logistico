@@ -359,8 +359,6 @@
         }
 
 
-        
-
     </style>
 </head>
 <body>
@@ -398,7 +396,7 @@
             </div>
     </div>
 
-    <div class="fab-container">
+    <div class="fab-container" id="fab-container">
         <div class="fab-menu" id="fabMenu">
             <div class="fab-item" onclick="apriModalePassword()"><i class="fa-solid fa-user-plus"></i> Crea Utente</div>
             </div>
@@ -420,18 +418,30 @@
     </div>
 
     <script>
-        const webAppUrl = "https://script.google.com/macros/s/AKfycbylGfOredFlZPng9z9fVyP3D8h0brSBPuz9qfoA_Ro9LKNlXqYDuTaD43cq1-tkMzdH/exec";
-        
+
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbylGfOredFlZPng9z9fVyP3D8h0brSBPuz9qfoA_Ro9LKNlXqYDuTaD43cq1-tkMzdH/exec";  
         let passwordData = {};
 
         window.onload = async function() {
+            
+            const bottoneAdmin = document.getElementById('fab-container');
+
             const nomeUtente = localStorage.getItem("utenteLoggato") || "Ospite";
             document.getElementById('userFullname').innerText = nomeUtente;
             const parti = nomeUtente.split(/[._ ]/); 
             let iniziali = (parti.length > 1) ? (parti[0][0] + parti[1][0]) : (parti[0][0] + (parti[0][1] || ""));
-            document.getElementById('userInitials').innerText = iniziali.toUpperCase();
+                document.getElementById('userInitials').innerText = iniziali.toUpperCase();
+
+                let utenteLoggatoFormattato = nomeUtente.trim().toUpperCase();
+                    console.log("Utente loggato formattato:", utenteLoggatoFormattato);
+
+                            if(utenteLoggatoFormattato !== 'GIACOMO BARDELLI'){
+                                bottoneAdmin.remove();
+                            } 
+
 
             await caricaTuttiGliUtenti();
+
         };
 
         async function caricaTuttiGliUtenti() {

@@ -341,16 +341,10 @@
     </div>
 
     <script>
-        const autorizzazioni = {
-            "Admin": ["book", "pescheria", "accessi", "frutta"],
-            "Qualita.Pesce": ["pescheria", "book"],
-            "User.Ortofrutta": ["frutta", "book"],
-            "Test": ["pescheria"],
-            "giacomo bardelli": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni"],
-            "Giacomo Gardelli": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni"],
-            "Ospite": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi"],
-            "ermanno lamperti": ["book","accessi", "pescheria", "manutenzione", "haccp"],
-            "Ermanno Lamperti": ["book","accessi", "pescheria", "manutenzione", "haccp"]
+        const autorizzazioni = {  
+            "GIACOMO BARDELLI": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni"],
+            "ELABORAZIONI CEDI": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni"],
+            "ERMANNO LAMPERTI": ["book","accessi", "pescheria", "manutenzione", "haccp"]
         };
 
         window.onload = function() {
@@ -367,7 +361,10 @@
             let iniziali = (parti.length > 1) ? parti[0][0] + parti[1][0] : parti[0][0] + (parti[0][1] || "");
             document.getElementById('userInitials').innerText = iniziali.toUpperCase();
 
-            const repartiConsentiti = autorizzazioni[nomeUtente] || ["book"]; 
+                let utenteFormattato = nomeUtente.toUpperCase();    
+                    console.log("Utente loggato formattato:", utenteFormattato);
+
+            const repartiConsentiti = autorizzazioni[utenteFormattato] || ["book"]; 
             const tuttiIBox = ["book", "pescheria", "accessi", "frutta","manutenzione", "haccp", "trasporti", "freschi", "impostazioni"];
 
             tuttiIBox.forEach(reparto => {

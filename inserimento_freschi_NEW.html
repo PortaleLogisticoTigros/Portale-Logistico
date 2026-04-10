@@ -47,9 +47,9 @@
         .user-initials {
             width: 30px; height: 30px; background: #ffcc00; color: #003087;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: 900;
+            font-weight: bold; font-size: 0.85rem; text-transform: uppercase;
         }
-        .user-fullname { font-size: 0.85rem; font-weight: 600; }
+        .user-fullname { font-size: 0.85rem; font-weight: 100; }
         
         .selector-box { display: flex; align-items: center; gap: 10px; background: rgba(0,48,135,0.6); padding: 6px 15px; border-radius: 8px; border: 1px solid #ffcc00;}
         .selector-box label { font-weight: 900; color: #ffcc00; }
@@ -79,7 +79,6 @@
             overflow-y: auto;
         }
         
-        /* Scrollbar personalizzata globale */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; }
@@ -310,6 +309,17 @@
         const nomiMesi = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
 
         window.onload = function() {
+
+             let userRaw = (localStorage.getItem("utenteLoggato") || "Ospite").trim();
+            let userFormattato = userRaw.split(/[ ._-]+/).map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(" ");
+            document.getElementById('userFullname').innerText = userFormattato;
+            
+            const parti = userRaw.split(/[ ._-]+/);
+            let inits = (parti.length >= 2) ? parti[0][0] + parti[1][0] : userRaw.substring(0, 2);
+            document.getElementById('userInitials').innerText = inits.toUpperCase();
+
+
+
             caricaDatiCSV();
         };
 
