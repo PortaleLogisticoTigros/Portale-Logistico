@@ -114,6 +114,67 @@
             100% { transform: rotate(360deg); }
         }
 
+
+            .fab-container {
+            position: fixed; bottom: 30px; right: 30px; z-index: 1000;
+        }
+        
+        .fab-button {
+            width: 55px; height: 55px; background-color:#ffcc00; color: #003087;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 28px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 2px solid #ffcc00; transition: transform 0.3s;
+        }
+        .fab-button:hover { transform: scale(1.1); }
+        
+        .fab-menu {
+            position: absolute; bottom: 70px; right: 0; background: rgba(0, 48, 135, 0.95);
+            backdrop-filter: blur(10px); border: 1px solid #ffcc00; border-radius: 10px;
+            padding: 10px 0; display: none; flex-direction: column; min-width: 200px; width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+        .fab-menu.active { display: flex; animation: fadeUp 0.3s ease; }
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+
+        .fab-item {
+            padding: 12px 20px; color: white; font-family: 'Montserrat', sans-serif;
+            font-size: 16px; cursor: pointer; transition: background 0.2s;
+        }
+        .fab-item:hover { background: #ffcc00; color: #003087;}
+
+        /* Modale Password */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px);
+            display: flex; justify-content: center; align-items: center; z-index: 2000;
+            opacity: 0; visibility: hidden; pointer-events: none; transition: all 0.3s;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; pointer-events: auto; }
+        
+        .modal-content {
+            background: rgba(0, 48, 135, 0.9); border: 2px solid #ffcc00; border-radius: 20px;
+            padding: 30px; width: 90%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform: scale(0.8); transition: transform 0.3s; display: flex; flex-direction: column; gap: 15px;
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        
+        .modal-content h3 { color: #ffcc00; margin: 0 0 10px 0; font-family: 'Montserrat', sans-serif; text-align: center; }
+        .modal-content input {
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255, 204, 0, 0.5); 
+            background: rgba(255, 255, 255, 0.1); color: white; font-family: 'Montserrat', sans-serif; 
+            font-size: 16px; box-sizing: border-box; outline: none;
+        }
+        .modal-content input::placeholder { color: rgba(255, 255, 255, 0.6); }
+        .modal-content input:focus { border-color: #ffcc00; background: rgba(255, 255, 255, 0.2); }
+        
+        .modal-buttons { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-modal { flex: 1; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; transition: 0.2s; font-family: 'Montserrat', sans-serif; }
+        .btn-salva { background: #ffcc00; color: #003087; }
+        .btn-salva:hover { filter: brightness(1.1); transform: scale(1.02); }
+        .btn-annulla { background: rgba(255,255,255,0.2); color: white; }
+        .btn-annulla:hover { background: rgba(255,255,255,0.3); }
+
+
+
         /* ------------------------------------------------------------------ */
         /* MEDIA QUERIES SOLO PER MOBILE (Fino a 768px)                       */
         /* ------------------------------------------------------------------ */
@@ -196,8 +257,6 @@
         <ul>
             <li><a href="Home_new.html">HOME</a></li>
             <li><a href="Viaggi.html">DASHBOARD VIAGGI</a></li>
-            <li><a href="Ordini.html">DASHBOARD ORDINI</a></li>
-            <li><a href="Ricevimenti.html">DASHBOARD RICEVIMENTI</a></li> 
             <li><a onclick="confermaEsci()" style="color:#efba0a">ESCI</a></li>
         </ul>
 
@@ -220,7 +279,21 @@
         </div>
         
         <iframe id="pdfFrame" src="" style="visibility: hidden;" onload="nascondiLoader()"></iframe>
+        <iframe id="pdfFrame-pes" src="" style="visibility: hidden; display: none;" onload="nascondiLoader()"></iframe>
+        <iframe id="pdfFrame-orto" src="" style="visibility: hidden; display: none;" onload="nascondiLoader()"></iframe>
     </div>
+
+
+     <div class="fab-container" id="fab-container">
+        <div class="fab-menu" id="fabMenu">
+            <div class="fab-item" onclick="apriBookLogistico()"><i class="fa-solid fa-file-pdf"></i> Book Logistico</div>
+            <div class="fab-item" onclick="apriBookPescheria()"><i class="fa-solid fa-fish-fins"></i> Book Controllo Qualità Pescheria</div>
+            <div class="fab-item" onclick="apriBookOrtofrutta()"><i class="fa-solid fa-apple-whole"></i> Book Controllo Qualità Ortofrutta</div>
+            
+            </div>
+        <div class="fab-button" onclick="toggleMenu(event)">⋮</div>
+    </div>
+
 
     <script>
         const webAppUrl = "https://script.google.com/macros/s/AKfycbxjgzkWhP284tzaZjKS2_siazqUYIJcNO8hu6SsktyTWbsxqORHkpuj7OUia2nRDaFWjQ/exec"; 
@@ -231,7 +304,37 @@
             document.getElementById('pdfFrame').style.visibility = 'visible';
         }
 
-        
+        function apriBookLogistico() {
+            //mostraLoader("Caricamento Book Logistico in corso...");
+
+                    localStorage.removeItem("bookAperto");
+                    localStorage.setItem("bookAperto", "logistico");
+
+                document.getElementById('pdfFrame').style.display = 'block';
+                document.getElementById('pdfFrame-pes').style.display = 'none';
+                document.getElementById('pdfFrame-orto').style.display = 'none';
+        }
+
+        function apriBookPescheria() {
+            //mostraLoader("Caricamento Book Controllo Qualità Pescheria in corso...");
+                localStorage.removeItem("bookAperto");
+                localStorage.setItem("bookAperto", "pescheria");
+
+            document.getElementById('pdfFrame').style.display = 'none';
+            document.getElementById('pdfFrame-pes').style.display = 'block';
+            document.getElementById('pdfFrame-orto').style.display = 'none';
+        }
+
+        function apriBookOrtofrutta() {
+            //mostraLoader("Caricamento Book Controllo Qualità Ortofrutta in corso...");
+                localStorage.removeItem("bookAperto");
+                localStorage.setItem("bookAperto", "ortofrutta");
+
+            document.getElementById('pdfFrame').style.display = 'none';
+            document.getElementById('pdfFrame-pes').style.display = 'none';
+            document.getElementById('pdfFrame-orto').style.display = 'block';
+        }
+
         function mostraLoader(testo) {
             document.getElementById('loaderText').innerText = testo || "Caricamento PDF in corso...";
             document.getElementById('loaderContainer').style.display = 'flex';
@@ -240,6 +343,21 @@
 
         window.addEventListener('load', async function() {
             mostraLoader("Caricamento Book Logistico in corso...");
+
+            const nomeUtente = localStorage.getItem("utenteLoggato") || "Ospite";
+                    document.getElementById('userFullname').innerText = nomeUtente;
+                    
+                    nomeFormattato = nomeUtente.toUpperCase();
+
+                        console.log("Utente loggato fomattato:", nomeFormattato);
+                 
+                    const btnUpload = document.getElementById('btnUpload');
+                    if (utentiAutorizzati.includes(nomeFormattato)) {
+                        btnUpload.style.display = "inline-block"; 
+                    } else {
+                        btnUpload.remove();
+                    }
+
             
             try {
                 const response = await fetch(webAppUrl + "?t=" + new Date().getTime());
@@ -259,19 +377,7 @@
             }
 
           
-                    const nomeUtente = localStorage.getItem("utenteLoggato") || "Ospite";
-                    document.getElementById('userFullname').innerText = nomeUtente;
                     
-                    nomeFormattato = nomeUtente.toUpperCase();
-
-                        console.log("Utente loggato fomattato:", nomeFormattato);
-                 
-                    const btnUpload = document.getElementById('btnUpload');
-                    if (utentiAutorizzati.includes(nomeFormattato)) {
-                        btnUpload.style.display = "inline-block"; 
-                    } else {
-                        btnUpload.style.display = "none"; 
-                    }
 
             
      
@@ -280,6 +386,18 @@
             let iniziali = (parti.length > 1) ? (parti[0][0] + parti[1][0]) : (parti[0][0] + (parti[0][1] || ""));
             document.getElementById('userInitials').innerText = iniziali.toUpperCase();
         });
+
+         function toggleMenu(event) {
+            event.stopPropagation(); 
+            document.getElementById('fabMenu').classList.toggle('active');
+        }
+        document.addEventListener('click', function(event) {
+                const menu = document.getElementById('fabMenu');
+                if (menu.classList.contains('active')) {
+                    menu.classList.remove('active');
+                }
+            });
+
 
 
 
