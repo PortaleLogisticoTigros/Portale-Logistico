@@ -85,7 +85,7 @@
             border: none;
         }
 
-        iframe { width: 100%; height: 100%; border: none; display: block; }
+        iframe { width: 100%; height: 100%; border: none; display: block; position: absolute; top:0; left:0; }
 
         #loaderContainer {
             position: absolute;
@@ -108,14 +108,21 @@
             animation: spin 1s linear infinite;
             margin-bottom: 15px;
         }
+        .titolo-book{
+            align-content: center;
+            margin-left: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.25rem;
+            color: #ffcc00;
+            font-weight: 600;
+        }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-
-            .fab-container {
+        .fab-container {
             position: fixed; bottom: 30px; right: 30px; z-index: 1000;
         }
         
@@ -142,105 +149,33 @@
         }
         .fab-item:hover { background: #ffcc00; color: #003087;}
 
-        /* Modale Password */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px);
-            display: flex; justify-content: center; align-items: center; z-index: 2000;
-            opacity: 0; visibility: hidden; pointer-events: none; transition: all 0.3s;
-        }
-        .modal-overlay.active { opacity: 1; visibility: visible; pointer-events: auto; }
-        
-        .modal-content {
-            background: rgba(0, 48, 135, 0.9); border: 2px solid #ffcc00; border-radius: 20px;
-            padding: 30px; width: 90%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            transform: scale(0.8); transition: transform 0.3s; display: flex; flex-direction: column; gap: 15px;
-        }
-        .modal-overlay.active .modal-content { transform: scale(1); }
-        
-        .modal-content h3 { color: #ffcc00; margin: 0 0 10px 0; font-family: 'Montserrat', sans-serif; text-align: center; }
-        .modal-content input {
-            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255, 204, 0, 0.5); 
-            background: rgba(255, 255, 255, 0.1); color: white; font-family: 'Montserrat', sans-serif; 
-            font-size: 16px; box-sizing: border-box; outline: none;
-        }
-        .modal-content input::placeholder { color: rgba(255, 255, 255, 0.6); }
-        .modal-content input:focus { border-color: #ffcc00; background: rgba(255, 255, 255, 0.2); }
-        
-        .modal-buttons { display: flex; gap: 10px; margin-top: 10px; }
-        .btn-modal { flex: 1; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; transition: 0.2s; font-family: 'Montserrat', sans-serif; }
-        .btn-salva { background: #ffcc00; color: #003087; }
-        .btn-salva:hover { filter: brightness(1.1); transform: scale(1.02); }
-        .btn-annulla { background: rgba(255,255,255,0.2); color: white; }
-        .btn-annulla:hover { background: rgba(255,255,255,0.3); }
-
-
-
-        /* ------------------------------------------------------------------ */
-        /* MEDIA QUERIES SOLO PER MOBILE (Fino a 768px)                       */
-        /* ------------------------------------------------------------------ */
+        /* MEDIA QUERIES MOBILE */
         @media (max-width: 768px) {
-            /* Manteniamo il blocco totale del body per dare il 100% all'iframe */
-            body { 
-                height: 100vh; 
-                overflow: hidden; 
-            }
+            body { height: 100vh; overflow: hidden; }
+            
 
-            /* Navigazione orizzontale scorrevole, tutto su una riga */
             nav {
-                flex-direction: row;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                padding: 10px;
-                gap: 15px;
-                justify-content: flex-start;
-                scrollbar-width: none; /* Nasconde scrollbar su Firefox */
+                flex-direction: row; flex-wrap: nowrap; overflow-x: auto;
+                -webkit-overflow-scrolling: touch; padding: 10px; gap: 15px;
+                justify-content: flex-start; scrollbar-width: none; 
             }
-            nav::-webkit-scrollbar { display: none; } /* Nasconde scrollbar su Chrome/Safari */
+            nav::-webkit-scrollbar { display: none; } 
 
-            /* Impediamo il collasso degli elementi */
-            .nav-left, nav ul, .nav-right {
-                flex: 0 0 auto;
-                width: auto;
-                justify-content: flex-start;
-                margin: 0;
-                padding: 0;
-            }
-
+            .nav-left, nav ul, .nav-right { flex: 0 0 auto; width: auto; justify-content: flex-start; margin: 0; padding: 0; }
             .user-fullname { display: none; }
             .user-badge { padding: 5px; background: transparent; border: none; }
             
-            nav ul {
-                gap: 15px;
-                overflow: visible;
-            }
-            
+            nav ul { gap: 15px; overflow: visible; }
             nav ul li a { font-size: 0.9rem; }
 
-            .nav-right {
-                flex-direction: row;
-                flex-wrap: nowrap;
-                gap: 10px;
-                align-items: center;
-            }
-
-            .nav-right .caricoPDF, .nav-right .stampaPDF {
-                margin: 0;
-                padding: 8px 15px;
-                font-size: 0.8rem;
-            }
-
-            .nav-logo {
-                margin-left: 5px;
-            }
+            .nav-right { flex-direction: row; flex-wrap: nowrap; gap: 10px; align-items: center; }
+            .nav-right .caricoPDF, .nav-right .stampaPDF { margin: 0; padding: 8px 15px; font-size: 0.8rem; }
+            .nav-logo { margin-left: 5px; }
             .nav-logo img { height: 30px; }
 
-            /* Il wrapper dell'iframe prende tutto lo spazio rimanente */
-            .iframe-wrapper {
-                flex: 1;
-                height: auto;
-                width: 100%;
-            }
+            .titolo-book { display: none; }
+
+            .iframe-wrapper { flex: 1; height: auto; width: 100%; }
         }
     </style>
 </head>
@@ -251,7 +186,9 @@
             <div class="user-badge" onclick="location.href='info_utente.html'">
                 <div class="user-initials" id="userInitials">??</div>
                 <span class="user-fullname" id="userFullname">Utente</span>
+                
             </div>
+            <small class="titolo-book" id="titoloBook"></small>
         </div>
 
         <ul>
@@ -275,158 +212,227 @@
     <div class="iframe-wrapper">
         <div id="loaderContainer">
             <div class="spinner"></div>
-            <p id="loaderText" style="color:#ffcc00; font-family: 'Montserrat', sans-serif;">Caricamento PDF in corso...</p>
+            <p id="loaderText" style="color:#ffcc00; font-family: 'Montserrat', sans-serif;">Caricamento dei PDF in corso...</p>
         </div>
         
-        <iframe id="pdfFrame" src="" style="visibility: hidden;" onload="nascondiLoader()"></iframe>
+        <iframe id="pdfFrame" src="" style="visibility: hidden; display: none;" onload="nascondiLoader()"></iframe>
         <iframe id="pdfFrame-pes" src="" style="visibility: hidden; display: none;" onload="nascondiLoader()"></iframe>
         <iframe id="pdfFrame-orto" src="" style="visibility: hidden; display: none;" onload="nascondiLoader()"></iframe>
     </div>
-
 
      <div class="fab-container" id="fab-container">
         <div class="fab-menu" id="fabMenu">
             <div class="fab-item" onclick="apriBookLogistico()"><i class="fa-solid fa-file-pdf"></i> Book Logistico</div>
             <div class="fab-item" onclick="apriBookPescheria()"><i class="fa-solid fa-fish-fins"></i> Book Controllo Qualità Pescheria</div>
             <div class="fab-item" onclick="apriBookOrtofrutta()"><i class="fa-solid fa-apple-whole"></i> Book Controllo Qualità Ortofrutta</div>
-            
-            </div>
+        </div>
         <div class="fab-button" onclick="toggleMenu(event)">⋮</div>
     </div>
 
-
     <script>
-        const webAppUrl = "https://script.google.com/macros/s/AKfycbxjgzkWhP284tzaZjKS2_siazqUYIJcNO8hu6SsktyTWbsxqORHkpuj7OUia2nRDaFWjQ/exec"; 
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbzoEGWIF1Xyuc1U3jGHfgsue_PkmZayNLM4oIQrCi_MDX05aJwDOjJTyVfuHS0RLp8uqA/exec"; 
         const utentiAutorizzati = ["GIACOMO BARDELLI"];
     
+  
+        function getIframeAttivo() {
+            const bookAperto = localStorage.getItem("bookAperto") || "logistico";
+            if (bookAperto === "pescheria") return document.getElementById('pdfFrame-pes');
+            if (bookAperto === "ortofrutta") return document.getElementById('pdfFrame-orto');
+            return document.getElementById('pdfFrame');
+        }
+
         function nascondiLoader() {
             document.getElementById('loaderContainer').style.display = 'none';
-            document.getElementById('pdfFrame').style.visibility = 'visible';
+            // Rende visibile solo quello attualmente attivo
+            getIframeAttivo().style.visibility = 'visible';
         }
 
         function apriBookLogistico() {
-            //mostraLoader("Caricamento Book Logistico in corso...");
-
-                    localStorage.removeItem("bookAperto");
-                    localStorage.setItem("bookAperto", "logistico");
-
-                document.getElementById('pdfFrame').style.display = 'block';
-                document.getElementById('pdfFrame-pes').style.display = 'none';
-                document.getElementById('pdfFrame-orto').style.display = 'none';
+            localStorage.setItem("bookAperto", "logistico");
+            document.getElementById('titoloBook').innerText = "Book Logistico Settimanale";
+            document.getElementById('pdfFrame').style.display = 'block';
+            document.getElementById('pdfFrame').style.visibility = 'visible';
+            document.getElementById('pdfFrame-pes').style.display = 'none';
+            document.getElementById('pdfFrame-orto').style.display = 'none';
         }
 
         function apriBookPescheria() {
-            //mostraLoader("Caricamento Book Controllo Qualità Pescheria in corso...");
-                localStorage.removeItem("bookAperto");
-                localStorage.setItem("bookAperto", "pescheria");
-
+            localStorage.setItem("bookAperto", "pescheria");
+            document.getElementById('titoloBook').innerText = "Book Controllo Qualità Pescheria";
             document.getElementById('pdfFrame').style.display = 'none';
             document.getElementById('pdfFrame-pes').style.display = 'block';
+            document.getElementById('pdfFrame-pes').style.visibility = 'visible';
             document.getElementById('pdfFrame-orto').style.display = 'none';
         }
 
         function apriBookOrtofrutta() {
-            //mostraLoader("Caricamento Book Controllo Qualità Ortofrutta in corso...");
-                localStorage.removeItem("bookAperto");
-                localStorage.setItem("bookAperto", "ortofrutta");
-
+            localStorage.setItem("bookAperto", "ortofrutta");
+            document.getElementById('titoloBook').innerText = "Book Controllo Qualità Ortofrutta";
             document.getElementById('pdfFrame').style.display = 'none';
             document.getElementById('pdfFrame-pes').style.display = 'none';
             document.getElementById('pdfFrame-orto').style.display = 'block';
+            document.getElementById('pdfFrame-orto').style.visibility = 'visible';
         }
 
         function mostraLoader(testo) {
             document.getElementById('loaderText').innerText = testo || "Caricamento PDF in corso...";
             document.getElementById('loaderContainer').style.display = 'flex';
             document.getElementById('pdfFrame').style.visibility = 'hidden';
+            document.getElementById('pdfFrame-pes').style.visibility = 'hidden';
+            document.getElementById('pdfFrame-orto').style.visibility = 'hidden';
+        }
+
+        // Funzione per convertire il link in modalità anteprima
+        function formattaURL(url) {
+            if (url && url.startsWith("http")) {
+                let finalUrl = url.replace("/view", "/preview");
+                finalUrl += "#pagemode=thumbs&view=FitH&toolbar=1";
+                return finalUrl;
+            }
+            return "";
         }
 
         window.addEventListener('load', async function() {
-            mostraLoader("Caricamento Book Logistico in corso...");
+            mostraLoader("Caricamento Documenti in corso...");
 
             const nomeUtente = localStorage.getItem("utenteLoggato") || "Ospite";
-                    document.getElementById('userFullname').innerText = nomeUtente;
-                    
-                    nomeFormattato = nomeUtente.toUpperCase();
-
-                        console.log("Utente loggato fomattato:", nomeFormattato);
-                 
-                    const btnUpload = document.getElementById('btnUpload');
-                    if (utentiAutorizzati.includes(nomeFormattato)) {
-                        btnUpload.style.display = "inline-block"; 
-                    } else {
-                        btnUpload.remove();
-                    }
-
+            document.getElementById('userFullname').innerText = nomeUtente;
             
-            try {
-                const response = await fetch(webAppUrl + "?t=" + new Date().getTime());
-                const urlDrive = await response.text();
-                
-                if (urlDrive && urlDrive.startsWith("http")) {
-                    let finalUrl = urlDrive.replace("/view", "/preview");
-                    finalUrl += "#pagemode=thumbs&view=FitH&toolbar=1";
-                    document.getElementById('pdfFrame').src = finalUrl;
-                } else {
-                  
-                    document.getElementById('pdfFrame').src = "Book Logistico.pdf#view=FitH";
-                }
-            } catch (err) {
-                console.error("Errore Drive:", err);
-                document.getElementById('pdfFrame').src = "Book Logistico.pdf#view=FitH";
+            nomeFormattato = nomeUtente.toUpperCase();
+            const btnUpload = document.getElementById('btnUpload');
+            if (utentiAutorizzati.includes(nomeFormattato)) {
+                btnUpload.style.display = "inline-block"; 
+            } else {
+                btnUpload.remove();
             }
 
-          
-                    
+            try {
 
-            
-     
-            document.getElementById('userFullname').innerText = nomeUtente;
+                const response = await fetch(webAppUrl + "?t=" + new Date().getTime());
+                const dati = await response.json(); // Usiamo .json() invece di .text()
+   
+                if (dati.logistico) document.getElementById('pdfFrame').src = formattaURL(dati.logistico);
+                if (dati.pescheria) document.getElementById('pdfFrame-pes').src = formattaURL(dati.pescheria);
+                if (dati.ortofrutta) document.getElementById('pdfFrame-orto').src = formattaURL(dati.ortofrutta);
+
+
+                const bookAperto = localStorage.getItem("bookAperto") || "logistico";
+
+                if (bookAperto === "pescheria") {
+                    apriBookPescheria();
+                } else if (bookAperto === "ortofrutta") {
+                    apriBookOrtofrutta();
+                } else {
+                    apriBookLogistico();
+                }
+
+            } catch (err) {
+                console.error("Errore Drive:", err);
+                document.getElementById('loaderText').innerText = "Impossibile recuperare i documenti. Riprova più tardi.";
+            }
+
             const parti = nomeUtente.split(/[._ ]/); 
             let iniziali = (parti.length > 1) ? (parti[0][0] + parti[1][0]) : (parti[0][0] + (parti[0][1] || ""));
             document.getElementById('userInitials').innerText = iniziali.toUpperCase();
         });
 
-         function toggleMenu(event) {
+        function toggleMenu(event) {
             event.stopPropagation(); 
             document.getElementById('fabMenu').classList.toggle('active');
         }
+        
         document.addEventListener('click', function(event) {
-                const menu = document.getElementById('fabMenu');
-                if (menu.classList.contains('active')) {
-                    menu.classList.remove('active');
-                }
-            });
-
-
-
+            const menu = document.getElementById('fabMenu');
+            if (menu.classList.contains('active')) {
+                menu.classList.remove('active');
+            }
+        });
 
         async function gestisciUpload(input) {
-
             const nomeUtenteLoggato = localStorage.getItem("utenteLoggato") || "Ospite";
             nomeFormattatoControllo = nomeUtenteLoggato.toUpperCase();
 
-                    if (!utentiAutorizzati.includes(nomeFormattatoControllo)) {
-                        alert("Accesso negato " + nomeUtenteLoggato + " ma non hai i permessi per caricare file.");
-                        return;
-                    }
+                let frameAnteprima = "";
+
+            if (!utentiAutorizzati.includes(nomeFormattatoControllo)) {
+                alert("Accesso negato " + nomeUtenteLoggato + " ma non hai i permessi per caricare file.");
+                return;
+            }
 
             const file = input.files[0];
-            if (!file) return;
+                if (!file) return;
 
+            const nomepercontrollo = file.name.toLowerCase();
+                console.log("nome per il controllo del frame nel quale forzare la vista del loader: " + nomepercontrollo);
+                    
+                if(nomepercontrollo.includes("book logistico")){
+                       let frameAnteprima = 'BookLogistico';
+                    }
+                    else if(nomepercontrollo.includes("book controllo qualita pescheria")){
+                        let frameAnteprima = 'BookPescheria';
+                    }
+                    else if(nomepercontrollo.includes("book controllo qualita ortofrutta")){
+                        let frameAnteprima = 'BookOrtofrutta';
+                    }
+                    else{
+                        alert("Il nome del file caricato non è corretto. Assicurati che contenga 'book logistico', 'book controllo qualita pescheria' o 'book controllo qualita ortofrutta'.");
+                        input.value = "";
+                        return;
+                    }
+         
             mostraLoader("Elaborazione file caricato...");
 
+           
             const blobUrl = URL.createObjectURL(file);
-            document.getElementById('pdfFrame').src = blobUrl + "#pagemode=thumbs";
+                            
+                            if(frameAnteprima === ''){
+                                alert("Non è stato possibile determinare il book di destinazione per l'anteprima. Assicurati che il nome del file contenga 'book logistico', 'book controllo qualita pescheria' o 'book controllo qualita ortofrutta'.");
+                                input.value = "";
+                                return;
+                            }
+
+                    
+                    if(frameAnteprima === 'BookLogistico'){
+                        document.getElementById('pdfFrame').src = blobUrl + "#pagemode=thumbs";
+                         apriBookLogistico(); 
+                    }
+                    else if(frameAnteprima === 'BookPescheria'){
+                        document.getElementById('pdfFrame-pes').src = blobUrl + "#pagemode=thumbs";
+                            apriBookPescheria();
+                    }
+                    else if(frameAnteprima === 'BookOrtofrutta'){
+                        document.getElementById('pdfFrame-orto').src = blobUrl + "#pagemode=thumbs";
+                            apriBookOrtofrutta();
+                    }
+
+           
 
             const btn = document.getElementById('btnUpload');
             btn.innerText = "SALVATAGGIO...";
             btn.disabled = true;
 
+                let controlloNome = file.name.toLowerCase();
+                    
+                    console.log("Nome file caricato: " + file.name);
+                    console.log("Controllo nome file: " + controlloNome);
+
+                        if(file.name.includes("book logistico")){
+                            let azione = "uploadPDF";
+                        }
+                        else if(file.name.includes("book controllo qualita pescheria")){
+                            let azione = "uploadPDFPescheria";
+                        }
+                        else if(file.name.includes("book controllo qualita ortofrutta")){
+                            let azione = "uploadPDFOrtofrutta";
+                        }
+
+                           
+                            console.log("Azione determinata: " + azione);
+
             const reader = new FileReader();
             reader.onload = async function(e) {
                 const base64Data = e.target.result.split(',')[1];
-                const payload = { azione: "uploadPDF", blob: base64Data, nomeFile: file.name };
+                const payload = { azione: azione, blob: base64Data, nomeFile: file.name };
 
                 try {
                     await fetch(webAppUrl, {
@@ -441,6 +447,7 @@
                     btn.innerText = "Carica pdf";
                     btn.disabled = false;
                     input.value = "";
+                    nascondiLoader();
                 }
             };
             reader.readAsDataURL(file);
@@ -454,56 +461,48 @@
         }
         
         function stampaDocumento() {
-                const frame = document.getElementById('pdfFrame');
-                
-                try {
-                   
-                    frame.contentWindow.focus();
-                    frame.contentWindow.print();
-
-                } catch (e) {
-                  
-                    console.warn("Stampa diretta bloccata, apro in nuova scheda...");
-                    const urlPDF = frame.src;
-                    window.open(urlPDF, '_blank');
-                }
+            // Seleziona dinamicamente il frame corretto
+            const frame = getIframeAttivo();
+            
+            try {
+                frame.contentWindow.focus();
+                frame.contentWindow.print();
+            } catch (e) {
+                console.warn("Stampa diretta bloccata, apro in nuova scheda...");
+                const urlPDF = frame.src;
+                window.open(urlPDF, '_blank');
             }
+        }
 
-            function scaricaDocumento() {
-                    const frame = document.getElementById('pdfFrame');
-                    let url = frame.src;
+        function scaricaDocumento() {
+            // Seleziona dinamicamente il frame corretto
+            const frame = getIframeAttivo();
+            let url = frame.src;
 
-                    if (!url || url === "" || url.includes("about:blank")) {
-                        alert("Nessun documento da scaricare.");
-                        return;
-                    }
-
-                    
-                    url = url.split('#')[0];
-
-                    
-                    if (url.includes("drive.google.com")) {
-                        
-                        const fileId = url.match(/\/d\/(.+?)\//);
-                        if (fileId && fileId[1]) {
-                            const downloadUrl = "https://drive.google.com/uc?export=download&id=" + fileId[1];
-                            window.open(downloadUrl, '_blank');
-                        } else {
-                            
-                            window.open(url, '_blank');
-                        }
-                    } 
-         
-                    else {
-                        const link = document.createElement('a');
-                        link.href = url;
-                        link.download = "Documento_Logistico.pdf"; 
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                    }
+            if (!url || url === "" || url.includes("about:blank")) {
+                alert("Nessun documento da scaricare.");
+                return;
+            }
+            
+            url = url.split('#')[0];
+            
+            if (url.includes("drive.google.com")) {
+                const fileId = url.match(/\/d\/(.+?)\//);
+                if (fileId && fileId[1]) {
+                    const downloadUrl = "https://drive.google.com/uc?export=download&id=" + fileId[1];
+                    window.open(downloadUrl, '_blank');
+                } else {
+                    window.open(url, '_blank');
                 }
-
+            } else {
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = "Documento_Qualita.pdf"; 
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
     </script>
 </body>
 </html>
