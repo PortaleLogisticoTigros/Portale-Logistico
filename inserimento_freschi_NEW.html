@@ -212,8 +212,8 @@
     <nav>
         <div class="nav-left">
             <div class="user-badge">
-                <div class="user-initials">GB</div>
-                <span class="user-fullname">Giacomo Bardelli</span>
+                <div class="user-initials" id="user-Initials">GB</div>
+                <span class="user-fullname" id="user-Fullname">Giacomo Bardelli</span>
             </div>
             <div class="selector-box">
                 <label style="font-weight: 100;"><i class="fa-solid fa-calendar-week"></i> SETTIMANA:</label>
@@ -307,21 +307,16 @@
 
         const nomiGiorni = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
         const nomiMesi = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
+                window.onload = function() {
 
-        window.onload = function() {
-
-             let userRaw = (localStorage.getItem("utenteLoggato") || "Ospite").trim();
-            let userFormattato = userRaw.split(/[ ._-]+/).map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(" ");
-            document.getElementById('userFullname').innerText = userFormattato;
-            
-            const parti = userRaw.split(/[ ._-]+/);
-            let inits = (parti.length >= 2) ? parti[0][0] + parti[1][0] : userRaw.substring(0, 2);
-            document.getElementById('userInitials').innerText = inits.toUpperCase();
-
-
-
-            caricaDatiCSV();
-        };
+                    const nomeUtente = localStorage.getItem("utenteLoggato") || "Ospite";
+                    document.getElementById('user-Fullname').innerText = nomeUtente;
+                    
+                    const parti = nomeUtente.split(/[._ ]/); 
+                    let iniziali = (parti.length > 1) ? parti[0][0] + parti[1][0] : parti[0][0] + (parti[0][1] || "");
+                    document.getElementById('user-Initials').innerText = iniziali.toUpperCase();
+                    caricaDatiCSV();
+                };
 
         function parseCSV(testo) {
             const righe = [];
@@ -337,6 +332,7 @@
         }
 
         async function caricaDatiCSV() {
+            
             const spinner = document.getElementById('spinner');
             spinner.style.display = 'flex';
             try {
