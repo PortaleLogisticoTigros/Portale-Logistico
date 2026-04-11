@@ -310,7 +310,8 @@
                 window.onload = function() {
 
                     const nomeUtente = localStorage.getItem("utenteLoggato") || "Ospite";
-                    document.getElementById('user-Fullname').innerText = nomeUtente;
+                      let userFormattato = nomeUtente.split(/[ ._-]+/).map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(" ");
+                    document.getElementById('user-Fullname').innerText = userFormattato;
                     
                     const parti = nomeUtente.split(/[._ ]/); 
                     let iniziali = (parti.length > 1) ? parti[0][0] + parti[1][0] : parti[0][0] + (parti[0][1] || "");
