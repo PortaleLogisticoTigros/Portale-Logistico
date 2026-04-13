@@ -148,14 +148,14 @@
 
       
         .glass-box-container { perspective: 1000px; display: none; }
-        .book-glass-box, .report-glass-box, .accessi-glass-box, .frutta-glass-box, .manutenzione-glass-box, .haccp-glass-box, .trasporti-glass-box, .freschi-glass-box, .impost-glass-box, .prep-glass-box, .ric-glass-box {
+        .book-glass-box, .report-glass-box, .accessi-glass-box, .frutta-glass-box, .manutenzione-glass-box, .haccp-glass-box, .trasporti-glass-box, .freschi-glass-box, .impost-glass-box, .prep-glass-box, .ric-glass-box, .fascia-glass-box {
             background: rgba(255, 255, 255, 0.1) !important; backdrop-filter: blur(15px); padding: 20px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 15px 30px rgba(0,0,0,0.2); text-align: center; width: 400px; height: 250px; max-width: 90vw; cursor: pointer; transition: all 0.4s ease; box-sizing: border-box; animation: apparizioneIniziale 1.2s forwards;
         }
         .glass-box-container:hover { box-shadow: #ffcc00 0px 0px 20px; transform: translateY(-5px); border-radius: 20px; }
 
-        .book-title, .report-title, .accessi-title, .frutta-title, .manutenzione-title, .haccp-title, .trasporti-title, .freschi-title, .impost-title, .prep-title, .ric-title { color: #ecb40c; font-size: 20px; margin-bottom: 20px; font-weight: bold; }
+        .book-title, .report-title, .accessi-title, .frutta-title, .manutenzione-title, .haccp-title, .trasporti-title, .freschi-title, .impost-title, .prep-title, .ric-title, .fascia-title { color: #ecb40c; font-size: 20px; margin-bottom: 20px; font-weight: bold; }
 
-        .report_before, .frutta_before, .accessi_before, .manutenzione_before, .haccp_before, .trasporti_before, .freschi_before, .impost_before, .prep_before, .ric_before {
+        .report_before, .frutta_before, .accessi_before, .manutenzione_before, .haccp_before, .trasporti_before, .freschi_before, .impost_before, .prep_before, .ric_before, .fascia_before {
             width: 130px; height: 130px; background: #efba0a; border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 5px 5px 15px rgba(0,0,0,0.3); color: #003087;
         }
         .impost_before { background: #003087; color: #ffcc00; }
@@ -238,6 +238,12 @@
                 <div class="prep_before"><span><i class="fa-solid fa-headset" style="font-size: 60px;"></i></span></div>
             </div>
         </div>
+        <div class="glass-box-container" id="box-fascia">
+            <div class="fascia-glass-box" onclick="location.href='preparazione_fascia_live.html'">
+                <h2 class="fascia-title">PREPARAZIONE FASCIA</h2>
+                <div class="fascia_before"><span><i class="fa-solid fa-clock-rotate-left" style="font-size: 60px;"></i></span></div>
+            </div>
+        </div>
 
         <div class="glass-box-container" id="box-ric">
             <div class="ric-glass-box" onclick="location.href='ricevimenti_live.html'">
@@ -318,10 +324,10 @@
 
     <script>
         const autorizzazioni = {
-            "GIACOMO BARDELLI": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"],
+            "GIACOMO BARDELLI": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric", "fascia"],
             "OSPITE": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi"],
-            "ERMANNO LAMPERTI":  ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"],
-            "ELABORAZIONI CEDI":  ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"],
+            "ERMANNO LAMPERTI":  ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric", "fascia"],
+            "ELABORAZIONI CEDI":  ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric","fascia"],
             "CEDI CASSANO": ["prep", "ric"]
         };
 
@@ -350,7 +356,7 @@
 
             // Autorizzazioni
             const consentiti = autorizzazioni[userRaw] || ["book"];
-            const tutti = ["book", "pescheria", "accessi", "frutta","manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"];
+            const tutti = ["book", "pescheria", "accessi", "frutta","manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric", "fascia"];
             tutti.forEach(reparto => {
                 const box = document.getElementById('box-' + reparto);
                 if (box) {

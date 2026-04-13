@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piattaforma Tigros - Produttività Oraria</title>
+    <link rel="icon" type="image/png" href="images.png">
+    <link rel="apple-touch-icon" href="images.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%);
+            font-family: 'Montserrat', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+            -webkit-scrollbar {
+            width: 12px;  /* Larghezza scrollbar verticale */
+            height: 12px; /* Altezza scrollbar orizzontale (per le tabelle) */
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2); /* Sfondo scuro semi-trasparente */
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ffcc00; /* Giallo Tigros */
+            border-radius: 10px;
+            border: 3px solid rgba(0, 48, 135, 0.8); /* Crea un effetto "imbottitura" col blu di sfondo */
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #facc15; /* Giallo più acceso quando ci passi sopra col mouse */
+        }
+
+        /* Stile per Firefox (Supporta solo due regole base) */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #ffcc00 rgba(0, 0, 0, 0.2);
+        }
+
+
+        nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 100;
+        }
+
+        .nav-left { display: flex; align-items: center; flex: 1; gap: 20px; }
+        .user-badge {
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 10px; border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer; transition: background 0.3s ease;
+        }
+        .user-initials {
+            width: 30px; height: 30px; background: #ffcc00; color: #003087;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 0.8rem;
+        }
+        .user-fullname { color: white; font-size: 0.8rem; font-weight: 100; margin-left: 5px; }
+
+        .nav-center { flex: 2; display: flex; justify-content: center; align-items: center; }
+        .nav-center ul { list-style: none; display: flex; gap: 15px; margin: 0; padding: 0; }
+        .nav-center ul li a { text-decoration: none; color: white; font-size: 1.15rem; font-weight: 100; text-transform: uppercase; cursor: pointer; }
+        nav ul:hover li a { filter: blur(2px); opacity: 0.5; transform: scale(0.95); }
+        nav ul li a:hover { filter: blur(0px); opacity: 1; transform: scale(1.15); color: #ffcc00; }
+
+        /* Filtro Data in Navbar (Spostato a sinistra) */
+        .date-filter {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(0, 48, 135, 0.8); padding: 5px 15px; border-radius: 20px;
+            border: 1px solid #ffcc00; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .date-filter label { color: #ffcc00; font-weight: bold; font-size: 0.9rem;}
+        .date-filter select {
+            background: transparent; color: white; border: none; font-family: 'Montserrat', sans-serif;
+            font-size: 1rem; font-weight: bold; outline: none; cursor: pointer;
+        }
+        .date-filter select option { background: #003087; color: white; }
+
+        .nav-right { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+        .btn-refresh { background: #ffcc00; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .nav-logo img { height: 28px; width: auto; }
+
+        .container-main { flex: 1; padding: 20px 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 40px; box-sizing: border-box;}
+
+        .container-reparto {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
+            padding: 20px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%; max-width: none; box-sizing: border-box;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .container-reparto h4 {
+            color: #ffcc00; background: #003087; padding: 10px 20px;
+            border-radius: 12px; width: fit-content; margin: -40px auto 0;
+            font-size: 1.2rem; text-align: center; border: 2px solid #ffcc00;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.2);
+        }
+
+        table { width: 100%; border-collapse: collapse; color: white; white-space: nowrap; }
+        th { background: rgba(0, 48, 135, 0.9); color: #ffcc00; padding: 6px; font-size: 0.75rem; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.1); text-align: center;}
+        td { padding: 6px 4px; border: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 0.85rem; font-weight: bold; }
+        
+        .col-ordinati { background: rgba(255, 204, 0, 0.2); color: #ffcc00; font-size: 1.1rem; padding: 0 10px; }
+        .row-delta { color: #4ade80; } 
+        .row-prog { color: white; }
+        .row-perc { color: #facc15; font-size: 0.8rem;}
+
+        .chart-container {
+            width: 100%;
+            height: 350px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        #loader-mag { text-align:center; color:#ffcc00; font-size: 1.2rem; margin-top: 50px;}
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <div class="user-badge" onclick="window.location.href='info_utente.html'">
+                <div class="user-initials" id="userInitials">--</div>
+                <span class="user-fullname" id="userFullname">Utente</span>
+            </div>
+            
+            <div class="date-filter">
+                <label for="dateSelect"><i class="fa-regular fa-calendar"></i> DATA:</label>
+                <select id="dateSelect" onchange="applicaFiltroData()">
+                    <option value="">Caricamento...</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="nav-center">
+            <ul>
+                <li><a href="Home_new.html">HOME</a></li>
+                <li><a href="Viaggi.html">VIAGGI</a></li>
+                <li><a onclick="confermaEsci()" style="color:#ffcc00;">ESCI</a></li>
+            </ul>
+        </div>
+        
+        <div class="nav-right">
+            <button class="btn-refresh" onclick="caricaDatiCSV()">
+                <svg viewBox="0 0 24 24" style="width:16px; fill:#003087;"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+            </button>
+            <div class="nav-logo"><img src="LOGO_TIGROS_VERTICALE.jpg" alt="Tigros"></div>
+        </div>
+    </nav>
+
+    <div class="container-main" id="main-container">
+        <div id="loader-mag">Sincronizzazione Dati in corso... <i class="fa-solid fa-spinner fa-spin"></i></div>
+    </div>
+
+    <script>
+        const linkCSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT17pUiDnZxN1zENf_l3_xPc5wBnlyOTBbbb7GxPyaMTMAWB4wqxFzEZq58OzMgvof5zBpVeZ0NQyrG/pub?output=csv';
+
+        let globalCsvText = ""; 
+        let globalDates = [];
+
+        // Generazione automatica delle fasce orarie
+        const fasceStandard = [];
+        for(let i=6; i<24; i++) fasceStandard.push(`${String(i).padStart(2,'0')}:00-${String((i+1)%24).padStart(2,'0')}:00`);
+        for(let i=0; i<6; i++) fasceStandard.push(`${String(i).padStart(2,'0')}:00-${String(i+1).padStart(2,'0')}:00`);
+
+        const fasceCedi35 = [];
+        for(let i=2; i<=14; i++) fasceCedi35.push(`${String(i).padStart(2,'0')}:00-${String(i+1).padStart(2,'0')}:00`);
+
+        const ordineReparti = [
+            "Cedi 21 - Ventilazione", "Cedi 21 - Picking", 
+            "Cedi 23 - Ortofrutta", "Cedi 23 - IV Gamma", 
+            "Cedi 24 - Cameri Picking", "Cedi 24 - Cameri Expo", 
+            "Cedi 25 - Cameri Consumo", "Cedi 28 - Macelleria", 
+            "Cedi 29 - Pescheria", "Cedi 35 - Cassano Acque", 
+            "Totale Piattaforme"
+        ];
+
+        window.onload = () => {
+            let userRaw = (localStorage.getItem("utenteLoggato") || "Ospite").trim();
+            let userFormattato = userRaw.split(/[ ._-]+/).map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(" ");
+            document.getElementById('userFullname').innerText = userFormattato;
+            const parti = userRaw.split(/[ ._-]+/);
+            let inits = (parti.length >= 2 && parti[0] && parti[1]) ? (parti[0].charAt(0) + parti[1].charAt(0)) : userRaw.substring(0, 2);
+            document.getElementById('userInitials').innerText = inits.toUpperCase();
+
+            caricaDatiCSV();
+        };
+
+        function confermaEsci() { if(confirm("Chiudere sessione?")) { localStorage.clear(); window.location.href="index.html"; } }
+
+        // --- FUNZIONE PER DATA LOGICA (Turno di Notte spostato al giorno prima) ---
+        function calcolaDataLogica(dataOriginale, fascia, isCedi35) {
+            if (!dataOriginale) return "";
+            
+            // Rimossa 05:00-06:00 e aggiunta 23:00-00:00 come richiesto
+            const fasceNotturne = ["23:00-00:00", "00:00-01:00", "01:00-02:00", "02:00-03:00", "03:00-04:00", "04:00-05:00"];
+            
+            if (!isCedi35 && fasceNotturne.includes(fascia)) {
+                let partiData = dataOriginale.split('/');
+                if (partiData.length === 3) {
+                    let dataObj = new Date(partiData[2], partiData[1] - 1, partiData[0]);
+                    dataObj.setDate(dataObj.getDate() - 1); // Sottrae un giorno
+                    
+                    let gg = String(dataObj.getDate()).padStart(2, '0');
+                    let mm = String(dataObj.getMonth() + 1).padStart(2, '0');
+                    let aaaa = dataObj.getFullYear();
+                    
+                    return `${gg}/${mm}/${aaaa}`;
+                }
+            }
+            return dataOriginale; 
+        }
+
+        // --- 1. DOWNLOAD E GESTIONE DELLE DATE ---
+        async function caricaDatiCSV() {
+            const container = document.getElementById('main-container');
+            container.innerHTML = '<div id="loader-mag">Scaricamento Dati in corso... <i class="fa-solid fa-spinner fa-spin"></i></div>';
+            
+            try {
+                const response = await fetch(linkCSV + "&t=" + new Date().getTime());
+                globalCsvText = await response.text();
+                
+                estraiEPopolaDate(globalCsvText);
+            } catch (error) {
+                console.error("Errore:", error);
+                container.innerHTML = `<div style="color:red; text-align:center;">Errore nel caricamento: ${error.message}</div>`;
+            }
+        }
+
+        function estraiEPopolaDate(csvText) {
+            const righe = csvText.split('\n').map(r => r.split(','));
+            const headers = righe[0].map(h => h.replace(/["\r]/g, '').trim().toUpperCase());
+            
+            const idxData = headers.findIndex(h => h === 'DATA');
+            const idxCedi = headers.findIndex(h => h.includes('CEDI'));
+            const idxFascia = headers.findIndex(h => h.includes('FASCIA_ORARIA') || h === 'FASCIA');
+
+            const dateSet = new Set();
+            for(let i=1; i<righe.length; i++) {
+                if(righe[i].length > Math.max(idxData, idxFascia, idxCedi)) {
+                    let cedi = (righe[i][idxCedi] || "").replace(/["\r]/g, '').trim();
+                    let fascia = (righe[i][idxFascia] || "").replace(/["\r]/g, '').trim();
+                    let dataOriginale = (righe[i][idxData] || "").replace(/["\r]/g, '').trim();
+                    
+                    if(dataOriginale) {
+                        let dataLogica = calcolaDataLogica(dataOriginale, fascia, cedi === '35');
+                        dateSet.add(dataLogica);
+                    }
+                }
+            }
+
+            globalDates = Array.from(dateSet).sort((a,b) => {
+                let [d1, m1, y1] = a.split('/');
+                let [d2, m2, y2] = b.split('/');
+                return new Date(y2, m2-1, d2) - new Date(y1, m1-1, d1);
+            });
+
+            const select = document.getElementById('dateSelect');
+            select.innerHTML = '';
+            globalDates.forEach(d => {
+                let opt = document.createElement('option');
+                opt.value = d;
+                opt.textContent = d;
+                select.appendChild(opt);
+            });
+
+            if(globalDates.length > 0) {
+                select.value = globalDates[0]; 
+                applicaFiltroData(); 
+            } else {
+                document.getElementById('main-container').innerHTML = '<div id="loader-mag">Nessuna data trovata nel CSV.</div>';
+            }
+        }
+
+        function applicaFiltroData() {
+            const dataSelezionata = document.getElementById('dateSelect').value;
+            const datiAnalizzati = processaCSV(globalCsvText, dataSelezionata);
+            costruisciDashboard(datiAnalizzati);
+        }
+
+        // --- 2. FILTRO E MAPPATURA ESATTA DEI NOMI ---
+        function processaCSV(csvText, dataFiltro) {
+            const righe = csvText.split('\n').map(r => r.split(','));
+            const headers = righe[0].map(h => h.replace(/["\r]/g, '').trim().toUpperCase());
+
+            const idxCedi = headers.findIndex(h => h.includes('CEDI'));
+            const idxAreaPrep = headers.findIndex(h => h === 'AREA_PREPARAZIONE' || h === 'REPARTO');
+            const idxDescr = headers.findIndex(h => h === 'DESCRIZIONE');
+            const idxOrdinati = headers.findIndex(h => h.includes('COLLI_ORD'));
+            const idxPreparati = headers.findIndex(h => h.includes('COLLI_PREPARATI'));
+            const idxFascia = headers.findIndex(h => h.includes('FASCIA_ORARIA') || h === 'FASCIA');
+            const idxData = headers.findIndex(h => h === 'DATA');
+
+            const datiReparti = {};
+
+            for (let i = 1; i < righe.length; i++) {
+                if (righe[i].length < 3) continue;
+
+                const cedi = (righe[i][idxCedi] || "").replace(/["\r]/g, '').trim();
+                const fascia = (righe[i][idxFascia] || "").replace(/["\r]/g, '').trim();
+                const dataOriginale = (righe[i][idxData] || "").replace(/["\r]/g, '').trim();
+                
+                const dataLogica = calcolaDataLogica(dataOriginale, fascia, cedi === '35');
+                if(dataLogica !== dataFiltro) continue;
+
+                const areaPrep = idxAreaPrep >= 0 ? (righe[i][idxAreaPrep] || "").replace(/["\r]/g, '').trim() : "";
+                const descrizione = idxDescr >= 0 ? (righe[i][idxDescr] || "").replace(/["\r]/g, '').trim() : "";
+
+                let nomeChiave = null;
+
+                if (cedi === "21" && areaPrep === "VENTILA") nomeChiave = "Cedi 21 - Ventilazione";
+                else if (cedi === "21" && areaPrep === "PICKING") nomeChiave = "Cedi 21 - Picking";
+                else if (cedi === "23" && areaPrep === "FRUTTA") nomeChiave = "Cedi 23 - Ortofrutta";
+                else if (cedi === "23" && areaPrep === "4 GAMMA") nomeChiave = "Cedi 23 - IV Gamma";
+                else if (cedi === "24" && areaPrep === "CASS PICK") nomeChiave = "Cedi 24 - Cameri Picking";
+                else if (cedi === "24" && areaPrep === "EXPO PICK") nomeChiave = "Cedi 24 - Cameri Expo";
+                else if (cedi === "25" && areaPrep === "CONSUMO") nomeChiave = "Cedi 25 - Cameri Consumo";
+                else if (cedi === "28" && areaPrep === "VENTILA") nomeChiave = "Cedi 28 - Macelleria";
+                else if (cedi === "29" && areaPrep === "VENTILA") nomeChiave = "Cedi 29 - Pescheria";
+                else if (cedi === "35" && areaPrep === "CASS PICK") nomeChiave = "Cedi 35 - Cassano Acque";
+                else if (cedi === "0" && descrizione === "TOTALE") nomeChiave = "Totale Piattaforme";
+
+                if (!nomeChiave) continue; 
+
+                const ordinatiStr = (righe[i][idxOrdinati] || "0");
+                const ordinati = parseInt(ordinatiStr.replace(/\D/g, '')) || 0;
+
+                const preparatiStr = (righe[i][idxPreparati] || "0");
+                const preparati = parseInt(preparatiStr.replace(/\D/g, '')) || 0;
+
+                if (!datiReparti[nomeChiave]) {
+                    const isCedi35 = (cedi === '35'); 
+                    datiReparti[nomeChiave] = {
+                        nome: nomeChiave,
+                        isCedi35: isCedi35,
+                        ordinati: ordinati,
+                        timeline: isCedi35 ? [...fasceCedi35] : [...fasceStandard],
+                        datiFasce: {}
+                    };
+                }
+
+                if (fascia) {
+                    datiReparti[nomeChiave].datiFasce[fascia] = preparati;
+                    if(ordinati > 0) datiReparti[nomeChiave].ordinati = ordinati;
+                }
+            }
+            return datiReparti;
+        }
+
+        // --- 3. COSTRUZIONE UI E GRAFICI ---
+        function costruisciDashboard(datiReparti) {
+            const container = document.getElementById('main-container');
+            container.innerHTML = ''; 
+
+            if(Object.keys(datiReparti).length === 0) {
+                container.innerHTML = '<div id="loader-mag">Nessun dato corrispondente per la data selezionata.</div>';
+                return;
+            }
+
+            const repartiOrdinati = Object.values(datiReparti).sort((a, b) => {
+                return ordineReparti.indexOf(a.nome) - ordineReparti.indexOf(b.nome);
+            });
+
+            repartiOrdinati.forEach((reparto, index) => {
+                
+                let preparatiPrecedenti = 0;
+                const arrayDelta = []; 
+                const arrayProgressivo = []; 
+                const arrayPercFascia = []; 
+                const arrayPercProgressiva = []; 
+                
+                reparto.timeline.forEach(fascia => {
+                    let progressivoAttuale = reparto.datiFasce[fascia];
+                    
+                    if (progressivoAttuale === undefined) {
+                        arrayDelta.push(null);
+                        arrayProgressivo.push(null);
+                        arrayPercFascia.push(null);
+                        arrayPercProgressiva.push(null);
+                    } else {
+                        let delta = progressivoAttuale - preparatiPrecedenti;
+                        if (delta < 0) delta = 0; 
+                        
+                        let percFascia = reparto.ordinati > 0 ? ((delta / reparto.ordinati) * 100).toFixed(1) : 0;
+                        let percTotale = reparto.ordinati > 0 ? ((progressivoAttuale / reparto.ordinati) * 100).toFixed(1) : 0;
+
+                        arrayDelta.push(delta);
+                        arrayProgressivo.push(progressivoAttuale);
+                        arrayPercFascia.push(percFascia);
+                        arrayPercProgressiva.push(percTotale);
+
+                        preparatiPrecedenti = progressivoAttuale; 
+                    }
+                });
+
+                const canvasId = `chart-${index}`;
+                let theadHTML = `<th>ORDINATI</th>` + reparto.timeline.map(f => `<th>${f}</th>`).join('');
+                
+                let rigaDelta = `<td rowspan="4" class="col-ordinati">${reparto.ordinati.toLocaleString('it-IT')}</td>`;
+                rigaDelta += arrayDelta.map(v => `<td class="row-delta">${v !== null ? '+'+v.toLocaleString('it-IT') : '-'}</td>`).join('');
+                let rigaProg = arrayProgressivo.map(v => `<td class="row-prog">${v !== null ? v.toLocaleString('it-IT') : '-'}</td>`).join('');
+                let rigaPercFascia = arrayPercFascia.map(v => `<td class="row-perc">${v !== null ? v+'%' : '-'}</td>`).join('');
+                let rigaPercProg = arrayPercProgressiva.map(v => `<td class="row-perc" style="color:#fff;">${v !== null ? v+'%' : '-'}</td>`).join('');
+
+                const htmlReparto = `
+                    <div class="container-reparto">
+                        <h4>${reparto.nome}</h4>
+                        
+                        <div class="table-wrapper">
+                            <table>
+                                <thead><tr><th>DATI ORARI</th>${theadHTML}</tr></thead>
+                                <tbody>
+                                    <tr><td style="text-align:left; color:#ffcc00;">COLLI IN FASCIA</td>${rigaDelta}</tr>
+                                    <tr><td style="text-align:left; color:#fff;">PROGRESSIVO TOTALE</td>${rigaProg}</tr>
+                                    <tr><td style="text-align:left; color:#facc15;">% FATTA IN FASCIA</td>${rigaPercFascia}</tr>
+                                    <tr><td style="text-align:left; color:#4ade80;">% COMPLETAMENTO</td>${rigaPercProg}</tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="chart-container">
+                            <canvas id="${canvasId}"></canvas>
+                        </div>
+                    </div>
+                `;
+                
+                container.insertAdjacentHTML('beforeend', htmlReparto);
+
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar', 
+                    data: {
+                        labels: reparto.timeline, 
+                        datasets: [
+                            {
+                                type: 'line',
+                                label: '% Completamento Totale',
+                                data: arrayPercProgressiva,
+                                borderColor: '#4ade80', 
+                                backgroundColor: 'rgba(74, 222, 128, 0.2)',
+                                borderWidth: 3,
+                                pointBackgroundColor: '#fff',
+                                yAxisID: 'y_perc', 
+                                tension: 0.3,
+                                fill: true
+                            },
+                            {
+                                type: 'bar',
+                                label: 'Colli Preparati nella Fascia',
+                                data: arrayDelta,
+                                backgroundColor: '#ffcc00', 
+                                borderRadius: 5,
+                                yAxisID: 'y_colli' 
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { mode: 'index', intersect: false },
+                        plugins: {
+                            legend: { labels: { color: 'white', font: { family: 'Montserrat' } } }
+                        },
+                        scales: {
+                            x: {
+                                ticks: { color: 'rgba(255,255,255,0.7)', font: { size: 10 } },
+                                grid: { color: 'rgba(255,255,255,0.1)' }
+                            },
+                            y_colli: {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                title: { display: true, text: 'Colli', color: '#ffcc00' },
+                                ticks: { color: '#ffcc00' },
+                                grid: { color: 'rgba(255,255,255,0.1)' }
+                            },
+                            y_perc: {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                title: { display: true, text: '% Completamento', color: '#4ade80' },
+                                ticks: { color: '#4ade80', callback: function(value) { return value + '%' } },
+                                min: 0,
+                                max: 100, 
+                                grid: { drawOnChartArea: false } 
+                            }
+                        }
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>
