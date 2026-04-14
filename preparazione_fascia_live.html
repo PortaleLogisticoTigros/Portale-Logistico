@@ -74,7 +74,7 @@
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
             font-weight: 900; font-size: 0.8rem;
         }
-        .user-fullname { color: white; font-size: 0.8rem; font-weight: 100; margin-left: 5px; }
+        .user-fullname { color: white; font-size: 0.8rem; font-weight: 100; margin-left: 5px; text-wrap: nowrap;}
 
         .nav-center { flex: 2; display: flex; justify-content: center; align-items: center; }
         .nav-center ul { list-style: none; display: flex; gap: 15px; margin: 0; padding: 0; }
@@ -84,14 +84,14 @@
 
         /* Filtro Data in Navbar (Spostato a sinistra) */
         .date-filter {
-            display: flex; align-items: center; gap: 10px;
-            background: rgba(0, 48, 135, 0.8); padding: 5px 15px; border-radius: 20px;
+            display: flex; align-items: center; gap: 40px; margin-right: 15px; text-wrap: nowrap;
+            background: rgba(0, 48, 135, 0.8); padding: 5px 20px; border-radius: 20px;
             border: 1px solid #ffcc00; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         .date-filter label { color: #ffcc00; font-weight: bold; font-size: 0.9rem;}
         .date-filter select {
             background: transparent; color: white; border: none; font-family: 'Montserrat', sans-serif;
-            font-size: 1rem; font-weight: bold; outline: none; cursor: pointer;
+            font-size: 1rem; font-weight: bold; outline: none; cursor: pointer; width: 150px;
         }
         .date-filter select option { background: #003087; color: white; }
 
@@ -121,6 +121,10 @@
             background: rgba(0,0,0,0.2);
         }
 
+        .toggle-prep { background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 50px; display: flex; gap: 5px; border: 1px solid rgba(255, 255, 255, 0.1); width: fit-content; margin-left: 50px; margin-top: 2px; margin-right: 20px;}
+        .btn-prep, .btn-fascia { background: transparent; color: white; border: none; padding: 8px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 11px; transition: 0.3s; text-transform: uppercase; }
+        .btn-prep.active, .btn-fascia.active { background: #ffcc00 !important; color: #003087 !important; }
+
         table { width: 100%; border-collapse: collapse; color: white; white-space: nowrap; }
         th { background: rgba(0, 48, 135, 0.9); color: #ffcc00; padding: 6px; font-size: 0.75rem; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.1); text-align: center;}
         td { padding: 6px 4px; border: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 0.85rem; font-weight: bold; }
@@ -149,6 +153,11 @@
             <div class="user-badge" onclick="window.location.href='info_utente.html'">
                 <div class="user-initials" id="userInitials">--</div>
                 <span class="user-fullname" id="userFullname">Utente</span>
+            </div>
+
+            <div class="toggle-prep">
+                <button class="btn-prep" type="button" id="btn-prep" onclick="cambiaVista('LIVE')">Live</button>
+                <button class="btn-fascia active" type="button" id="btn-fascia" onclick="cambiaVista('FASCIA')">Fascia</button>
             </div>
             
             <div class="date-filter">
@@ -239,6 +248,20 @@
             }
             return dataOriginale; 
         }
+
+        function cambiaVista(tipo) {
+                vistaAttuale = tipo;
+                document.getElementById('btn-prep').classList.toggle('active', tipo === 'LIVE');
+                document.getElementById('btn-fascia').classList.toggle('active', tipo === 'FASCIA');
+                        
+                        if(tipo === 'LIVE'){
+                            window.location.href="preparazione_live.html"
+                        }
+                        else if(tipo === 'FASCIA'){
+                            window.location.href="preparazione_fascia_live.html"
+                        } 
+
+            }
 
 
         async function caricaDatiCSV() {

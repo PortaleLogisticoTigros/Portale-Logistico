@@ -325,9 +325,8 @@
     <script>
         const autorizzazioni = {
             "GIACOMO BARDELLI": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric", "fascia"],
-            "OSPITE": ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi"],
-            "ERMANNO LAMPERTI":  ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric", "fascia"],
-            "ELABORAZIONI CEDI":  ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric","fascia"],
+            "ERMANNO LAMPERTI":  ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"],
+            "ELABORAZIONI CEDI":  ["book","accessi", "pescheria", "frutta", "manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"],
             "CEDI CASSANO": ["prep", "ric"]
         };
 
@@ -356,7 +355,7 @@
 
             // Autorizzazioni
             const consentiti = autorizzazioni[userRaw] || ["book"];
-            const tutti = ["book", "pescheria", "accessi", "frutta","manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric", "fascia"];
+            const tutti = ["book", "pescheria", "accessi", "frutta","manutenzione", "haccp", "trasporti", "freschi", "impostazioni", "prep", "ric"];
             tutti.forEach(reparto => {
                 const box = document.getElementById('box-' + reparto);
                 if (box) {
