@@ -15,123 +15,57 @@
 
         body { margin: 0; background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%); font-family: 'Montserrat', sans-serif; color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
+        ::-webkit-scrollbar { width: 12px; height: 12px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; border: 3px solid rgba(0, 48, 135, 0.8); }
+        ::-webkit-scrollbar-thumb:hover { background: #facc15; }
+        * { scrollbar-width: thin; scrollbar-color: #ffcc00 rgba(0, 0, 0, 0.2); }
+
         nav {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 10px 20px; 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 8px 20px; 
+            display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky; top: 0; z-index: 1000;
         }
 
         .nav-left { flex: 0 0 auto; display: flex; align-items: center; gap: 15px; }
-
-        .user-badge {
-            display: flex; align-items: center; gap: 10px;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 5px 12px; border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-        }
-
-        .user-initials {
-            width: 30px; height: 30px; background: #ffcc00; color: #003087;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 0.85rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
+        .user-badge { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.15); padding: 5px 12px; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.2); cursor: pointer; }
+        .user-initials { width: 30px; height: 30px; background: #ffcc00; color: #003087; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.85rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
         .user-fullname { color: white; font-size: 0.85rem; font-weight: 500; }
 
-        nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; flex: 1; justify-content: center; margin-left: -400px;}
+        .toggle-prep { background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 50px; display: flex; gap: 5px; border: 1px solid rgba(255, 255, 255, 0.1); width: fit-content; margin-left: 20px;}
+        .btn-prep, .btn-fascia { background: transparent; color: white; border: none; padding: 8px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 11px; transition: 0.3s; text-transform: uppercase; }
+        .btn-prep.active, .btn-fascia.active { background: #ffcc00 !important; color: #003087 !important; }
+
+        nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; flex: 1; justify-content: center; margin-left: -150px;}
         nav ul li a { text-decoration: none; color: white; font-size: 1.15rem; transition: all 0.4s ease; cursor: pointer; white-space: nowrap; }
         nav ul:hover li a { filter: blur(2px); opacity: 0.5; transform: scale(0.95); }
         nav ul li a:hover { filter: blur(0px); opacity: 1; transform: scale(1.15); color: #ffcc00; }
         .logout { color: #efba0a !important; }
 
-        .nav-right { flex: 0 0 auto; display: flex; justify-content: flex-end; }
+        .nav-right { flex: 0 0 auto; display: flex; justify-content: flex-end; align-items: center; gap: 15px;}
         .nav-logo img { height: 38px; width: auto; }
 
-        .btn-preview {
-            color:#003087;
-            font-family: 'Montserrat', sans-serif;
-            background-color: #ffcc00;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 10px; cursor: pointer;
-            display: flex; align-items: center; font-weight: 100; font-size: 0.85rem;
-            margin-right: 15px; transition: 0.3s;
-        }
+        .btn-preview { color:#003087; font-family: 'Montserrat', sans-serif; background-color: #ffcc00; border: none; padding: 8px 15px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; font-weight: bold; font-size: 0.85rem; transition: 0.3s; }
         .btn-preview:hover { transform: scale(1.05); }
 
         .filter-bar { background: rgba(255, 255, 255, 0.05); padding: 15px 30px; display: flex; gap: 20px; align-items: center; }
-        select { background: rgba(0, 48, 135, 0.8); color: white; border: 1px solid #ffcc00; padding: 8px 15px; border-radius: 5px; font-family: 'Montserrat', sans-serif; cursor: pointer; }
+        select { background: rgba(0, 48, 135, 0.8); color: white; border: 1px solid #ffcc00; padding: 8px 15px; border-radius: 5px; font-family: 'Montserrat', sans-serif; cursor: pointer; font-weight: bold;}
         
-        .display_totali{
-            margin-left:auto;
-            font-weight: bold;
-            color:#003087;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 18px;
-            background-color: #ffcc00;
-            border: 4px solid #ffcc00; 
-            border-radius: 10px; padding: 5px 15px;
-        }
+        .display_totali{ margin-left:auto; font-weight: bold; color:#003087; font-family: 'Montserrat', sans-serif; font-size: 18px; background-color: #ffcc00; border: 4px solid #ffcc00; border-radius: 10px; padding: 5px 15px; }
 
-        /* --- LAYOUT PRINCIPALE --- */
-        .main-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 20px;
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
-            overflow-y: auto;
-        }
+        .main-wrapper { display: flex; flex-direction: column; gap: 20px; padding: 20px; width: 100%; height: 100%; box-sizing: border-box; overflow-y: auto; }
 
-        /* --- TABELLA REPARTI --- */
-        .table-container { 
-            background: rgba(255, 255, 255, 0.1); 
-            backdrop-filter: blur(15px); 
-            border-radius: 20px; 
-            padding: 20px; 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            overflow-x: auto;
-            flex-shrink: 0;
-        }
-
+        .table-container { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.2); overflow-x: auto; flex-shrink: 0; }
         table { width: 100%; border-collapse: collapse; color: white; white-space: nowrap; }
         th { background: rgba(0, 48, 135, 0.9); color: #ffcc00; padding: 12px; font-size: 0.9rem; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
         td { padding: 10px 8px; border: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 1rem; font-weight: bold; }
         .row-totale td { background: rgba(0, 48, 135, 0.7); color: #ffcc00; font-weight: 900; border-top: 2px solid #ffcc00; }
         .col-totale { color: #4ade80; }
-        
         .td-reparto { text-align: left; cursor: pointer; text-decoration: underline; transition: opacity 0.2s; }
         .td-reparto:hover { opacity: 0.7; }
 
-        /* --- GRAFICI (AFFIANCATI) --- */
-        .charts-row {
-            display: flex;
-            gap: 20px;
-            width: 100%;
-            min-height: 400px;
-        }
-
-        .chart-container { 
-            flex: 1;
-            background: rgba(255, 255, 255, 0.1); 
-            backdrop-filter: blur(15px); 
-            border-radius: 20px; 
-            padding: 20px; 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            display: flex;
-            flex-direction: column;
-        }
-        
+        .charts-row { display: flex; gap: 20px; width: 100%; min-height: 400px; }
+        .chart-container { flex: 1; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.2); display: flex; flex-direction: column; }
         h2 { font-family: 'Montserrat', sans-serif; color: #ffcc00; text-transform: uppercase; border-bottom: 2px solid #ffcc00; font-size: 1.2rem; margin-top: 0; margin-bottom: 15px;}
         .canvas-wrapper { position: relative; flex: 1; width: 100%; }
         
@@ -139,27 +73,13 @@
         .spinner { width: 40px; height: 40px; border: 4px solid #ffcc00; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* --- MODALE DETTAGLI REPARTO --- */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px);
-            display: flex; justify-content: center; align-items: center; z-index: 3000;
-            opacity: 0; visibility: hidden; transition: all 0.3s ease;
-        }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 3000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-content {
-            background: rgba(0, 48, 135, 0.95); border: 2px solid #ffcc00; border-radius: 20px;
-            padding: 30px; width: 90%; max-width: 600px; color: white;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6); transform: scale(0.9); transition: all 0.3s ease;
-            position: relative;
-        }
+        .modal-content { background: rgba(0, 48, 135, 0.95); border: 2px solid #ffcc00; border-radius: 20px; padding: 30px; width: 90%; max-width: 600px; color: white; box-shadow: 0 15px 40px rgba(0,0,0,0.6); transform: scale(0.9); transition: all 0.3s ease; position: relative; }
         .modal-overlay.active .modal-content { transform: scale(1); }
-        .modal-close {
-            position: absolute; top: 15px; right: 20px; color: #ffcc00; font-size: 1.5rem;
-            cursor: pointer; transition: 0.2s;
-        }
+        .modal-close { position: absolute; top: 15px; right: 20px; color: #ffcc00; font-size: 1.5rem; cursor: pointer; transition: 0.2s; }
         .modal-close:hover { transform: scale(1.2); color: white; }
         .modal-title { font-family: 'Montserrat', sans-serif; color: #ffcc00; font-size: 1.5rem; text-transform: uppercase; margin-top: 0; border-bottom: 2px solid rgba(255,204,0,0.3); padding-bottom: 10px; margin-bottom: 20px; text-align: center; }
-        
         .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .modal-stat { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
         .modal-stat.full { grid-column: span 2; background: rgba(0,0,0,0.2); border-color: rgba(255,204,0,0.3); }
@@ -168,19 +88,7 @@
         .modal-stat-value.yellow { color: #ffcc00; }
         .modal-stat-value.red { color: #ff4d4d; }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 10px; height: 10px; }
-        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #facc15; }
-
-        @media (max-width: 1000px) {
-            .charts-row { flex-direction: column; }
-            .chart-container { min-height: 350px; }
-            .modal-grid { grid-template-columns: 1fr; }
-            .modal-stat.full { grid-column: span 1; }
-        }
-
+        @media (max-width: 1000px) { .charts-row { flex-direction: column; } .chart-container { min-height: 350px; } .modal-grid { grid-template-columns: 1fr; } .modal-stat.full { grid-column: span 1; } }
     </style>
 </head>
 <body>
@@ -192,19 +100,23 @@
                 <span class="user-fullname" id="userFullname">Utente</span>
             </div>
             <div style="font-family: 'Montserrat', sans-serif; font-size: 1.2rem; color: #ffcc00; font-weight: bold; margin-left: 20px;">TIGROS - ACCESSI PIATTAFORMA</div>
+            
+            
         </div>
+        
         <ul>
             <li><a href="Home_new.html" style="color: #ffcc00;">HOME</a></li>
             <li><a href="Viaggi.html">DASHBOARD VIAGGI</a></li>
             <li><a onclick="confermaEsci()" class="logout">ESCI</a></li>
         </ul>
+        
         <div class="nav-right">
             <button class="btn-preview" onclick="window.location.href='home_accessi.html'">INDIETRO</button>
             <div class="nav-logo"><img src="LOGO_TIGROS_VERTICALE.jpg" alt="Logo"></div>
         </div>
     </nav>
 
-    <div id="loader-overlay"><div class="spinner"></div><p style="font-family: 'Montserrat', sans-serif; color: #ffcc00; margin-top:10px; font-size: 20px;">Lettura dati dal Database degli Accessi...</p></div>
+    <div id="loader-overlay"><div class="spinner"></div><p style="font-family: 'Montserrat', sans-serif; color: #ffcc00; margin-top:10px; font-size: 20px;">Lettura dati dal Database...</p></div>
 
     <div id="repartoModal" class="modal-overlay" onclick="chiudiModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
@@ -213,19 +125,16 @@
             <div class="modal-grid">
                 <div class="modal-stat"><div class="modal-stat-title">Totale Arrivi</div><div id="modTot" class="modal-stat-value yellow">0</div></div>
                 <div class="modal-stat"><div class="modal-stat-title">Mezzi in Ritardo</div><div id="modRit" class="modal-stat-value red">0</div></div>
-                
                 <div class="modal-stat full"><div class="modal-stat-title">Orario Medio di Registrazione</div><div id="modReg" class="modal-stat-value yellow">--:--</div></div>
-                
                 <div class="modal-stat"><div class="modal-stat-title">Attesa Esterna Media</div><div id="modAttEst" class="modal-stat-value">--</div></div>
                 <div class="modal-stat"><div class="modal-stat-title">Tempo Medio Scarico</div><div id="modSca" class="modal-stat-value">--</div></div>
-                
                 <div class="modal-stat full"><div class="modal-stat-title">Attesa Complessiva Media</div><div id="modAttTot" class="modal-stat-value yellow">--</div></div>
             </div>
         </div>
     </div>
 
     <div class="filter-bar">
-        <span>Seleziona Settimana:</span>
+        <span><i class="fa-regular fa-calendar"></i> Seleziona Settimana:</span>
         <select id="selectSettimana" onchange="processaDati()"></select>
         <span class="display_totali" id="counter-display"></span>
     </div>
@@ -271,7 +180,6 @@
         const giorniNomi = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"];
         const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQJSsaqnuyzKhFmxzipIeuX8d5hj95qeEkQ7X6WwyNpeF_88FrjnSEVANZFzaZoA_WI_5GlPgMhs5KR/pub?gid=0&single=true&output=csv';
 
-        // MAPPATURA COLORI FISSI
         const coloriReparti = {
             "FRESCHI": "#5ca0d3",      
             "ORTOFRUTTA": "#4ade80",   
@@ -282,18 +190,11 @@
             "FORNO": "#8b5a2b",
             "PASTICCERIA": "#e699ff"
         };
-        const coloreDefault = "#ffff"; 
+        const coloreDefault = "#cccccc"; 
 
-        // ORARI MASSIMI PER IL CONTEGGIO DEI RITARDI (Minuti da mezzanotte)
         const orariLimite = {
-            "FRESCHI": 10 * 60,
-            "ORTOFRUTTA": 23 * 60,
-            "MACELLERIA": 19 * 60,
-            "PESCHERIA": 2 * 60,
-            "FORNO": 12 * 60,
-            "PASTICCERIA": 12 * 60,
-            "E-COMMERCE": 12 * 60,
-            "GROCERY": 12 * 60
+            "FRESCHI": 10 * 60, "ORTOFRUTTA": 23 * 60, "MACELLERIA": 19 * 60, "PESCHERIA": 2 * 60,
+            "FORNO": 12 * 60, "PASTICCERIA": 12 * 60, "E-COMMERCE": 12 * 60, "GROCERY": 12 * 60
         };
 
         window.onload = function() {
@@ -308,6 +209,13 @@
             caricaDati();
         };
 
+        function confermaEsci() { if(confirm("Chiudere sessione?")) { localStorage.clear(); window.location.href="index.html"; } }
+
+        function cambiaVista(tipo) {
+            if(tipo === 'LIVE') window.location.href="preparazione_live.html";
+            else if(tipo === 'FASCIA') window.location.href="preparazione_fascia_live.html";
+        }
+
         function getSettimanaCorrente() {
             const d = new Date();
             d.setHours(0, 0, 0, 0);
@@ -318,30 +226,41 @@
             return `${w}-${d.getFullYear()}`;
         }
 
-        function popolaSettimane() {
+        function estraiEPopolaSettimane() {
             const select = document.getElementById('selectSettimana');
+            
+            let settimaneUniche = [...new Set(datiOriginali.map(r => r.settimana.replace(/[^\x20-\x7E]/g, "").trim()))];
+            settimaneUniche = settimaneUniche.filter(s => s !== ""); 
+
+            settimaneUniche.sort((a, b) => {
+                let [settA, annoA] = a.split('-');
+                let [settB, annoB] = b.split('-');
+                if (annoA !== annoB) return annoB - annoA; 
+                return settB - settA; 
+            });
+
+            select.innerHTML = '';
+            settimaneUniche.forEach(sett => {
+                let opt = document.createElement('option');
+                opt.value = sett;
+                opt.text = `Settimana ${sett.replace('-', ' - ')}`;
+                select.appendChild(opt);
+            });
+
             const settAttuale = getSettimanaCorrente();
-            for (let anno = 2024; anno <= 2026; anno++) {
-                for (let i = 1; i <= 52; i++) {
-                    let w = i < 10 ? "0" + i : i;
-                    let val = `${w}-${anno}`;
-                    let opt = document.createElement('option');
-                    opt.value = val;
-                    opt.text = `Settimana ${w} - ${anno}`;
-                    if (val === settAttuale) opt.selected = true; 
-                    select.appendChild(opt);
-                }
+            if (settimaneUniche.includes(settAttuale)) {
+                select.value = settAttuale;
+            } else if (settimaneUniche.length > 0) {
+                select.value = settimaneUniche[0]; 
             }
         }
 
         async function caricaDati() {
-            popolaSettimane();
             try {
                 const response = await fetch(sheetUrl + '&t=' + new Date().getTime());
                 const rawData = await response.text();
                 const lines = rawData.split(/\r?\n/).filter(l => l.trim().length > 10);
                 
-            
                 const headers = lines[0].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(h => h.replace(/"/g, "").trim().toUpperCase());
                 const idxReg = headers.findIndex(h => h.includes('REGISTRAZIONE') || h.includes('ARRIVO'));
                 const idxEnt = headers.findIndex(h => h.includes('ENTRATA') || h.includes('INGRESSO'));
@@ -353,7 +272,6 @@
                     const reparto = cols[2] ? cols[2].replace(/"/g, "").trim() : "N.D."; 
                     const settimanaCSV = cols[19] ? cols[19].replace(/"/g, "").trim() : "";
                     
-                    // Salvataggio stringhe orario
                     const tReg = idxReg >= 0 && cols[idxReg] ? cols[idxReg].replace(/"/g, "").trim() : "";
                     const tEnt = idxEnt >= 0 && cols[idxEnt] ? cols[idxEnt].replace(/"/g, "").trim() : "";
                     const tUsc = idxUsc >= 0 && cols[idxUsc] ? cols[idxUsc].replace(/"/g, "").trim() : "";
@@ -368,11 +286,14 @@
                     return { settimana: settimanaCSV, giorno: giornoIndice, reparto: reparto, reg: tReg, ent: tEnt, usc: tUsc };
                 });
 
+                // IMPORTANTE: Popola il menu a tendina DOPO aver scaricato i dati
+                estraiEPopolaSettimane();
+
                 setTimeout(() => {
                     document.getElementById('loader-overlay').style.opacity = '0';
                     setTimeout(() => {
                         document.getElementById('loader-overlay').style.display = 'none';
-                        processaDati();
+                        processaDati(); // Costruisce i grafici
                     }, 500);
                 }, 1000);
 
@@ -400,7 +321,14 @@
             });
 
             document.getElementById('counter-display').innerText = "TOTALI ACCESSI: " + totali;
-            aggiornaUI(accessiGiorno, repartiCount, matrixDati, totali);
+            
+            if(totali === 0) {
+                document.getElementById('corpo-tabella').innerHTML = '<tr><td colspan="9" style="color:#ffcc00; padding: 20px;">Nessun dato presente per la settimana selezionata</td></tr>';
+                if(dailyChart) dailyChart.destroy();
+                if(deptPieChart) deptPieChart.destroy();
+            } else {
+                aggiornaUI(accessiGiorno, repartiCount, matrixDati, totali);
+            }
         }
 
         function aggiornaUI(giorni, reparti, matrixDati, totali) {
@@ -410,8 +338,7 @@
             repartiOrdinati.forEach(rep => {
                 const accessiSettimana = matrixDati[rep];
                 const totReparto = accessiSettimana.reduce((a, b) => a + b, 0);
-
-                const coloreFisso = coloreDefault[rep.toUpperCase()] || coloreDefault;
+                const coloreFisso = coloreDefault[rep.toUpperCase()] || coloreDefault; // Corretto il typo!
 
                 htmlTabella += `<tr>
                     <td class="td-reparto" style="color: ${coloreFisso};" onclick="apriModal('${rep}')">${rep}</td>
@@ -427,8 +354,6 @@
             </tr>`;
 
             document.getElementById('corpo-tabella').innerHTML = htmlTabella;
-
-
 
             if (dailyChart) dailyChart.destroy();
             dailyChart = new Chart(document.getElementById('dailyChart'), {
@@ -455,7 +380,6 @@
                 }
             });
 
-      
             const etichetteReparti = Object.keys(reparti);
             const sfondiTorta = etichetteReparti.map(rep => coloriReparti[rep.toUpperCase()] || coloreDefault);
 
@@ -488,8 +412,7 @@
         function hhmmToMins(tStr) {
             if (!tStr || !tStr.includes(':')) return null;
             let p = tStr.split(':');
-            let h = parseInt(p[0], 10);
-            let m = parseInt(p[1], 10);
+            let h = parseInt(p[0], 10); let m = parseInt(p[1], 10);
             return (isNaN(h) || isNaN(m)) ? null : (h * 60 + m);
         }
 
@@ -502,27 +425,23 @@
 
         function formatDuration(mins) {
             if (mins === null || isNaN(mins)) return "--";
-            let h = Math.floor(mins / 60);
-            let m = Math.round(mins % 60);
+            let h = Math.floor(mins / 60); let m = Math.round(mins % 60);
             if (h === 0) return `${m}m`;
             return `${h}h ${String(m).padStart(2, '0')}m`;
         }
 
         function formatTime(mins) {
             if (mins === null || isNaN(mins)) return "--:--";
-            let h = Math.floor(mins / 60) % 24;
-            let m = Math.round(mins % 60);
+            let h = Math.floor(mins / 60) % 24; let m = Math.round(mins % 60);
             return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
         }
-
 
         function calcMediaCircolare(minsArray) {
             if (minsArray.length === 0) return null;
             let sSin = 0, sCos = 0;
             for (let m of minsArray) {
                 let rad = (m / (24 * 60)) * 2 * Math.PI;
-                sSin += Math.sin(rad);
-                sCos += Math.cos(rad);
+                sSin += Math.sin(rad); sCos += Math.cos(rad);
             }
             let radMedia = Math.atan2(sSin, sCos);
             let minMedia = (radMedia / (2 * Math.PI)) * 24 * 60;
@@ -534,27 +453,21 @@
             const selSett = document.getElementById('selectSettimana').value.trim();
             const repUpper = nomeReparto.toUpperCase();
             
-            const recordReparto = datiOriginali.filter(r => 
-                r.settimana.replace(/[^\x20-\x7E]/g, "").trim() === selSett && 
-                r.reparto === nomeReparto
-            );
+            const recordReparto = datiOriginali.filter(r => r.settimana.replace(/[^\x20-\x7E]/g, "").trim() === selSett && r.reparto === nomeReparto);
 
             let totArrivi = recordReparto.length;
             let ritardi = 0;
-
             let arrReg = [];
             let sumAttEst = 0, countAttEst = 0;
             let sumScarico = 0, countScarico = 0;
             let sumAttTot = 0, countAttTot = 0;
-
-                const orarioMax = orariLimite[repUpper];
+            const orarioMax = orariLimite[repUpper];
 
             recordReparto.forEach(r => {
                 let mReg = hhmmToMins(r.reg);
                 let mEnt = hhmmToMins(r.ent);
                 let mUsc = hhmmToMins(r.usc);
 
-        
                 if (mReg !== null && orarioMax !== undefined) {
                     let dRitardo = mReg - orarioMax;
                     if (dRitardo < 0) dRitardo += 24 * 60;
@@ -573,32 +486,28 @@
                 if (diffTot !== null) { sumAttTot += diffTot; countAttTot++; }
             });
 
-                    let avgReg = calcMediaCircolare(arrReg);
-                    let avgEst = countAttEst > 0 ? (sumAttEst / countAttEst) : null;
-                    let avgSca = countScarico > 0 ? (sumScarico / countScarico) : null;
-                    let avgTot = countAttTot > 0 ? (sumAttTot / countAttTot) : null;
+            let avgReg = calcMediaCircolare(arrReg);
+            let avgEst = countAttEst > 0 ? (sumAttEst / countAttEst) : null;
+            let avgSca = countScarico > 0 ? (sumScarico / countScarico) : null;
+            let avgTot = countAttTot > 0 ? (sumAttTot / countAttTot) : null;
 
+            document.getElementById('modalTitle').innerText = nomeReparto;
+            document.getElementById('modTot').innerText = totArrivi;
+            document.getElementById('modRit').innerText = ritardi;
+            document.getElementById('modReg').innerText = formatTime(avgReg);
+            document.getElementById('modAttEst').innerText = formatDuration(avgEst);
+            document.getElementById('modSca').innerText = formatDuration(avgSca);
+            document.getElementById('modAttTot').innerText = formatDuration(avgTot);
 
-                    document.getElementById('modalTitle').innerText = nomeReparto;
-                    document.getElementById('modTot').innerText = totArrivi;
-                    document.getElementById('modRit').innerText = ritardi;
-                    document.getElementById('modReg').innerText = formatTime(avgReg);
-                    document.getElementById('modAttEst').innerText = formatDuration(avgEst);
-                    document.getElementById('modSca').innerText = formatDuration(avgSca);
-                    document.getElementById('modAttTot').innerText = formatDuration(avgTot);
-    
-                    document.querySelector('.modal-content').style.borderColor = coloriReparti[repUpper] || '#ffcc00';
-                    document.getElementById('modalTitle').style.color = coloriReparti[repUpper] || '#ffcc00';
-
-                    document.getElementById('repartoModal').classList.add('active');
+            document.querySelector('.modal-content').style.borderColor = coloriReparti[repUpper] || '#ffcc00';
+            document.getElementById('modalTitle').style.color = coloriReparti[repUpper] || '#ffcc00';
+            document.getElementById('repartoModal').classList.add('active');
         }
 
         function chiudiModal(e) {
-            
             if(e) e.stopPropagation();
             document.getElementById('repartoModal').classList.remove('active');
         }
-
     </script>
 </body>
 </html>

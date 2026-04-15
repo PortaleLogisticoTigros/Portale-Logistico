@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tigros - Control Tower</title>
+    <link rel="icon" type="image/png" href="images.png">
+    <link rel="apple-touch-icon" href="images.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+        body { 
+            margin: 0; 
+            background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%); 
+            font-family: 'Montserrat', sans-serif; 
+            color: white; 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+        }
+        
+        /* --- NAVBAR TIGROS --- */
+        nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-left { flex: 0 0 auto; display: flex; align-items: center; gap: 15px; }
+        .user-badge { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.15); padding: 5px 12px; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.2); cursor: pointer; }
+        .user-initials { width: 30px; height: 30px; background: #ffcc00; color: #003087; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.85rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .user-fullname { color: white; font-size: 0.85rem; font-weight: 500; }
+        
+        nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; flex: 1; justify-content: center; }
+        nav ul li a { text-decoration: none; color: white; font-size: 1.15rem; transition: all 0.4s ease; cursor: pointer; white-space: nowrap; }
+        nav ul:hover li a { filter: blur(2px); opacity: 0.5; transform: scale(0.95); }
+        nav ul li a:hover { filter: blur(0px); opacity: 1; transform: scale(1.15); color: #ffcc00; }
+        .logout { color: #efba0a !important; }
+        
+        .nav-right { flex: 0 0 auto; display: flex; justify-content: flex-end; align-items: center; gap: 15px;}
+        .nav-logo img { height: 38px; width: auto; }
+        .btn-refresh { background: #ffcc00; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s;}
+        .btn-refresh:hover { transform: scale(1.1); }
+
+        /* --- LAYOUT PRINCIPALE --- */
+        .main-wrapper {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #loader-mag { text-align: center; color: #ffcc00; font-size: 1.2rem; margin-top: 50px; font-weight: bold; }
+        #ultimo-aggiornamento { font-size: 0.75rem; color: rgba(255,255,255,0.7); text-align: center; margin-top: 15px; width: 100%; }
+
+        /* --- STILE TABELLA UNIFICATA --- */
+        .table-container {
+            width: 100%;
+            max-width: 1700px;
+            background: rgba(0, 48, 135, 0.4);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            overflow-x: auto;
+            display: none; /* Nascosto finché non carica */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate; 
+            border-spacing: 0;
+            color: white;
+            white-space: nowrap;
+        }
+
+        /* Intestazioni "Pillola" superiori */
+        .header-pill {
+            background-color: #003087;
+            color: #ffcc00;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            text-align: center;
+            border: 2px solid #003087;
+            margin-bottom: 5px;
+        }
+
+        /* Celle Intestazioni Colonne */
+        thead tr:nth-child(2) th {
+            font-size: 0.85rem;
+            font-weight: 400;
+            padding: 15px 10px 10px 10px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #ffcc00;
+            color: #ffcc00;
+        }
+
+        /* Celle Dati */
+        tbody td {
+            padding: 12px 10px;
+            font-size: 1.05rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Allineamenti e Colori specifici */
+        .col-cedi { width: 50px; font-weight: normal; }
+        .col-reparto { text-align: left !important; color: #ffcc00; font-weight: bold; width: 280px;}
+        
+        /* Bordi gialli di divisione sezioni */
+        .border-right-yellow { border-right: 2px solid #ffcc00; }
+        
+        /* Riga dei Totali */
+        .row-totale td {
+            font-weight: 900;
+            font-size: 1.1rem;
+            padding: 15px 10px;
+            border-top: 2px solid #ffcc00;
+            border-bottom: none;
+            background: rgba(0, 48, 135, 0.6);
+        }
+        .row-totale .col-reparto { color: #ffcc00; }
+
+        /* --- BARRE DI PROGRESSO --- */
+        .progress-bg {
+            width: 100%;
+            min-width: 120px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            height: 22px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #ffcc00, #ff9900);
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            transition: width 1s ease-in-out;
+        }
+        .progress-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            line-height: 22px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            color: #003087;
+            z-index: 2;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #facc15; }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <div class="user-badge" onclick="location.href='info_utente.html'">
+                <div class="user-initials" id="userInitials">??</div>
+                <span class="user-fullname" id="userFullname">Utente</span>
+            </div>
+            
+        </div>
+        <ul>
+            <li><a href="Home_new.html">HOME</a></li>
+            <li><a href="Viaggi.html">DASHBOARD VIAGGI</a></li>
+            <li><a onclick="confermaEsci()" class="logout">ESCI</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="btn-refresh" onclick="caricaTutto()" title="Aggiorna Dati">
+                <svg viewBox="0 0 24 24" style="width:18px; fill:#003087;"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+            </button>
+            <div class="nav-logo"><img src="LOGO_TIGROS_VERTICALE.jpg" alt="Logo"></div>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div id="loader-mag">Sincronizzazione Dati in corso... <i class="fa-solid fa-spinner fa-spin"></i></div>
+        
+        <div class="table-container" id="mainTable">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2" class="border-right-yellow" style="border-bottom: none;"></th>
+                        <th colspan="4" class="border-right-yellow" style="border-bottom: none;">
+                            <div class="header-pill">RICEVIMENTO MERCI</div>
+                        </th>
+                        <th colspan="4" style="border-bottom: none;">
+                            <div class="header-pill">PREPARAZIONE PIATTAFORMA</div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left;">CEDI</th>
+                        <th class="border-right-yellow"></th>
+                        <th>ORDINATI</th>
+                        <th>RICEVUTI</th>
+                        <th>MANCANTI</th>
+                        <th class="border-right-yellow">PROGRESSO</th>
+                        <th>ORDINATI</th>
+                        <th>PREPARATI</th>
+                        <th>RIMASTI</th>
+                        <th>PROGRESSO</th>
+                    </tr>
+                </thead>
+                <tbody id="corpo-tabella">
+                    </tbody>
+            </table>
+        </div>
+        
+        <div id="ultimo-aggiornamento"></div>
+    </div>
+
+    <script>
+        // Links ai 3 database CSV
+        const linkCSV_Ric = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCD2u3-ErC6NQWjRERPsojHNqDOyOcmAT46HIHIrscoY9wC6ljoajpv8sqN0HEQ_m0P2f4ggXjkWtY/pub?output=csv';
+        const linkCSV_PrepMag = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1HEv87Esyv53CeLeDtM5sI0FGXvbjWtDsA1_GY3gin3GBMBQ7SdS31rR8C1l2o0eUGwjIQYrvJxuW/pub?output=csv';
+        const linkCSV_PrepLab = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQJDecwQTsnTMoubMCP6giwt7KnPbKa1cnWHL4gUmmO5d1OJvlJzWsunlH9koplOUFHAiOogVhGPqpd/pub?output=csv';
+
+        window.onload = function() {
+            let userRaw = (localStorage.getItem("utenteLoggato") || "Ospite").trim();
+            let userFormattato = userRaw.split(/[ ._-]+/).map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(" ");
+            document.getElementById('userFullname').innerText = userFormattato;
+            
+            const parti = userRaw.split(/[ ._-]+/);
+            let inits = (parti.length >= 2) ? parti[0][0] + parti[1][0] : userRaw.substring(0, 2);
+            document.getElementById('userInitials').innerText = inits.toUpperCase();
+
+            caricaTutto();
+  
+            //setInterval(caricaTutto, 30000);
+        };
+
+        function confermaEsci() { 
+            if(confirm("Chiudere sessione?")) { localStorage.clear(); window.location.href="index.html"; } 
+        }
+
+        function parseCSVLine(line, separator) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            for (let char of line) {
+                if (char === '"') inQuotes = !inQuotes;
+                else if (char === separator && !inQuotes) { result.push(current.trim()); current = ''; } 
+                else { current += char; }
+            }
+            result.push(current.trim());
+            return result;
+        }
+
+        function formatNum(num) {
+            if(num === null || isNaN(num) || num === 0) return "-";
+            return num.toLocaleString('it-IT');
+        }
+
+        function creaBarra(percentuale) {
+            let widthVisiva = percentuale > 100 ? 100 : (percentuale < 0 ? 0 : percentuale);
+            return `
+                <div class="progress-bg">
+                    <div class="progress-fill" style="width: ${widthVisiva}%;"></div>
+                    <div class="progress-text">${percentuale}%</div>
+                </div>
+            `;
+        }
+
+        async function caricaTutto() {
+            document.getElementById('loader-mag').style.display = 'block';
+            document.getElementById('mainTable').style.display = 'none';
+
+            try {
+                // Fetch parallela: scarica tutti e 3 i database contemporaneamente
+                const [resRic, resPrepMag, resPrepLab] = await Promise.all([
+                    fetch(`${linkCSV_Ric}&nocache=${new Date().getTime()}`).then(r => r.text()),
+                    fetch(`${linkCSV_PrepMag}&nocache=${new Date().getTime()}`).then(r => r.text()),
+                    fetch(`${linkCSV_PrepLab}&nocache=${new Date().getTime()}`).then(r => r.text())
+                ]);
+
+                // Struttura che conterrà tutti i reparti fusi
+                const allData = {};
+
+                function getOrCreate(cedi, name) {
+                    if (!allData[name]) {
+                        allData[name] = { cedi: cedi, rep: name, ricOrd: 0, ricFatti: 0, prepOrd: 0, prepFatti: 0 };
+                    }
+                    return allData[name];
+                }
+
+     
+                let righeRic = resRic.split('\n').filter(r => r.trim() !== '');
+                if (righeRic.length > 1) {
+                    let sep = righeRic[0].includes(';') ? ';' : ',';
+                    let headers = parseCSVLine(righeRic[0], sep).map(h => h.trim().toUpperCase());
+                    let idx = {
+                        cedi: headers.indexOf("CEDI"),
+                        area: headers.indexOf("AREA_PREPARAZIONE"),
+                        ord: headers.indexOf("COLLI_ORDINATI"),
+                        fatti: headers.indexOf("COLLI_RICEVUTI")
+                    };
+                    for(let i = 1; i < righeRic.length; i++) {
+                        let col = parseCSVLine(righeRic[i], sep);
+                        if(col.length < headers.length) continue;
+                        let cedi = col[idx.cedi] || "";
+                        let area = col[idx.area] || "";
+                        let nomeDisplay = "";
+                        
+
+                        if (cedi === "21" && area === "CASSANO SAFO") nomeDisplay = "Cassano - Reparto Freschi";
+                        else if (cedi === "23" && area === "EM ORTOFRUTTA ARTICOLI A PESO VARIABILE") nomeDisplay = "Cassano - Ortofrutta P. Variabile";
+                        else if (cedi === "23" && area === "EM ORTOFRUTTA ARTICOLI A PESO FISSO") nomeDisplay = "Cassano - Ortofrutta P. Fisso";
+                        else if (cedi === "24" && area === "CASSANO GROCERY") nomeDisplay = "Cassano - Grocery (Cameri)";
+                        else if (cedi === "25" && area === "MATERIALI DI CONSUMO") nomeDisplay = "Cassano - Mat. Consumo (Cameri)";
+                        else if (cedi === "35" && area === "GRO_CASSANO CATASTA") nomeDisplay = "Cassano - Grocery Acque e Pellet";
+                        else if (cedi === "28" && area === "EM MACELLERIA") nomeDisplay = "Cassano - Reparto Macelleria";
+                        else if (cedi === "29" && area === "EM ITTICO") nomeDisplay = "Cassano - Reparto Pescheria";
+                        else if (cedi === "30" && area === "FORNO - ENTRATA MERCE") nomeDisplay = "Cassano - Reparto Forno";
+                        else if (cedi === "31" && area === "PASTICCERIA - ENTRATA MERCE") nomeDisplay = "Cassano - Reparto Pasticceria";
+                        
+                        if (nomeDisplay) {
+                            let row = getOrCreate(cedi, nomeDisplay);
+                            row.ricOrd += Number(col[idx.ord]) || 0;
+                            row.ricFatti += Number(col[idx.fatti]) || 0;
+                        }
+                    }
+                }
+
+                let righePrepM = resPrepMag.split('\n').filter(r => r.trim() !== '');
+                if (righePrepM.length > 1) {
+                    let sep = righePrepM[0].includes(';') ? ';' : ',';
+                    let headers = parseCSVLine(righePrepM[0], sep).map(h => h.trim().toUpperCase());
+                    let idx = {
+                        cedi: headers.indexOf("CEDI"),
+                        area: headers.indexOf("AREA_PREPARAZIONE"),
+                        ord: headers.indexOf("COLLI_ORD"),
+                        fatti: headers.indexOf("COLLI_PREPARATI")
+                    };
+                    for(let i = 1; i < righePrepM.length; i++) {
+                        let col = parseCSVLine(righePrepM[i], sep);
+                        if(col.length < headers.length) continue;
+                        let cedi = col[idx.cedi] || "";
+                        let area = col[idx.area] || "";
+                        let nomeDisplay = "";
+                        
+                        // Mappatura Nomi Preparazione Magazzini
+                        if (cedi === "21" && area === "VENTILA") nomeDisplay = "Freschi - Ventilazione";
+                        else if (cedi === "21" && area === "PICKING") nomeDisplay = "Freschi - Picking";
+                        else if (cedi === "23" && area === "FRUTTA") nomeDisplay = "Ortofrutta - Frutta";
+                        else if (cedi === "23" && area === "4 GAMMA") nomeDisplay = "Ortofrutta - IV Gamma";
+                        else if (cedi === "24" && area === "CASS PICK") nomeDisplay = "Cameri - Picking";
+                        else if (cedi === "24" && area === "EXPO PICK") nomeDisplay = "Cameri - Expo";
+                        else if (cedi === "25" && area === "PICKING") nomeDisplay = "Cameri - Consumo interno";
+                        else if (cedi === "35" && area === "CASS PICK") nomeDisplay = "Cassano - Omogenei";
+                        else if (cedi === "28" && area === "VENTILA") nomeDisplay = "Macelleria - Ventilazione";
+                        else if (cedi === "29" && area === "VENTILA") nomeDisplay = "Pescheria - Ventilazione";
+                        
+                        if (nomeDisplay) {
+                            let row = getOrCreate(cedi, nomeDisplay);
+                            row.prepOrd += Number(col[idx.ord]) || 0;
+                            row.prepFatti += Number(col[idx.fatti]) || 0;
+                        }
+                    }
+                }
+
+
+                let righePrepL = resPrepLab.split('\n').filter(r => r.trim() !== '');
+                if (righePrepL.length > 1) {
+                    let sep = righePrepL[0].includes(';') ? ';' : ',';
+                    let headers = parseCSVLine(righePrepL[0], sep).map(h => h.trim().toUpperCase());
+                    let idx = {
+                        cedi: headers.indexOf("CEDI"),
+                        area: headers.indexOf("AREA_PREPARAZIONE"),
+                        ord: headers.indexOf("COLLI_ORD"),
+                        fatti: headers.indexOf("COLLI_PREPARATI")
+                    };
+                    for(let i = 1; i < righePrepL.length; i++) {
+                        let col = parseCSVLine(righePrepL[i], sep);
+                        if(col.length < headers.length) continue;
+                        let cedi = col[idx.cedi] || "";
+                        let area = col[idx.area] || "";
+                        let nomeDisplay = "";
+                        
+                        // Mappatura Nomi Preparazione Laboratori
+                        if (cedi === "30" && area === "PRECOTTO") nomeDisplay = "Forno - Precotto";
+                        else if (cedi === "30" && area === "FRESCO") nomeDisplay = "Forno - Pane Fresco";
+                        else if (cedi === "31" && area === "PAST_VENTI") nomeDisplay = "Pasticceria - Produzione";
+                        
+                        if (nomeDisplay) {
+                            let row = getOrCreate(cedi, nomeDisplay);
+                            row.prepOrd += Number(col[idx.ord]) || 0;
+                            row.prepFatti += Number(col[idx.fatti]) || 0;
+                        }
+                    }
+                }
+
+                costruisciTabella(allData);
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('loader-mag').innerHTML = "Errore durante la sincronizzazione dati. Riprova.";
+            }
+        }
+
+        function costruisciTabella(datiMap) {
+            let html = "";
+            let totRicOrd = 0, totRicFatti = 0, totRicManc = 0;
+            let totPrepOrd = 0, totPrepFatti = 0, totPrepRimasti = 0;
+
+
+            let rows = Object.values(datiMap).sort((a, b) => {
+                if (a.cedi !== b.cedi) return Number(a.cedi) - Number(b.cedi);
+                return a.rep.localeCompare(b.rep);
+            });
+
+            rows.forEach(row => {
+            
+                let ricMancanti = row.ricOrd - row.ricFatti;
+                let percRic = row.ricOrd > 0 ? Math.round((row.ricFatti / row.ricOrd) * 100) : 0;
+                if(percRic > 100) percRic = 100; 
+
+        
+                let prepRimasti = row.prepOrd - row.prepFatti;
+                let percPrep = row.prepOrd > 0 ? Math.round((row.prepFatti / row.prepOrd) * 100) : 0;
+
+      
+                totRicOrd += row.ricOrd;
+                totRicFatti += row.ricFatti;
+                totRicManc += Math.max(0, ricMancanti); 
+                
+                totPrepOrd += row.prepOrd;
+                totPrepFatti += row.prepFatti;
+                totPrepRimasti += Math.max(0, prepRimasti);
+
+                
+                html += `
+                    <tr>
+                        <td class="col-cedi">${row.cedi}</td>
+                        <td class="col-reparto border-right-yellow">${row.rep}</td>
+                        
+                        <td>${formatNum(row.ricOrd)}</td>
+                        <td>${formatNum(row.ricFatti)}</td>
+                        <td style="color: ${ricMancanti > 0 ? '#ff4d4d' : 'white'}">${formatNum(ricMancanti)}</td>
+                        <td class="border-right-yellow" style="padding: 0 15px;">${row.ricOrd > 0 ? creaBarra(percRic) : '-'}</td>
+                        
+                        <td>${formatNum(row.prepOrd)}</td>
+                        <td>${formatNum(row.prepFatti)}</td>
+                        <td>${formatNum(prepRimasti)}</td>
+                        <td style="padding: 0 15px;">${row.prepOrd > 0 ? creaBarra(percPrep) : '-'}</td>
+                    </tr>
+                `;
+            });
+
+        
+            let percTotRic = totRicOrd > 0 ? Math.round((totRicFatti / totRicOrd) * 100) : 0;
+            let percTotPrep = totPrepOrd > 0 ? Math.round((totPrepFatti / totPrepOrd) * 100) : 0;
+
+         
+            html += `
+                <tr class="row-totale">
+                    <td></td>
+                    <td class="col-reparto border-right-yellow">TOTALE PIATTAFORMA</td>
+                    
+                    <td>${totRicOrd > 0 ? totRicOrd.toLocaleString('it-IT') : '-'}</td>
+                    <td style="color:#4ade80;">${totRicFatti > 0 ? totRicFatti.toLocaleString('it-IT') : '-'}</td>
+                    <td style="color:#ff4d4d;">${totRicManc > 0 ? totRicManc.toLocaleString('it-IT') : '-'}</td>
+                    <td class="border-right-yellow" style="padding: 0 15px;">${totRicOrd > 0 ? creaBarra(percTotRic) : '-'}</td>
+                    
+                    <td>${totPrepOrd > 0 ? totPrepOrd.toLocaleString('it-IT') : '-'}</td>
+                    <td style="color:#4ade80;">${totPrepFatti > 0 ? totPrepFatti.toLocaleString('it-IT') : '-'}</td>
+                    <td>${totPrepRimasti > 0 ? totPrepRimasti.toLocaleString('it-IT') : '-'}</td>
+                    <td style="padding: 0 15px;">${totPrepOrd > 0 ? creaBarra(percTotPrep) : '-'}</td>
+                </tr>
+            `;
+
+            document.getElementById('corpo-tabella').innerHTML = html;
+            
+        
+            document.getElementById('loader-mag').style.display = 'none';
+            document.getElementById('mainTable').style.display = 'block';
+            document.getElementById('ultimo-aggiornamento').innerText = "Ultimo Aggiornamento Dati: " + new Date().toLocaleTimeString('it-IT');
+        }
+    </script>
+</body>
+</html>
