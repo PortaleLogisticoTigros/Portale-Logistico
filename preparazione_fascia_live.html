@@ -332,6 +332,13 @@
         }
 
         function processaCSV(csvText, dataFiltro) {
+            
+            let dataGiorno = new Date();
+
+            const oraAttuale = dataGiorno.getHours();
+                console.log("Ora attuale a sistema: ", oraAttuale);
+
+
             const righe = csvText.split('\n').map(r => r.split(','));
             const headers = righe[0].map(h => h.replace(/["\r]/g, '').trim().toUpperCase());
 
@@ -342,6 +349,7 @@
             const idxPreparati = headers.findIndex(h => h.includes('COLLI_PREPARATI'));
             const idxFascia = headers.findIndex(h => h.includes('FASCIA_ORARIA') || h === 'FASCIA');
             const idxData = headers.findIndex(h => h === 'DATA');
+            const idxBollettati = headers.findIndex(h => h === 'COLLI_BOLLETTATI');
 
             const datiReparti = {};
 
@@ -353,7 +361,7 @@
                 const dataOriginale = (righe[i][idxData] || "").replace(/["\r]/g, '').trim();
                 
                 const dataLogica = calcolaDataLogica(dataOriginale, fascia, cedi === '35');
-                if(dataLogica !== dataFiltro) continue;
+                    if(dataLogica !== dataFiltro) continue;
 
                 const areaPrep = idxAreaPrep >= 0 ? (righe[i][idxAreaPrep] || "").replace(/["\r]/g, '').trim() : "";
                 const descrizione = idxDescr >= 0 ? (righe[i][idxDescr] || "").replace(/["\r]/g, '').trim() : "";
@@ -361,18 +369,18 @@
                 let nomeChiave = null;
 
                 if (cedi === "21" && areaPrep === "VENTILA") nomeChiave = "Cedi 21 - Ventilazione";
-                else if (cedi === "21" && areaPrep === "PICKING") nomeChiave = "Cedi 21 - Picking";
-                else if (cedi === "23" && areaPrep === "FRUTTA") nomeChiave = "Cedi 23 - Ortofrutta";
-                else if (cedi === "23" && areaPrep === "4 GAMMA") nomeChiave = "Cedi 23 - IV Gamma";
-                else if (cedi === "24" && areaPrep === "CASS PICK") nomeChiave = "Cedi 24 - Cameri Picking";
-                else if (cedi === "24" && areaPrep === "EXPO PICK") nomeChiave = "Cedi 24 - Cameri Expo";
-                else if (cedi === "25" && areaPrep === "CONSUMO") nomeChiave = "Cedi 25 - Cameri Consumo";
-                else if (cedi === "28" && areaPrep === "VENTILA") nomeChiave = "Cedi 28 - Macelleria";
-                else if (cedi === "29" && areaPrep === "VENTILA") nomeChiave = "Cedi 29 - Pescheria";
-                else if (cedi === "35" && areaPrep === "CASS PICK") nomeChiave = "Cedi 35 - Cassano Acque";
-                else if (cedi === "0" && descrizione === "TOTALE") nomeChiave = "Totale Piattaforme";
+                    else if (cedi === "21" && areaPrep === "PICKING") nomeChiave = "Cedi 21 - Picking";
+                        else if (cedi === "23" && areaPrep === "FRUTTA") nomeChiave = "Cedi 23 - Ortofrutta";
+                            else if (cedi === "23" && areaPrep === "4 GAMMA") nomeChiave = "Cedi 23 - IV Gamma";
+                                else if (cedi === "24" && areaPrep === "CASS PICK") nomeChiave = "Cedi 24 - Cameri Picking";
+                                    else if (cedi === "24" && areaPrep === "EXPO PICK") nomeChiave = "Cedi 24 - Cameri Expo";
+                                        else if (cedi === "25" && areaPrep === "CONSUMO") nomeChiave = "Cedi 25 - Cameri Consumo";
+                                            else if (cedi === "28" && areaPrep === "VENTILA") nomeChiave = "Cedi 28 - Macelleria";
+                                                else if (cedi === "29" && areaPrep === "VENTILA") nomeChiave = "Cedi 29 - Pescheria";
+                                                    else if (cedi === "35" && areaPrep === "CASS PICK") nomeChiave = "Cedi 35 - Cassano Acque";
+                                                        else if (cedi === "0" && descrizione === "TOTALE") nomeChiave = "Totale Piattaforme";
 
-                if (!nomeChiave) continue; 
+                    if (!nomeChiave) continue; 
 
                 const ordinatiStr = (righe[i][idxOrdinati] || "0");
                 const ordinati = parseInt(ordinatiStr.replace(/\D/g, '')) || 0;
@@ -380,28 +388,50 @@
                 const preparatiStr = (righe[i][idxPreparati] || "0");
                 const preparati = parseInt(preparatiStr.replace(/\D/g, '')) || 0;
 
-                if (!datiReparti[nomeChiave]) {
-                    const isCedi35 = (cedi === '35'); 
-                    datiReparti[nomeChiave] = {
-                        nome: nomeChiave,
-                        isCedi35: isCedi35,
-                        ordinati: ordinati, // Inizializza con il primo valore trovato
-                        timeline: isCedi35 ? [...fasceCedi35] : [...fasceStandard],
-                        datiFasce: {}
-                    };
-                } else {
-                    // TROVATA LA CHIAVE: Prendi il valore PIÙ ALTO degli ordinati per questa data
-                    if (ordinati > datiReparti[nomeChiave].ordinati) {
-                        datiReparti[nomeChiave].ordinati = ordinati;
-                    }
-                }
+                const bollettatiStr = (righe[i][idxBollettati] || "0");
+                const bollettati = parseInt(bollettatiStr.replace(/\D/g, '') || 0);
 
-                // Salvataggio dei dati orari preparati
-                if (fascia) {
-                    datiReparti[nomeChiave].datiFasce[fascia] = preparati;
-                }
-            }
-            return datiReparti;
+                            if (!datiReparti[nomeChiave]) {
+                                const isCedi35 = (cedi === '35'); 
+                                datiReparti[nomeChiave] = {
+                                    nome: nomeChiave,
+                                    isCedi35: isCedi35,
+                                    ordinati: ordinati, 
+                                    timeline: isCedi35 ? [...fasceCedi35] : [...fasceStandard],
+                                    datiFasce: {}
+                                };
+                            }
+                                else {
+                                
+                                    if (ordinati > datiReparti[nomeChiave].ordinati) {
+                                        datiReparti[nomeChiave].ordinati = ordinati;
+                                    }
+                                }
+
+                            if (fascia) {
+     
+                                    let ordinatoMassimo = datiReparti[nomeChiave].ordinati;
+                                    let differenzaOrdinati = (ordinatoMassimo > ordinati) ? (ordinatoMassimo - ordinati) : 0;
+
+                                    let preparatiRicalcolati = preparati + differenzaOrdinati;
+
+                        
+                                    if (nomeChiave === "Totale Piattaforme" || nomeChiave === "Cedi 23 - Ortofrutta") {
+                                        
+                                        datiReparti[nomeChiave].datiFasce[fascia] = preparati + bollettati;
+                                    }
+                                    else if (nomeChiave === "Cedi 21 - Ventilazione" && oraAttuale < 15 && preparati === 137) {
+                                        datiReparti[nomeChiave].datiFasce[fascia] = 0;
+                                    }
+                                    else if (nomeChiave === "Cedi 35 - Cassano Acque" && preparatiRicalcolati > ordinatoMassimo) {
+                                        datiReparti[nomeChiave].datiFasce[fascia] = ordinatoMassimo;
+                                    }
+                                    else {
+                                        datiReparti[nomeChiave].datiFasce[fascia] = preparatiRicalcolati;
+                                    }
+                                }
+                            }
+                    return datiReparti;
         }
 
         function costruisciDashboard(datiReparti) {
