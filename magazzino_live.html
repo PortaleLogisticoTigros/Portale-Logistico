@@ -269,7 +269,7 @@
                 ric: [ { l: "Ricevimento", m: ["EM ITTICO"] } ],
                 prep: [ { l: "Ventilazione", m: ["VENTILA"] } ]
             },
-            {
+           /*{
                 cedi: "30", area: "FORNO",
                 ric: [ { l: "Ricevimento", m: ["FORNO - ENTRATA MERCE"] } ],
                 prep: [ { l: "Precotto", m: ["PRECOTTO"] }, { l: "Pane Fresco", m: ["FRESCO"] } ]
@@ -278,7 +278,7 @@
                 cedi: "31", area: "PASTICCERIA",
                 ric: [ { l: "Ricevimento", m: ["PASTICCERIA - ENTRATA MERCE"] } ],
                 prep: [ { l: "Produzione", m: ["PAST_VENTI"] } ]
-            },
+            },*/
             {
                 cedi: "35", area: "ACQUE / PELLET",
                 ric: [ { l: "Ricevimento", m: ["GRO_CASSANO CATASTA"] } ],
@@ -498,7 +498,7 @@
                     <td></td>
                     <td>${totRicOrd > 0 ? totRicOrd.toLocaleString('it-IT') : '-'}</td>
                     <td style="color:#4ade80;">${totRicFatti > 0 ? totRicFatti.toLocaleString('it-IT') : '-'}</td>
-                    <td style="color:#ff4d4d;">${totRicManc > 0 ? totRicManc.toLocaleString('it-IT') : '-'}</td>
+                    <td style="color:'white';">${totRicManc > 0 ? totRicManc.toLocaleString('it-IT') : '-'}</td>
                     <td class="border-right-yellow" style="padding: 0 15px;">${totRicOrd > 0 ? creaBarra(percTotRic) : '-'}</td>
                     
                     <td></td>
