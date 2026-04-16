@@ -144,7 +144,7 @@
             </table>
         </div>
 
-        <div class="container-dashboard" style="margin-bottom: 10px;">
+        <div class="container-dashboard" style="margin-bottom: 10px; display: none;">
             <h4>PREPARAZIONE LABORATORI</h4>
             <div id="loader-lab" style="text-align:center; color:#ffcc00;">Sincronizzazione...</div>
             <table id="tabella-lab" style="display:none;">
@@ -199,6 +199,11 @@
                 const righeRaw = dataText.split('\n').filter(r => r.trim() !== '');
                 if (righeRaw.length === 0) return;
 
+                    let totOrd = 0;
+                    let totPrep = 0;
+                    let totRim = 0;
+                    let perTot = 0;
+
                 const sep = righeRaw[0].includes(';') ? ';' : ',';
                 const headers = parseCSVLine(righeRaw[0], sep).map(h => h.trim().toUpperCase());
                 const idx = {
@@ -207,7 +212,8 @@
                     area: headers.indexOf("AREA_PREPARAZIONE"),
                     ord: headers.indexOf("COLLI_ORD"),
                     prep: headers.indexOf("COLLI_PREPARATI"),
-                    rim: headers.indexOf("COLLI_DA_PREPARARE")
+                    rim: headers.indexOf("COLLI_DA_PREPARARE"),
+                    bol: headers.indexOf("COLLI_BOLLETTATI")
                 };
 
                 const tbody = document.getElementById(tbodyId);
@@ -235,7 +241,7 @@
                         else if (cedi === "35" && area === "CASS PICK") nomeDisplay = "Cassano - Omogenei";
                         else if (cedi === "28" && area === "VENTILA") nomeDisplay = "Macelleria - Ventilazione";
                         else if (cedi === "29" && area === "VENTILA") nomeDisplay = "Pescheria - Ventilazione";
-                        else if (cedi === "" && desc === "TOTALE") { nomeDisplay = "TOTALE PIATTAFORMA"; isTot = true; }
+                        else if (cedi === "35" && area === "GRO_GVPICK") { nomeDisplay = "TOTALE PIATTAFORMA"; isTot = true; }
                         else continue;
                     } else {
                         // LOGICA LABORATORI
@@ -252,15 +258,43 @@
                     let r = Number(col[idx.rim]) || 0;
                     let perc = o > 0 ? Math.min(100, Math.round((p / o) * 100)) : 0;
 
+                   
+
+                    totOrd = totOrd + o;
+                    totPrep = totPrep + p;
+                    totRim = totRim + r;
+                    percTot = totOrd > 0 ? Math.min(100, Math.round((totPrep / totOrd) * 100)) : 0;
+
+                        console.log("Totale Ordinato: ", totOrd);
+                        console.log("Totale Preparato: ", totPrep);
+                        console.log("Totale Rimasto: ", totRim);
+                        console.log("% avanzamento: ", perTot);
+
+
                     const tr = document.createElement('tr');
-                    if (isTot) tr.classList.add("riga-totale");
-                    tr.innerHTML = `
-                        <td>${cedi}</td><td>${nomeDisplay}</td>
-                        <td>${o.toLocaleString('it-IT')}</td><td>${p.toLocaleString('it-IT')}</td><td>${r.toLocaleString('it-IT')}</td>
-                        <td><div class="progress-bg"><div class="progress-fill" style="width:${perc}%"></div><div class="progress-text">${perc}%</div></div></td>
-                    `;
-                    tbody.appendChild(tr);
+                    
+                            if (!isTot){                               
+                                tr.innerHTML = `
+                                    <td>${cedi}</td><td>${nomeDisplay}</td>
+                                    <td>${o.toLocaleString('it-IT')}</td><td>${p.toLocaleString('it-IT')}</td><td>${r.toLocaleString('it-IT')}</td>
+                                    <td><div class="progress-bg"><div class="progress-fill" style="width:${perc}%"></div><div class="progress-text">${perc}%</div></div></td>
+                                `;
+                                    tbody.appendChild(tr);
                 }
+                            else {
+                                 tr.classList.add("riga-totale");
+                                tr.innerHTML = `
+                                    <td>${cedi}</td><td>${nomeDisplay}</td>
+                                    <td>${totOrd.toLocaleString('it-IT')}</td><td>${totPrep.toLocaleString('it-IT')}</td><td>${totRim.toLocaleString('it-IT')}</td>
+                                    <td><div class="progress-bg"><div class="progress-fill" style="width:${percTot}%"></div><div class="progress-text">${percTot}%</div></div></td>
+                                `;
+                                tbody.appendChild(tr);
+                            }
+                            
+                }
+                    
+
+
                 document.getElementById(loaderId).style.display = 'none';
                 document.getElementById(tableId).style.display = 'table';
             } catch (err) { console.error(err); }
