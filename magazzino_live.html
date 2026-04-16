@@ -51,10 +51,11 @@
         .btn-refresh { background: #ffcc00; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s;}
         .btn-refresh:hover { transform: scale(1.1); }
 
-        /* --- LAYOUT PRINCIPALE --- */
+   
         .main-wrapper {
             flex: 1;
             padding: 20px;
+            margin-top: 20px;
             overflow-y: auto;
             box-sizing: border-box;
             display: flex;
@@ -65,17 +66,16 @@
         #loader-mag { text-align: center; color: #ffcc00; font-size: 1.2rem; margin-top: 50px; font-weight: bold; }
         #ultimo-aggiornamento { font-size: 0.75rem; color: rgba(255,255,255,0.7); text-align: center; margin-top: 15px; width: 100%; }
 
-        /* --- STILE TABELLA UNIFICATA --- */
         .table-container {
             width: 100%;
-            max-width: 1700px;
+            max-width: 1800px; /* Allargata per ospitare le nuove colonne */
             background: rgba(0, 48, 135, 0.4);
             backdrop-filter: blur(15px);
             border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 15px;
             overflow-x: auto;
-            display: none; /* Nascosto finché non carica */
+            display: none;
         }
 
         table {
@@ -86,7 +86,6 @@
             white-space: nowrap;
         }
 
-        /* Intestazioni "Pillola" superiori */
         .header-pill {
             background-color: #003087;
             color: #ffcc00;
@@ -99,7 +98,6 @@
             margin-bottom: 5px;
         }
 
-        /* Celle Intestazioni Colonne */
         thead tr:nth-child(2) th {
             font-size: 0.85rem;
             font-weight: 400;
@@ -109,33 +107,35 @@
             color: #ffcc00;
         }
 
-        /* Celle Dati */
+
         tbody td {
             padding: 12px 10px;
             font-size: 1.05rem;
             text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+       
+        .group-bottom td {
+            border-bottom: 2px solid rgba(255, 204, 0, 0.3);
         }
 
-        /* Allineamenti e Colori specifici */
         .col-cedi { width: 50px; font-weight: normal; }
-        .col-reparto { text-align: left !important; color: #ffcc00; font-weight: bold; width: 280px;}
-        
-        /* Bordi gialli di divisione sezioni */
+        .col-area { text-align: left !important; color: #ffcc00; font-weight: bold; width: 150px;}
+        .col-flusso { text-align: left !important; font-size: 0.85rem !important; color: #cbd5e1; width: 130px; white-space: normal; line-height: 1.2; }
+     
         .border-right-yellow { border-right: 2px solid #ffcc00; }
         
-        /* Riga dei Totali */
+
         .row-totale td {
             font-weight: 900;
             font-size: 1.1rem;
             padding: 15px 10px;
             border-top: 2px solid #ffcc00;
-            border-bottom: none;
+            border-bottom: none !important;
             background: rgba(0, 48, 135, 0.6);
         }
-        .row-totale .col-reparto { color: #ffcc00; }
+        .row-totale .col-area { color: #ffcc00; }
 
-        /* --- BARRE DI PROGRESSO --- */
         .progress-bg {
             width: 100%;
             min-width: 120px;
@@ -165,7 +165,6 @@
             z-index: 2;
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 10px; height: 10px; }
         ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; }
@@ -181,7 +180,6 @@
                 <div class="user-initials" id="userInitials">??</div>
                 <span class="user-fullname" id="userFullname">Utente</span>
             </div>
-            
         </div>
         <ul>
             <li><a href="Home_new.html">HOME</a></li>
@@ -204,20 +202,22 @@
                 <thead>
                     <tr>
                         <th colspan="2" class="border-right-yellow" style="border-bottom: none;"></th>
-                        <th colspan="4" class="border-right-yellow" style="border-bottom: none;">
+                        <th colspan="5" class="border-right-yellow" style="border-bottom: none;">
                             <div class="header-pill">RICEVIMENTO MERCI</div>
                         </th>
-                        <th colspan="4" style="border-bottom: none;">
+                        <th colspan="5" style="border-bottom: none;">
                             <div class="header-pill">PREPARAZIONE PIATTAFORMA</div>
                         </th>
                     </tr>
                     <tr>
                         <th style="text-align: left;">CEDI</th>
-                        <th class="border-right-yellow"></th>
+                        <th class="border-right-yellow" style="text-align: left;">AREA</th>
+                        <th style="text-align: left;">ATTIVITA'</th>
                         <th>ORDINATI</th>
                         <th>RICEVUTI</th>
                         <th>MANCANTI</th>
                         <th class="border-right-yellow">PROGRESSO</th>
+                        <th style="text-align: left;">AREA PREPARAZIONE</th>
                         <th>ORDINATI</th>
                         <th>PREPARATI</th>
                         <th>RIMASTI</th>
@@ -233,10 +233,58 @@
     </div>
 
     <script>
-        // Links ai 3 database CSV
         const linkCSV_Ric = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCD2u3-ErC6NQWjRERPsojHNqDOyOcmAT46HIHIrscoY9wC6ljoajpv8sqN0HEQ_m0P2f4ggXjkWtY/pub?output=csv';
         const linkCSV_PrepMag = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1HEv87Esyv53CeLeDtM5sI0FGXvbjWtDsA1_GY3gin3GBMBQ7SdS31rR8C1l2o0eUGwjIQYrvJxuW/pub?output=csv';
         const linkCSV_PrepLab = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQJDecwQTsnTMoubMCP6giwt7KnPbKa1cnWHL4gUmmO5d1OJvlJzWsunlH9koplOUFHAiOogVhGPqpd/pub?output=csv';
+
+        // DEFINIZIONE STRUTTURALE DEI GRUPPI (Permette layout 1:2, 2:2 ecc)
+        const configAree = [
+            {
+                cedi: "21", area: "FRESCHI",
+                ric: [ { l: "Ricevimento", m: ["CASSANO SAFO"] } ],
+                prep: [ { l: "Ventilazione", m: ["VENTILA"] }, { l: "Picking", m: ["PICKING"] } ]
+            },
+            {
+                cedi: "23", area: "ORTOFRUTTA",
+                ric: [ { l: "P. Variabile", m: ["EM ORTOFRUTTA ARTICOLI A PESO VARIABILE"] }, { l: "P. Fisso", m: ["EM ORTOFRUTTA ARTICOLI A PESO FISSO"] } ],
+                prep: [ { l: "Vent. Frutta", m: ["FRUTTA"] }, { l: "Vent. IV Gamma", m: ["4 GAMMA"] } ]
+            },
+            {
+                cedi: "24", area: "GROCERY (Cameri)",
+                ric: [ { l: "Ricevimento", m: ["CASSANO GROCERY"] } ],
+                prep: [ { l: "Picking", m: ["CASS PICK"] }, { l: "Picking Expo", m: ["EXPO PICK"] } ]
+            },
+            {
+                cedi: "25", area: "MAT. CONSUMO",
+                ric: [ { l: "Ricevimento", m: ["MATERIALI DI CONSUMO"] } ],
+                prep: [ { l: "Picking", m: ["PICKING"] } ]
+            },
+            {
+                cedi: "28", area: "MACELLERIA",
+                ric: [ { l: "Ricevimento", m: ["EM MACELLERIA"] } ],
+                prep: [ { l: "Ventilazione", m: ["VENTILA"] } ]
+            },
+            {
+                cedi: "29", area: "PESCHERIA",
+                ric: [ { l: "Ricevimento", m: ["EM ITTICO"] } ],
+                prep: [ { l: "Ventilazione", m: ["VENTILA"] } ]
+            },
+            {
+                cedi: "30", area: "FORNO",
+                ric: [ { l: "Ricevimento", m: ["FORNO - ENTRATA MERCE"] } ],
+                prep: [ { l: "Precotto", m: ["PRECOTTO"] }, { l: "Pane Fresco", m: ["FRESCO"] } ]
+            },
+            {
+                cedi: "31", area: "PASTICCERIA",
+                ric: [ { l: "Ricevimento", m: ["PASTICCERIA - ENTRATA MERCE"] } ],
+                prep: [ { l: "Produzione", m: ["PAST_VENTI"] } ]
+            },
+            {
+                cedi: "35", area: "ACQUE / PELLET",
+                ric: [ { l: "Ricevimento", m: ["GRO_CASSANO CATASTA"] } ],
+                prep: [ { l: "Omogenei", m: ["CASS PICK"] } ]
+            }
+        ];
 
         window.onload = function() {
             let userRaw = (localStorage.getItem("utenteLoggato") || "Ospite").trim();
@@ -248,8 +296,9 @@
             document.getElementById('userInitials').innerText = inits.toUpperCase();
 
             caricaTutto();
-  
-            //setInterval(caricaTutto, 30000);
+
+           setInterval(() => caricaTutto(true), 60000);
+
         };
 
         function confermaEsci() { 
@@ -284,135 +333,61 @@
             `;
         }
 
-        async function caricaTutto() {
-            document.getElementById('loader-mag').style.display = 'block';
-            document.getElementById('mainTable').style.display = 'none';
+       async function caricaTutto(isBackground = false) {
+
+           if (!isBackground) {
+                document.getElementById('loader-mag').style.display = 'block';
+                document.getElementById('mainTable').style.display = 'none';
+            }
 
             try {
-                // Fetch parallela: scarica tutti e 3 i database contemporaneamente
                 const [resRic, resPrepMag, resPrepLab] = await Promise.all([
                     fetch(`${linkCSV_Ric}&nocache=${new Date().getTime()}`).then(r => r.text()),
                     fetch(`${linkCSV_PrepMag}&nocache=${new Date().getTime()}`).then(r => r.text()),
                     fetch(`${linkCSV_PrepLab}&nocache=${new Date().getTime()}`).then(r => r.text())
                 ]);
 
-                // Struttura che conterrà tutti i reparti fusi
-                const allData = {};
+                // Generazione Working Data model
+                let dataMatrix = configAree.map(conf => ({
+                    cedi: conf.cedi, area: conf.area,
+                    ric: conf.ric.map(r => ({ l: r.l, m: r.m, ord: 0, fatti: 0 })),
+                    prep: conf.prep.map(p => ({ l: p.l, m: p.m, ord: 0, fatti: 0 }))
+                }));
 
-                function getOrCreate(cedi, name) {
-                    if (!allData[name]) {
-                        allData[name] = { cedi: cedi, rep: name, ricOrd: 0, ricFatti: 0, prepOrd: 0, prepFatti: 0 };
-                    }
-                    return allData[name];
-                }
-
-     
-                let righeRic = resRic.split('\n').filter(r => r.trim() !== '');
-                if (righeRic.length > 1) {
-                    let sep = righeRic[0].includes(';') ? ';' : ',';
-                    let headers = parseCSVLine(righeRic[0], sep).map(h => h.trim().toUpperCase());
+                // Funzione Helper per smistare i dati ai corretti oggetti
+                function popolaDati(csvText, tipo, colOrd, colFatti) {
+                    let righe = csvText.split('\n').filter(r => r.trim() !== '');
+                    if (righe.length <= 1) return;
+                    let sep = righe[0].includes(';') ? ';' : ',';
+                    let headers = parseCSVLine(righe[0], sep).map(h => h.trim().toUpperCase());
                     let idx = {
-                        cedi: headers.indexOf("CEDI"),
-                        area: headers.indexOf("AREA_PREPARAZIONE"),
-                        ord: headers.indexOf("COLLI_ORDINATI"),
-                        fatti: headers.indexOf("COLLI_RICEVUTI")
+                        cedi: headers.indexOf("CEDI"), area: headers.indexOf("AREA_PREPARAZIONE"),
+                        ord: headers.indexOf(colOrd), fatti: headers.indexOf(colFatti)
                     };
-                    for(let i = 1; i < righeRic.length; i++) {
-                        let col = parseCSVLine(righeRic[i], sep);
+                    
+                    for(let i = 1; i < righe.length; i++) {
+                        let col = parseCSVLine(righe[i], sep);
                         if(col.length < headers.length) continue;
-                        let cedi = col[idx.cedi] || "";
-                        let area = col[idx.area] || "";
-                        let nomeDisplay = "";
+                        let cedi = col[idx.cedi] || "", area = col[idx.area] || "";
                         
-
-                        if (cedi === "21" && area === "CASSANO SAFO") nomeDisplay = "Cassano - Reparto Freschi";
-                        else if (cedi === "23" && area === "EM ORTOFRUTTA ARTICOLI A PESO VARIABILE") nomeDisplay = "Cassano - Ortofrutta P. Variabile";
-                        else if (cedi === "23" && area === "EM ORTOFRUTTA ARTICOLI A PESO FISSO") nomeDisplay = "Cassano - Ortofrutta P. Fisso";
-                        else if (cedi === "24" && area === "CASSANO GROCERY") nomeDisplay = "Cassano - Grocery (Cameri)";
-                        else if (cedi === "25" && area === "MATERIALI DI CONSUMO") nomeDisplay = "Cassano - Mat. Consumo (Cameri)";
-                        else if (cedi === "35" && area === "GRO_CASSANO CATASTA") nomeDisplay = "Cassano - Grocery Acque e Pellet";
-                        else if (cedi === "28" && area === "EM MACELLERIA") nomeDisplay = "Cassano - Reparto Macelleria";
-                        else if (cedi === "29" && area === "EM ITTICO") nomeDisplay = "Cassano - Reparto Pescheria";
-                        else if (cedi === "30" && area === "FORNO - ENTRATA MERCE") nomeDisplay = "Cassano - Reparto Forno";
-                        else if (cedi === "31" && area === "PASTICCERIA - ENTRATA MERCE") nomeDisplay = "Cassano - Reparto Pasticceria";
-                        
-                        if (nomeDisplay) {
-                            let row = getOrCreate(cedi, nomeDisplay);
-                            row.ricOrd += Number(col[idx.ord]) || 0;
-                            row.ricFatti += Number(col[idx.fatti]) || 0;
+                        let gruppoTarget = dataMatrix.find(d => d.cedi === cedi);
+                        if (gruppoTarget) {
+                            let listaTarget = (tipo === 'RIC') ? gruppoTarget.ric : gruppoTarget.prep;
+                            let matchObj = listaTarget.find(x => x.m.includes(area));
+                            if (matchObj) {
+                                matchObj.ord += Number(col[idx.ord]) || 0;
+                                matchObj.fatti += Number(col[idx.fatti]) || 0;
+                            }
                         }
                     }
                 }
 
-                let righePrepM = resPrepMag.split('\n').filter(r => r.trim() !== '');
-                if (righePrepM.length > 1) {
-                    let sep = righePrepM[0].includes(';') ? ';' : ',';
-                    let headers = parseCSVLine(righePrepM[0], sep).map(h => h.trim().toUpperCase());
-                    let idx = {
-                        cedi: headers.indexOf("CEDI"),
-                        area: headers.indexOf("AREA_PREPARAZIONE"),
-                        ord: headers.indexOf("COLLI_ORD"),
-                        fatti: headers.indexOf("COLLI_PREPARATI")
-                    };
-                    for(let i = 1; i < righePrepM.length; i++) {
-                        let col = parseCSVLine(righePrepM[i], sep);
-                        if(col.length < headers.length) continue;
-                        let cedi = col[idx.cedi] || "";
-                        let area = col[idx.area] || "";
-                        let nomeDisplay = "";
-                        
-                        // Mappatura Nomi Preparazione Magazzini
-                        if (cedi === "21" && area === "VENTILA") nomeDisplay = "Freschi - Ventilazione";
-                        else if (cedi === "21" && area === "PICKING") nomeDisplay = "Freschi - Picking";
-                        else if (cedi === "23" && area === "FRUTTA") nomeDisplay = "Ortofrutta - Frutta";
-                        else if (cedi === "23" && area === "4 GAMMA") nomeDisplay = "Ortofrutta - IV Gamma";
-                        else if (cedi === "24" && area === "CASS PICK") nomeDisplay = "Cameri - Picking";
-                        else if (cedi === "24" && area === "EXPO PICK") nomeDisplay = "Cameri - Expo";
-                        else if (cedi === "25" && area === "PICKING") nomeDisplay = "Cameri - Consumo interno";
-                        else if (cedi === "35" && area === "CASS PICK") nomeDisplay = "Cassano - Omogenei";
-                        else if (cedi === "28" && area === "VENTILA") nomeDisplay = "Macelleria - Ventilazione";
-                        else if (cedi === "29" && area === "VENTILA") nomeDisplay = "Pescheria - Ventilazione";
-                        
-                        if (nomeDisplay) {
-                            let row = getOrCreate(cedi, nomeDisplay);
-                            row.prepOrd += Number(col[idx.ord]) || 0;
-                            row.prepFatti += Number(col[idx.fatti]) || 0;
-                        }
-                    }
-                }
+                // Esegui la mappatura
+                popolaDati(resRic, 'RIC', "COLLI_ORDINATI", "COLLI_RICEVUTI");
+                popolaDati(resPrepMag, 'PREP', "COLLI_ORD", "COLLI_PREPARATI");
+                popolaDati(resPrepLab, 'PREP', "COLLI_ORD", "COLLI_PREPARATI");
 
-
-                let righePrepL = resPrepLab.split('\n').filter(r => r.trim() !== '');
-                if (righePrepL.length > 1) {
-                    let sep = righePrepL[0].includes(';') ? ';' : ',';
-                    let headers = parseCSVLine(righePrepL[0], sep).map(h => h.trim().toUpperCase());
-                    let idx = {
-                        cedi: headers.indexOf("CEDI"),
-                        area: headers.indexOf("AREA_PREPARAZIONE"),
-                        ord: headers.indexOf("COLLI_ORD"),
-                        fatti: headers.indexOf("COLLI_PREPARATI")
-                    };
-                    for(let i = 1; i < righePrepL.length; i++) {
-                        let col = parseCSVLine(righePrepL[i], sep);
-                        if(col.length < headers.length) continue;
-                        let cedi = col[idx.cedi] || "";
-                        let area = col[idx.area] || "";
-                        let nomeDisplay = "";
-                        
-                        // Mappatura Nomi Preparazione Laboratori
-                        if (cedi === "30" && area === "PRECOTTO") nomeDisplay = "Forno - Precotto";
-                        else if (cedi === "30" && area === "FRESCO") nomeDisplay = "Forno - Pane Fresco";
-                        else if (cedi === "31" && area === "PAST_VENTI") nomeDisplay = "Pasticceria - Produzione";
-                        
-                        if (nomeDisplay) {
-                            let row = getOrCreate(cedi, nomeDisplay);
-                            row.prepOrd += Number(col[idx.ord]) || 0;
-                            row.prepFatti += Number(col[idx.fatti]) || 0;
-                        }
-                    }
-                }
-
-                costruisciTabella(allData);
+                costruisciTabella(dataMatrix);
 
             } catch (err) {
                 console.error(err);
@@ -420,70 +395,113 @@
             }
         }
 
-        function costruisciTabella(datiMap) {
+        function costruisciTabella(dataMatrix) {
             let html = "";
             let totRicOrd = 0, totRicFatti = 0, totRicManc = 0;
             let totPrepOrd = 0, totPrepFatti = 0, totPrepRimasti = 0;
 
+            dataMatrix.forEach(d => {
+                let maxRows = Math.max(d.ric.length, d.prep.length);
+                if (maxRows === 0) return;
 
-            let rows = Object.values(datiMap).sort((a, b) => {
-                if (a.cedi !== b.cedi) return Number(a.cedi) - Number(b.cedi);
-                return a.rep.localeCompare(b.rep);
-            });
+                // Calcoli Globali per questo gruppo
+                d.ric.forEach(r => { totRicOrd += r.ord; totRicFatti += r.fatti; totRicManc += Math.max(0, r.ord - r.fatti); });
+                d.prep.forEach(p => { totPrepOrd += p.ord; totPrepFatti += p.fatti; totPrepRimasti += Math.max(0, p.ord - p.fatti); });
 
-            rows.forEach(row => {
+                for (let i = 0; i < maxRows; i++) {
+                    let isLastRowInGroup = (i === maxRows - 1);
+                    let rowClass = isLastRowInGroup ? "group-bottom" : "";
+                    html += `<tr class="${rowClass}">`;
+
+                    // Colonne fisse (Area e CEDI): solo alla riga 0, con rowspan
+                    if (i === 0) {
+                        html += `<td rowspan="${maxRows}" class="col-cedi">${d.cedi}</td>`;
+                        html += `<td rowspan="${maxRows}" class="col-area border-right-yellow">${d.area}</td>`;
+                    }
+
             
-                let ricMancanti = row.ricOrd - row.ricFatti;
-                let percRic = row.ricOrd > 0 ? Math.round((row.ricFatti / row.ricOrd) * 100) : 0;
-                if(percRic > 100) percRic = 100; 
-
-        
-                let prepRimasti = row.prepOrd - row.prepFatti;
-                let percPrep = row.prepOrd > 0 ? Math.round((row.prepFatti / row.prepOrd) * 100) : 0;
-
-      
-                totRicOrd += row.ricOrd;
-                totRicFatti += row.ricFatti;
-                totRicManc += Math.max(0, ricMancanti); 
-                
-                totPrepOrd += row.prepOrd;
-                totPrepFatti += row.prepFatti;
-                totPrepRimasti += Math.max(0, prepRimasti);
-
-                
-                html += `
-                    <tr>
-                        <td class="col-cedi">${row.cedi}</td>
-                        <td class="col-reparto border-right-yellow">${row.rep}</td>
+                    if (d.ric.length === 1) {
+                  
+                        if (i === 0) {
+                            let r = d.ric[0];
+                            let mancanti = Math.max(0, r.ord - r.fatti);
+                            let perc = r.ord > 0 ? Math.round((r.fatti / r.ord) * 100) : 0;
+                            html += `
+                                <td rowspan="${maxRows}" class="col-flusso">${r.l}</td>
+                                <td rowspan="${maxRows}">${formatNum(r.ord)}</td>
+                                <td rowspan="${maxRows}">${formatNum(r.fatti)}</td>
+                                <td rowspan="${maxRows}" style="color: ${mancanti > 0 ? 'white' : 'white'}">${formatNum(mancanti)}</td>
+                                <td rowspan="${maxRows}" class="border-right-yellow" style="padding: 0 15px;">${r.ord > 0 ? creaBarra(perc) : '-'}</td>
+                            `;
+                        }
+                    } else {
                         
-                        <td>${formatNum(row.ricOrd)}</td>
-                        <td>${formatNum(row.ricFatti)}</td>
-                        <td style="color: ${ricMancanti > 0 ? '#ff4d4d' : 'white'}">${formatNum(ricMancanti)}</td>
-                        <td class="border-right-yellow" style="padding: 0 15px;">${row.ricOrd > 0 ? creaBarra(percRic) : '-'}</td>
-                        
-                        <td>${formatNum(row.prepOrd)}</td>
-                        <td>${formatNum(row.prepFatti)}</td>
-                        <td>${formatNum(prepRimasti)}</td>
-                        <td style="padding: 0 15px;">${row.prepOrd > 0 ? creaBarra(percPrep) : '-'}</td>
-                    </tr>
-                `;
+                        if (i < d.ric.length) {
+                            let r = d.ric[i];
+                            let mancanti = Math.max(0, r.ord - r.fatti);
+                            let perc = r.ord > 0 ? Math.round((r.fatti / r.ord) * 100) : 0;
+                            html += `
+                                <td class="col-flusso">${r.l}</td>
+                                <td>${formatNum(r.ord)}</td>
+                                <td>${formatNum(r.fatti)}</td>
+                                <td style="color: ${mancanti > 0 ? 'white' : 'white'}">${formatNum(mancanti)}</td>
+                                <td class="border-right-yellow" style="padding: 0 15px;">${r.ord > 0 ? creaBarra(perc) : '-'}</td>
+                            `;
+                        } else {
+                            html += `<td colspan="5" class="border-right-yellow"></td>`;
+                        }
+                    }
+
+                    // --- SEZIONE PREPARAZIONE ---
+                    if (d.prep.length === 1) {
+                        if (i === 0) {
+                            let p = d.prep[0];
+                            let rimasti = Math.max(0, p.ord - p.fatti);
+                            let perc = p.ord > 0 ? Math.round((p.fatti / p.ord) * 100) : 0;
+                            html += `
+                                <td rowspan="${maxRows}" class="col-flusso">${p.l}</td>
+                                <td rowspan="${maxRows}">${formatNum(p.ord)}</td>
+                                <td rowspan="${maxRows}">${formatNum(p.fatti)}</td>
+                                <td rowspan="${maxRows}">${formatNum(rimasti)}</td>
+                                <td rowspan="${maxRows}" style="padding: 0 15px;">${p.ord > 0 ? creaBarra(perc) : '-'}</td>
+                            `;
+                        }
+                    } else {
+                        if (i < d.prep.length) {
+                            let p = d.prep[i];
+                            let rimasti = Math.max(0, p.ord - p.fatti);
+                            let perc = p.ord > 0 ? Math.round((p.fatti / p.ord) * 100) : 0;
+                            html += `
+                                <td class="col-flusso">${p.l}</td>
+                                <td>${formatNum(p.ord)}</td>
+                                <td>${formatNum(p.fatti)}</td>
+                                <td>${formatNum(rimasti)}</td>
+                                <td style="padding: 0 15px;">${p.ord > 0 ? creaBarra(perc) : '-'}</td>
+                            `;
+                        } else {
+                            html += `<td colspan="5"></td>`;
+                        }
+                    }
+
+                    html += `</tr>`;
+                }
             });
 
-        
+            // Riga dei totali
             let percTotRic = totRicOrd > 0 ? Math.round((totRicFatti / totRicOrd) * 100) : 0;
             let percTotPrep = totPrepOrd > 0 ? Math.round((totPrepFatti / totPrepOrd) * 100) : 0;
 
-         
             html += `
                 <tr class="row-totale">
-                    <td></td>
-                    <td class="col-reparto border-right-yellow">TOTALE PIATTAFORMA</td>
+                    <td colspan="2" class="col-area border-right-yellow" style="text-align: right !important; padding-right: 20px;">TOTALE PIATTAFORMA</td>
                     
+                    <td></td>
                     <td>${totRicOrd > 0 ? totRicOrd.toLocaleString('it-IT') : '-'}</td>
                     <td style="color:#4ade80;">${totRicFatti > 0 ? totRicFatti.toLocaleString('it-IT') : '-'}</td>
                     <td style="color:#ff4d4d;">${totRicManc > 0 ? totRicManc.toLocaleString('it-IT') : '-'}</td>
                     <td class="border-right-yellow" style="padding: 0 15px;">${totRicOrd > 0 ? creaBarra(percTotRic) : '-'}</td>
                     
+                    <td></td>
                     <td>${totPrepOrd > 0 ? totPrepOrd.toLocaleString('it-IT') : '-'}</td>
                     <td style="color:#4ade80;">${totPrepFatti > 0 ? totPrepFatti.toLocaleString('it-IT') : '-'}</td>
                     <td>${totPrepRimasti > 0 ? totPrepRimasti.toLocaleString('it-IT') : '-'}</td>
@@ -493,7 +511,6 @@
 
             document.getElementById('corpo-tabella').innerHTML = html;
             
-        
             document.getElementById('loader-mag').style.display = 'none';
             document.getElementById('mainTable').style.display = 'block';
             document.getElementById('ultimo-aggiornamento').innerText = "Ultimo Aggiornamento Dati: " + new Date().toLocaleTimeString('it-IT');
