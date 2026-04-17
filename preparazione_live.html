@@ -268,11 +268,12 @@
 
                     /** In questo blocco azzero i 137 colli della VEntilazione Safo che ogni giorno si trascina **/
 
-                        if(nomeDisplay === "Freschi - Ventilazione" && orarioAttuale < 14){
-                            p = 0;
-                            o = 0;
-                        }
-                        
+                                if(nomeDisplay === "Freschi - Ventilazione" && orarioAttuale < 14){
+                                    p = 0;
+                                        if(o <= 137){o = 0;}    
+                                    perc = o > 0 ? Math.min(100, Math.round((p / o) * 100)) : 0;
+                                }
+
                     /**********************************************************************************************/
 
 

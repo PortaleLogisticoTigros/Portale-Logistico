@@ -128,6 +128,7 @@
             flex-direction: column;
             gap: 20px;
             box-sizing: border-box;
+            overflow-y: auto;
         }
 
         .title-chart-container, .title-report-container { text-align: center; color: #003087; background-color: #ffcc00; border-radius: 20px; padding: 5px; margin-top: -5px; }
@@ -136,15 +137,34 @@
         .lista-reparti li, .lista-aziende li { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; color: #ffcc00; background-color: #003087; border-radius: 20px; margin-bottom: 5px; transition: transform 0.2s; }
         .nome-totale { font-weight: 900 !important; background: #ffcc00 !important; color: #003087 !important; border-radius: 40px !important; margin-top: 10px;}
 
-        /* --- AZIENDE & REPARTI DETTAGLIO --- */
+    
         .manutenzioni-aziende, .manutenzioni-reparto { display: flex; flex-direction: row; align-items: stretch; gap: 0; width: 100%; height: 65vh; margin-top: 10px; }
         
-        /* LOGICA PER GRAFICO GRANDE E WRAPPER STRETTO */
+     
         .selezione-azienda { flex: 0 0 350px; display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.05); padding: 20px; border: 2px solid #ffcc00; border-radius: 20px 0 0 20px; border-right: none; }
+
+        .tendina-azienda-att{
+            height: fit-content;
+            margin: -60px 0 0 10px;
+        }
+        .tendina-reparto-att{
+            height: fit-content;
+            margin: -60px 0 0 10px;
+        }
+        .dati-att{
+            margin: -10px 15px 0 10px;
+            align-items: flex-start;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #ffcc00;
+            color: #003087;
+            border-radius: 20px;
+            height: fit-content;
+            padding: 5px 5px;
+        }
         
-        /* REPARTI: GRAFICO OCCUPA PIÙ SPAZIO */
-        .selezione-reparto { 
-            flex: 1.8; /* Aumentato per dare più spazio al grafico */
+
+        .selezione-reparto {
+            flex: 1.8; 
             display: flex; 
             flex-direction: column; 
             background: rgba(255, 255, 255, 0.05); 
@@ -154,9 +174,22 @@
             border-right: none; 
         }
 
-        /* WRAPPER PIÙ STRETTO NELLA SCHEDA REPARTI */
+       .box-new-att {
+            display: grid;
+            grid-template: 1fr 1fr / 1fr 6fr;
+            margin-top: 20px;
+            height: 90%;
+            grid: unset;
+            border: 1px solid rgba(4, 3, 0, 0.3);
+            align-content: space-around;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .wrapper-attivita { 
-            flex: 1; /* Più stretto rispetto alla selezione */
+            flex: 1; 
             background: rgba(0, 48, 135, 0.2); 
             border: 2px solid #ffcc00; 
             border-radius: 0 20px 20px 0; 
@@ -167,16 +200,29 @@
             overflow: hidden; 
         }
 
+        .container-new-att{
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px; padding: 30px; 
+            border: 1px solid rgba(255,204,0,0.3);
+            height: 98%;
+            padding: 15px  15px;
+        }
+        .input-testo-att{
+            height: auto;
+        }
+
+
         .tabella-attivita, .tabella-attivita-reparti { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1; }
         .tabella-attivita li, .tabella-attivita-reparti li { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background-color: #003087; color: #ffcc00; border-radius: 15px; margin-bottom: 8px; font-size: 15px; }
 
-        .dati-report-selezionato { margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .dati-report-selezionato { margin-top: 15px; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%;}
         .dati-report-selezionato h4 { 
             background-color: #003087; border: 1px solid rgba(255, 204, 0, 0.3); 
             min-width: 550px; padding: 15px; border-radius: 20px; color: #ffcc00; text-align: left; margin: 0;
         }
         .dati-report-selezionato span { background-color: #ffcc00; color: #003087; padding: 3px 12px; border-radius: 10px; margin-left: 15px; font-weight: 900; } 
-        .btn-report { width: 300px; padding: 15px; background: #ffcc00; color: #003087; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; align-self: center; margin-top: 20px; font-size: 16px; }
+        .btn-report { width: 500px; padding: 15px; background: #ffcc00; color: #003087; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; align-self: center; margin-top: 20px; font-size: 16px; transition: 0.3s;}
+        .btn-report:hover { transform: scale(1.02); filter: brightness(1.1); }
 
         .titoletto-menu { color: #ffcc00; font-weight: 700; margin-bottom: 10px; display: block; text-transform: uppercase; font-size: 12px;}
         .toggle-container { background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 50px; display: flex; gap: 5px; border: 1px solid rgba(255, 255, 255, 0.1); width: fit-content; }
@@ -193,8 +239,6 @@
             width: 2px;
             color: #ffcc00;
         }
-
-
 
     </style>
 </head>
@@ -368,11 +412,12 @@
         </div>
 
         <div class="report-container" id="report-container">
-            <h3 class="title-report-container" style="width: fit-content; padding: 5px 25px; margin-bottom: 20px;">INVIO REPORT MENSILE</h3>
-            <div style="background: rgba(255,255,255,0.05); border-radius: 15px; padding: 30px; border: 1px solid rgba(255,204,0,0.3); display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%;">
+            
+            <div style="background: rgba(255,255,255,0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255,204,0,0.3); display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; box-sizing: border-box;">
+                <h3 class="title-report-container" style="width: fit-content; padding: 5px 25px; margin-bottom: 0;">INVIO REPORT MENSILE</h3>
                 
-                <small class="titoletto-menu">SELEZIONA FORNITORE PER IL REPORT</small>
-                <select class="tendina-azienda-report" id="tendina-azienda-report" onchange="selezioneAzienda()" style="width: 50%; padding: 12px;"> 
+                <small class="titoletto-menu" style="margin-top: 10px;">SELEZIONA FORNITORE PER IL REPORT</small>
+                <select class="tendina-azienda-report" id="tendina-azienda-report" onchange="selezioneAzienda()" style="width: 50%; padding: 10px;"> 
                     <option value="" disabled selected>Scegli un'azienda...</option>
                     <option value="E.B. Di Bicciato Emanuele">E.B. Di Bicciato Emanuele</option>
                     <option value="Roberto Ruggeri">Roberto Ruggeri</option>
@@ -395,10 +440,104 @@
                     <h4>AZIENDA SELEZIONATA: <span id="azienda-genera">---</span></h4>
                 </div>
 
-                <button class="btn-report" id="btn-report" onclick="generaReport()">GENERA REPORT PDF</button>
+                <button class="btn-report" id="btn-report" onclick="generaReport()" style="width: 50%;">GENERA REPORT PDF</button>
             </div>
-        </div>
+            
+            <div style="background: rgba(255,255,255,0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255,204,0,0.3); width: 100%; box-sizing: border-box; margin-top: 10px;">
+                <h3 class="title-report-container" style="width: fit-content; padding: 5px 25px; margin: 0 auto 25px auto;">NUOVA ATTIVITÀ ORDINARIA</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%;">
+                    
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label style="color: #ffcc00; font-size: 0.85rem; font-weight: bold; font-family: 'Montserrat', sans-serif;">Azienda:</label>
+                        <select id="nuova-att-azienda" style="width: 100%; padding: 10px;">
+                            <option value="" disabled selected>Scegli un'azienda...</option>
+                            <option value="E.B. Di Bicciato Emanuele">E.B. Di Bicciato Emanuele</option>
+                            <option value="Roberto Ruggeri">Roberto Ruggeri</option>
+                            <option value="Bertuetti SPA">Bertuetti SPA</option>
+                            <option value="Bizerba SPA">Bizerba SPA</option>
+                            <option value="Fast Service SAS">Fast Service SAS</option>
+                            <option value="Gerosa Achille SRL">Gerosa Achille SRL</option>
+                            <option value="Mondial Pack Group">Mondial Pack Group</option>
+                            <option value="CAD Project SRL">CAD Project SRL</option>
+                            <option value="Fabbri Group SPA">Fabbri Group SPA</option>
+                            <option value="Carpeggiani SRL (Elettricista)">Carpeggiani SRL (Elettricista)</option>
+                            <option value="Carpeggiani SRL (Idraulico)">Carpeggiani SRL (Idraulico)</option>
+                            <option value="Gumiero Ambiente SRL">Gumiero Ambiente SRL</option>
+                            <option value="Cagnoni Enrico">Cagnoni Enrico</option>
+                        </select>
+                    </div>
 
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label style="color: #ffcc00; font-size: 0.85rem; font-weight: bold; font-family: 'Montserrat', sans-serif;">Reparto:</label>
+                        <select id="nuova-att-reparto" style="width: 100%; padding: 10px;">
+                            <option value="" disabled selected>Scegli un reparto...</option>
+                            <option value="Forno">Reparto Forno</option>
+                            <option value="Pasticceria">Reparto Pasticceria</option>
+                            <option value="Laboratorio Formaggi">Laboratorio Formaggi</option>
+                            <option value="Laboratorio Pescheria">Laboratorio Pescheria</option>
+                            <option value="E-Commerce">E-Commerce</option>
+                            <option value="Aree Comuni">Aree Comuni</option>
+                            <option value="Piattaforma Logistica">Piattaforma Logistica</option>
+                            <option value="Uffici">Uffici</option>
+                            <option value="Macelleria">Macelleria</option>
+                            <option value="Ortofrutta">Ortofrutta</option>
+                            <option value="Pescheria">Pescheria</option>
+                            <option value="Freschi">Freschi</option>
+                            <option value="Grocery">Grocery</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label style="color: #ffcc00; font-size: 0.85rem; font-weight: bold; font-family: 'Montserrat', sans-serif;">Area Reparto:</label>
+                        <select id="nuova-att-area" style="width: 100%; padding: 10px;">
+                            <option value="" disabled selected>Scegli un'area...</option>
+                            <option value="Area 1">Area 1</option>
+                            <option value="Area 2">Area 2</option>
+                            <option value="Area 3">Area 3</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label style="color: #ffcc00; font-size: 0.85rem; font-weight: bold; font-family: 'Montserrat', sans-serif;">Attrezzatura:</label>
+                        <select id="nuova-att-attrezzatura" style="width: 100%; padding: 10px;">
+                            <option value="" disabled selected>Scegli l'attrezzatura...</option>
+                            <option value="Attrezzatura A">Attrezzatura A</option>
+                            <option value="Attrezzatura B">Attrezzatura B</option>
+                            <option value="Attrezzatura C">Attrezzatura C</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label style="color: #ffcc00; font-size: 0.85rem; font-weight: bold; font-family: 'Montserrat', sans-serif;">Frequenza Intervento:</label>
+                        <select id="nuova-att-frequenza" style="width: 100%; padding: 10px;">
+                            <option value="" disabled selected>Scegli la frequenza...</option>
+                            <option value="Giornaliera">Giornaliera</option>
+                            <option value="Bisettimanale">Bisettimanale</option>
+                            <option value="Trisettimanale">Trisettimanale</option>
+                            <option value="Settimanale">Settimanale</option>
+                            <option value="Quindicinale">Quindicinale</option>
+                            <option value="Mensile">Mensile</option>
+                            <option value="Bimestrale">Bimestrale</option>
+                            <option value="Trimestrale">Trimestrale</option>
+                            <option value="Semestrale">Semestrale</option>
+                            <option value="Annuale">Annuale</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label style="color: #ffcc00; font-size: 0.85rem; font-weight: bold; font-family: 'Montserrat', sans-serif;">Prezzo Pattuito (€):</label>
+                        <input type="text" id="nuova-att-prezzo" placeholder="Es: 150.00" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ffcc00; background: rgba(0, 48, 135, 0.8); color: white; font-family: 'Montserrat', sans-serif; font-size: 1rem; box-sizing: border-box; outline: none;">
+                    </div>
+
+                </div>
+                
+                <div style="display: flex; justify-content: center; margin-top: 25px;">
+                    <button class="btn-report" onclick="alert('Funzione di salvataggio in sviluppo!')" style="width: 50%; margin: 0;">SALVA ATTIVITÀ</button>
+                </div>
+            </div>
+
+        </div>
         <div class="acquisti-container" id="acquisti-container"><h3>ACQUISTI - SCHEDA IN SVILUPPO</h3></div>
     </div>
 
@@ -417,7 +556,7 @@
         let iniziali = (parti.length > 1) ? parti[0][0] + parti[1][0] : parti[0][0] + (parti[0][1] || "");
         document.getElementById('userInitials').innerText = iniziali.toUpperCase();
         caricaDatiCSV();
-        spese(); 
+        report(); 
     };
 
     async function caricaDatiCSV() {

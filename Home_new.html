@@ -339,6 +339,16 @@
         let indexLoop = 0;
 
         window.onload = function() {
+
+                let controlloUser = (localStorage.getItem("utenteLoggato") || "Ospite").trim().toUpperCase();
+                    if(controlloUser === 'OSPITE'){
+                        
+                        alert("Non sei autorizzato ad accedere oppure esegui il log in");
+                        window.location.href="index.html"
+                        return;
+                    }
+
+
             const comingFrom = document.referrer;
             if (comingFrom.includes("index")) {
                 document.getElementById('welcomeBox').classList.add('mostra-benvenuto');
@@ -346,7 +356,7 @@
             }
 
             let userRaw = (localStorage.getItem("utenteLoggato") || "Ospite").trim().toUpperCase();
-            // Iniziali e Nome Camel Case
+           
             let userFormattato = userRaw.split(/[ ._-]+/).map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(" ");
             document.getElementById('userFullname').innerText = userFormattato;
             
