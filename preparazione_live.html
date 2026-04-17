@@ -194,6 +194,12 @@
 
         async function processaTabella(url, tbodyId, loaderId, tableId, isLab) {
             try {
+
+                let dataGrezza = new Date();
+                let orarioAttuale = dataGrezza.getHours();
+
+                    console.log("Orario attuale del sistema: ", orarioAttuale);
+
                 const response = await fetch(`${url}&nocache=${new Date().getTime()}`);
                 const dataText = await response.text();
                 const righeRaw = dataText.split('\n').filter(r => r.trim() !== '');
@@ -206,15 +212,16 @@
 
                 const sep = righeRaw[0].includes(';') ? ';' : ',';
                 const headers = parseCSVLine(righeRaw[0], sep).map(h => h.trim().toUpperCase());
-                const idx = {
-                    cedi: headers.indexOf("CEDI"),
-                    desc: headers.indexOf("DESCRIZIONE_CEDI"),
-                    area: headers.indexOf("AREA_PREPARAZIONE"),
-                    ord: headers.indexOf("COLLI_ORD"),
-                    prep: headers.indexOf("COLLI_PREPARATI"),
-                    rim: headers.indexOf("COLLI_DA_PREPARARE"),
-                    bol: headers.indexOf("COLLI_BOLLETTATI")
-                };
+
+                        const idx = {
+                            cedi: headers.indexOf("CEDI"),
+                            desc: headers.indexOf("DESCRIZIONE_CEDI"),
+                            area: headers.indexOf("AREA_PREPARAZIONE"),
+                            ord: headers.indexOf("COLLI_ORD"),
+                            prep: headers.indexOf("COLLI_PREPARATI"),
+                            rim: headers.indexOf("COLLI_DA_PREPARARE"),
+                            bol: headers.indexOf("COLLI_BOLLETTATI")
+                        };
 
                 const tbody = document.getElementById(tbodyId);
                 tbody.innerHTML = ''; 
@@ -230,7 +237,7 @@
                     let isTot = false;
 
                     if (!isLab) {
-                        // LOGICA MAGAZZINI
+
                         if (cedi === "21" && area === "VENTILA") nomeDisplay = "Freschi - Ventilazione";
                         else if (cedi === "21" && area === "PICKING") nomeDisplay = "Freschi - Picking";
                         else if (cedi === "23" && area === "FRUTTA") nomeDisplay = "Ortofrutta - Frutta";
@@ -241,10 +248,10 @@
                         else if (cedi === "35" && area === "CASS PICK") nomeDisplay = "Cassano - Omogenei";
                         else if (cedi === "28" && area === "VENTILA") nomeDisplay = "Macelleria - Ventilazione";
                         else if (cedi === "29" && area === "VENTILA") nomeDisplay = "Pescheria - Ventilazione";
-                        else if (cedi === "35" && area === "GRO_GVPICK") { nomeDisplay = "TOTALE PIATTAFORMA"; isTot = true; }
+                        //else if (cedi === "" && desc === "" && area === '') { nomeDisplay = "TOTALE PIATTAFORMA"; isTot = true; }
                         else continue;
                     } else {
-                        // LOGICA LABORATORI
+                        
                         if (cedi === "30" && area === "PRECOTTO") nomeDisplay = "Forno - Precotto";
                         else if (cedi === "30" && area === "FRESCO") nomeDisplay = "Forno - Pane Fresco";
                         else if (cedi === "31" && area === "PAST_VENTI") nomeDisplay = "Pasticceria - Produzione";
@@ -258,7 +265,16 @@
                     let r = Number(col[idx.rim]) || 0;
                     let perc = o > 0 ? Math.min(100, Math.round((p / o) * 100)) : 0;
 
-                   
+
+                    /** In questo blocco azzero i 137 colli della VEntilazione Safo che ogni giorno si trascina **/
+
+                        if(nomeDisplay === "Freschi - Ventilazione" && orarioAttuale < 14){
+                            p = 0;
+                            o = 0;
+                        }
+                        
+                    /**********************************************************************************************/
+
 
                     totOrd = totOrd + o;
                     totPrep = totPrep + p;
@@ -280,7 +296,7 @@
                                     <td><div class="progress-bg"><div class="progress-fill" style="width:${perc}%"></div><div class="progress-text">${perc}%</div></div></td>
                                 `;
                                     tbody.appendChild(tr);
-                }
+                            }
                             else {
                                  tr.classList.add("riga-totale");
                                 tr.innerHTML = `
@@ -292,6 +308,17 @@
                             }
                             
                 }
+
+                    /** Ricostruisco la TR per comporre la riga del totale Piattaforma **/
+
+                const tr = document.createElement('tr');
+                tr.classList.add("riga-totale");
+                                tr.innerHTML = `
+                                    <td>${""}</td><td>${"Totale Piattaforma"}</td>
+                                    <td>${totOrd.toLocaleString('it-IT')}</td><td>${totPrep.toLocaleString('it-IT')}</td><td>${totRim.toLocaleString('it-IT')}</td>
+                                    <td><div class="progress-bg"><div class="progress-fill" style="width:${percTot}%"></div><div class="progress-text">${percTot}%</div></div></td>
+                                `;
+                                tbody.appendChild(tr);
                     
 
 
