@@ -15,57 +15,128 @@
 
         body { margin: 0; background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%); font-family: 'Montserrat', sans-serif; color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
-        ::-webkit-scrollbar { width: 12px; height: 12px; }
-        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; border: 3px solid rgba(0, 48, 135, 0.8); }
-        ::-webkit-scrollbar-thumb:hover { background: #facc15; }
-        * { scrollbar-width: thin; scrollbar-color: #ffcc00 rgba(0, 0, 0, 0.2); }
-
         nav {
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 8px 20px; 
-            display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            position: sticky; top: 0; z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .nav-left { flex: 0 0 auto; display: flex; align-items: center; gap: 15px; }
-        .user-badge { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.15); padding: 5px 12px; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.2); cursor: pointer; }
-        .user-initials { width: 30px; height: 30px; background: #ffcc00; color: #003087; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.85rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+
+        .user-badge {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 5px 12px; border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+
+        .user-initials {
+            width: 30px; height: 30px; background: #ffcc00; color: #003087;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 0.85rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
         .user-fullname { color: white; font-size: 0.85rem; font-weight: 500; }
 
-        .toggle-prep { background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 50px; display: flex; gap: 5px; border: 1px solid rgba(255, 255, 255, 0.1); width: fit-content; margin-left: 20px;}
-        .btn-prep, .btn-fascia { background: transparent; color: white; border: none; padding: 8px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 11px; transition: 0.3s; text-transform: uppercase; }
-        .btn-prep.active, .btn-fascia.active { background: #ffcc00 !important; color: #003087 !important; }
-
-        nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; flex: 1; justify-content: center; margin-left: -150px;}
+        nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; flex: 1; justify-content: center; margin-left: -400px;}
         nav ul li a { text-decoration: none; color: white; font-size: 1.15rem; transition: all 0.4s ease; cursor: pointer; white-space: nowrap; }
         nav ul:hover li a { filter: blur(2px); opacity: 0.5; transform: scale(0.95); }
         nav ul li a:hover { filter: blur(0px); opacity: 1; transform: scale(1.15); color: #ffcc00; }
         .logout { color: #efba0a !important; }
 
-        .nav-right { flex: 0 0 auto; display: flex; justify-content: flex-end; align-items: center; gap: 15px;}
+        .nav-right { flex: 0 0 auto; display: flex; justify-content: flex-end; }
         .nav-logo img { height: 38px; width: auto; }
 
-        .btn-preview { color:#003087; font-family: 'Montserrat', sans-serif; background-color: #ffcc00; border: none; padding: 8px 15px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; font-weight: bold; font-size: 0.85rem; transition: 0.3s; }
+        .btn-preview {
+            color:#003087;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #ffcc00;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 10px; cursor: pointer;
+            display: flex; align-items: center; font-weight: 100; font-size: 0.85rem;
+            margin-right: 15px; transition: 0.3s;
+        }
         .btn-preview:hover { transform: scale(1.05); }
 
         .filter-bar { background: rgba(255, 255, 255, 0.05); padding: 15px 30px; display: flex; gap: 20px; align-items: center; }
-        select { background: rgba(0, 48, 135, 0.8); color: white; border: 1px solid #ffcc00; padding: 8px 15px; border-radius: 5px; font-family: 'Montserrat', sans-serif; cursor: pointer; font-weight: bold;}
+        select { background: rgba(0, 48, 135, 0.8); color: white; border: 1px solid #ffcc00; padding: 8px 15px; border-radius: 5px; font-family: 'Montserrat', sans-serif; cursor: pointer; }
         
-        .display_totali{ margin-left:auto; font-weight: bold; color:#003087; font-family: 'Montserrat', sans-serif; font-size: 18px; background-color: #ffcc00; border: 4px solid #ffcc00; border-radius: 10px; padding: 5px 15px; }
+        .display_totali{
+            margin-left:auto;
+            font-weight: bold;
+            color:#003087;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            background-color: #ffcc00;
+            border: 4px solid #ffcc00; 
+            border-radius: 10px; padding: 5px 15px;
+        }
 
-        .main-wrapper { display: flex; flex-direction: column; gap: 20px; padding: 20px; width: 100%; height: 100%; box-sizing: border-box; overflow-y: auto; }
+        /* --- LAYOUT PRINCIPALE --- */
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
 
-        .table-container { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.2); overflow-x: auto; flex-shrink: 0; }
+        /* --- TABELLA REPARTI --- */
+        .table-container { 
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(15px); 
+            border-radius: 20px; 
+            padding: 20px; 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            overflow-x: auto;
+            flex-shrink: 0;
+        }
+
         table { width: 100%; border-collapse: collapse; color: white; white-space: nowrap; }
         th { background: rgba(0, 48, 135, 0.9); color: #ffcc00; padding: 12px; font-size: 0.9rem; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
         td { padding: 10px 8px; border: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 1rem; font-weight: bold; }
         .row-totale td { background: rgba(0, 48, 135, 0.7); color: #ffcc00; font-weight: 900; border-top: 2px solid #ffcc00; }
         .col-totale { color: #4ade80; }
+        
         .td-reparto { text-align: left; cursor: pointer; text-decoration: underline; transition: opacity 0.2s; }
         .td-reparto:hover { opacity: 0.7; }
 
-        .charts-row { display: flex; gap: 20px; width: 100%; min-height: 400px; }
-        .chart-container { flex: 1; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.2); display: flex; flex-direction: column; }
+        /* Icona Camioncino & Animazione */
+        .indexFornitore i { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease; }
+        .indexFornitore:hover i { transform: scale(1.3) translateY(-2px); color: white !important; }
+
+    
+        .charts-row {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            min-height: 400px;
+        }
+
+        .chart-container { 
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(15px); 
+            border-radius: 20px; 
+            padding: 20px;
+            height: 92%; 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            display: flex;
+            flex-direction: column;
+        }
+        
         h2 { font-family: 'Montserrat', sans-serif; color: #ffcc00; text-transform: uppercase; border-bottom: 2px solid #ffcc00; font-size: 1.2rem; margin-top: 0; margin-bottom: 15px;}
         .canvas-wrapper { position: relative; flex: 1; width: 100%; }
         
@@ -73,13 +144,27 @@
         .spinner { width: 40px; height: 40px; border: 4px solid #ffcc00; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 3000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        /* --- MODALI --- */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px);
+            display: flex; justify-content: center; align-items: center; z-index: 3000;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
+        }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-content { background: rgba(0, 48, 135, 0.95); border: 2px solid #ffcc00; border-radius: 20px; padding: 30px; width: 90%; max-width: 600px; color: white; box-shadow: 0 15px 40px rgba(0,0,0,0.6); transform: scale(0.9); transition: all 0.3s ease; position: relative; }
+        .modal-content {
+            background: rgba(0, 48, 135, 0.95); border: 2px solid #ffcc00; border-radius: 20px;
+            padding: 30px; width: 90%; max-width: 600px; color: white;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6); transform: scale(0.9); transition: all 0.3s ease;
+            position: relative;
+        }
         .modal-overlay.active .modal-content { transform: scale(1); }
-        .modal-close { position: absolute; top: 15px; right: 20px; color: #ffcc00; font-size: 1.5rem; cursor: pointer; transition: 0.2s; }
+        .modal-close {
+            position: absolute; top: 15px; right: 20px; color: #ffcc00; font-size: 1.5rem;
+            cursor: pointer; transition: 0.2s;
+        }
         .modal-close:hover { transform: scale(1.2); color: white; }
         .modal-title { font-family: 'Montserrat', sans-serif; color: #ffcc00; font-size: 1.5rem; text-transform: uppercase; margin-top: 0; border-bottom: 2px solid rgba(255,204,0,0.3); padding-bottom: 10px; margin-bottom: 20px; text-align: center; }
+        
         .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .modal-stat { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
         .modal-stat.full { grid-column: span 2; background: rgba(0,0,0,0.2); border-color: rgba(255,204,0,0.3); }
@@ -88,7 +173,26 @@
         .modal-stat-value.yellow { color: #ffcc00; }
         .modal-stat-value.red { color: #ff4d4d; }
 
-        @media (max-width: 1000px) { .charts-row { flex-direction: column; } .chart-container { min-height: 350px; } .modal-grid { grid-template-columns: 1fr; } .modal-stat.full { grid-column: span 1; } }
+        /* Stili Tabella Modale Mezzi */
+        .modal-table-wrapper { overflow-x: auto; max-height: 50vh; margin-top: 15px; border-radius: 10px; border: 1px solid rgba(255,204,0,0.3); }
+        .modal-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: center; }
+        .modal-table th { position: sticky; top: 0; background: #002266; color: #ffcc00; padding: 10px; z-index: 2; border-bottom: 2px solid #ffcc00; font-size: 0.8rem;}
+        .modal-table td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 500;}
+        .modal-table tr:hover { background: rgba(255,255,255,0.05); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #facc15; }
+
+        @media (max-width: 1000px) {
+            .charts-row { flex-direction: column; }
+            .chart-container { min-height: 350px; }
+            .modal-grid { grid-template-columns: 1fr; }
+            .modal-stat.full { grid-column: span 1; }
+        }
+
     </style>
 </head>
 <body>
@@ -100,8 +204,6 @@
                 <span class="user-fullname" id="userFullname">Utente</span>
             </div>
             <div style="font-family: 'Montserrat', sans-serif; font-size: 1.2rem; color: #ffcc00; font-weight: bold; margin-left: 20px;">TIGROS - ACCESSI PIATTAFORMA</div>
-            
-            
         </div>
         
         <ul>
@@ -133,6 +235,31 @@
         </div>
     </div>
 
+    <div id="mezziModal" class="modal-overlay" onclick="chiudiMezziModal(event)">
+        <div class="modal-content" style="max-width: 1500px;" onclick="event.stopPropagation()">
+            <i class="fa-solid fa-xmark modal-close" onclick="chiudiMezziModal(event)"></i>
+            <h2 id="mezziModalTitle" class="modal-title">Dettaglio Mezzi</h2>
+            <div class="modal-table-wrapper">
+                <table class="modal-table">
+                    <thead>
+                        <tr>
+                            <th>Giorno</th>
+                            <th style="text-align: left;">Fornitore</th>
+                            <th>Registrazione</th>
+                            <th>Entrata</th>
+                            <th>Uscita</th>
+                            <th>Attesa Est.</th>
+                            <th>Scarico</th>
+                            <th>Attesa Tot.</th>
+                            <th>Stato</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo-tabella-mezzi"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <div class="filter-bar">
         <span><i class="fa-regular fa-calendar"></i> Seleziona Settimana:</span>
         <select id="selectSettimana" onchange="processaDati()"></select>
@@ -154,6 +281,7 @@
                         <th>Sabato</th>
                         <th>Domenica</th>
                         <th class="col-totale">TOT. REPARTO</th>
+                        <th class="indexFornitori"><i class="fa-solid fa-truck"></i></th>
                     </tr>
                 </thead>
                 <tbody id="corpo-tabella"></tbody>
@@ -211,11 +339,6 @@
 
         function confermaEsci() { if(confirm("Chiudere sessione?")) { localStorage.clear(); window.location.href="index.html"; } }
 
-        function cambiaVista(tipo) {
-            if(tipo === 'LIVE') window.location.href="preparazione_live.html";
-            else if(tipo === 'FASCIA') window.location.href="preparazione_fascia_live.html";
-        }
-
         function getSettimanaCorrente() {
             const d = new Date();
             d.setHours(0, 0, 0, 0);
@@ -262,9 +385,15 @@
                 const lines = rawData.split(/\r?\n/).filter(l => l.trim().length > 10);
                 
                 const headers = lines[0].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(h => h.replace(/"/g, "").trim().toUpperCase());
+                
                 const idxReg = headers.findIndex(h => h.includes('REGISTRAZIONE') || h.includes('ARRIVO'));
                 const idxEnt = headers.findIndex(h => h.includes('ENTRATA') || h.includes('INGRESSO'));
                 const idxUsc = headers.findIndex(h => h.includes('USCITA'));
+                
+                // Ricerca separata degli indici per Codice Fornitore e Descrizione Fornitore
+                // Cerca la colonna che si chiama ESATTAMENTE "FORNITORE" o "MITTENTE"
+                const idxFornitoreCodice = headers.findIndex(h => h === 'FORNITORE' || h === 'MITTENTE' || h === 'CODICE FORNITORE');
+                const idxFornitoreDescrizione = headers.findIndex(h => h.includes('DESCRIZIONE FORNITORE') || h.includes('RAGIONE SOCIALE'));
 
                 datiOriginali = lines.slice(1).map(line => {
                     const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
@@ -275,6 +404,19 @@
                     const tReg = idxReg >= 0 && cols[idxReg] ? cols[idxReg].replace(/"/g, "").trim() : "";
                     const tEnt = idxEnt >= 0 && cols[idxEnt] ? cols[idxEnt].replace(/"/g, "").trim() : "";
                     const tUsc = idxUsc >= 0 && cols[idxUsc] ? cols[idxUsc].replace(/"/g, "").trim() : "";
+                    
+                    // Composizione Fornitore Completo (Codice - Descrizione)
+                    let codForn = idxFornitoreCodice >= 0 && cols[idxFornitoreCodice] ? cols[idxFornitoreCodice].replace(/"/g, "").trim() : "";
+                    let descForn = idxFornitoreDescrizione >= 0 && cols[idxFornitoreDescrizione] ? cols[idxFornitoreDescrizione].replace(/"/g, "").trim() : "";
+                    
+                    let fornitoreCompleto = "N.D.";
+                    if (codForn && descForn) {
+                        fornitoreCompleto = `${codForn} - ${descForn}`;
+                    } else if (codForn) {
+                        fornitoreCompleto = codForn;
+                    } else if (descForn) {
+                        fornitoreCompleto = descForn;
+                    }
 
                     let d;
                     if (dataStr.includes("/")) {
@@ -283,17 +425,22 @@
                     } else { d = new Date(dataStr); }
                     const giornoIndice = isNaN(d.getTime()) ? 0 : (d.getDay() + 6) % 7;
                     
-                    return { settimana: settimanaCSV, giorno: giornoIndice, reparto: reparto, reg: tReg, ent: tEnt, usc: tUsc };
+                    return { 
+                        settimana: settimanaCSV, 
+                        giorno: giornoIndice, 
+                        reparto: reparto, 
+                        reg: tReg, ent: tEnt, usc: tUsc,
+                        fornitoreCompleto: fornitoreCompleto 
+                    };
                 });
 
-                // IMPORTANTE: Popola il menu a tendina DOPO aver scaricato i dati
                 estraiEPopolaSettimane();
 
                 setTimeout(() => {
                     document.getElementById('loader-overlay').style.opacity = '0';
                     setTimeout(() => {
                         document.getElementById('loader-overlay').style.display = 'none';
-                        processaDati(); // Costruisce i grafici
+                        processaDati(); 
                     }, 500);
                 }, 1000);
 
@@ -323,7 +470,7 @@
             document.getElementById('counter-display').innerText = "TOTALI ACCESSI: " + totali;
             
             if(totali === 0) {
-                document.getElementById('corpo-tabella').innerHTML = '<tr><td colspan="9" style="color:#ffcc00; padding: 20px;">Nessun dato presente per la settimana selezionata</td></tr>';
+                document.getElementById('corpo-tabella').innerHTML = '<tr><td colspan="10" style="color:#ffcc00; padding: 20px;">Nessun dato presente per la settimana selezionata</td></tr>';
                 if(dailyChart) dailyChart.destroy();
                 if(deptPieChart) deptPieChart.destroy();
             } else {
@@ -338,12 +485,13 @@
             repartiOrdinati.forEach(rep => {
                 const accessiSettimana = matrixDati[rep];
                 const totReparto = accessiSettimana.reduce((a, b) => a + b, 0);
-                const coloreFisso = coloreDefault[rep.toUpperCase()] || coloreDefault; // Corretto il typo!
+                const coloreFisso = coloriReparti[rep.toUpperCase()] || coloreDefault;
 
                 htmlTabella += `<tr>
-                    <td class="td-reparto" style="color: ${coloreFisso};" onclick="apriModal('${rep}')">${rep}</td>
+                    <td class="td-reparto" style="color: ${coloreDefault};" onclick="apriModal('${rep}')">${rep}</td>
                     ${accessiSettimana.map(val => `<td>${val > 0 ? val : '-'}</td>`).join('')}
                     <td class="col-totale">${totReparto > 0 ? totReparto : '-'}</td>
+                    <td class="indexFornitore" style="cursor:pointer; color: #ffcc00;" onclick="apriMezziModal('${rep}')" title="Dettaglio Mezzi"><i class="fa-solid fa-truck"></i></td>
                 </tr>`;
             });
 
@@ -351,6 +499,7 @@
                 <td style="text-align: left;">TOTALE GIORNALIERO</td>
                 ${giorni.map(val => `<td>${val > 0 ? val : '-'}</td>`).join('')}
                 <td style="color: #4ade80;">${totali}</td>
+                <td class="indexFornitore" style="color: #4ade80; cursor:pointer;" onclick="apriMezziModal('TOTALE')" title="Dettaglio Mezzi Totale"><i class="fa-solid fa-truck"></i></td>
             </tr>`;
 
             document.getElementById('corpo-tabella').innerHTML = htmlTabella;
@@ -499,7 +648,7 @@
             document.getElementById('modSca').innerText = formatDuration(avgSca);
             document.getElementById('modAttTot').innerText = formatDuration(avgTot);
 
-            document.querySelector('.modal-content').style.borderColor = coloriReparti[repUpper] || '#ffcc00';
+            document.querySelector('#repartoModal .modal-content').style.borderColor = coloriReparti[repUpper] || '#ffcc00';
             document.getElementById('modalTitle').style.color = coloriReparti[repUpper] || '#ffcc00';
             document.getElementById('repartoModal').classList.add('active');
         }
@@ -508,6 +657,75 @@
             if(e) e.stopPropagation();
             document.getElementById('repartoModal').classList.remove('active');
         }
+
+        function apriMezziModal(repartoSelezionato) {
+            const selSett = document.getElementById('selectSettimana').value.trim();
+
+            const datiFiltrati = datiOriginali.filter(r => {
+                const settimanaPulita = r.settimana.replace(/[^\x20-\x7E]/g, "").trim();
+                if (settimanaPulita !== selSett) return false;
+                if (repartoSelezionato !== 'TOTALE' && r.reparto !== repartoSelezionato) return false;
+                return true;
+            });
+
+            let htmlRighe = '';
+            
+            datiFiltrati.forEach(r => {
+                let mReg = hhmmToMins(r.reg);
+                let mEnt = hhmmToMins(r.ent);
+                let mUsc = hhmmToMins(r.usc);
+
+                let attEst = formatDuration(getDiffMins(mReg, mEnt));
+                let scarico = formatDuration(getDiffMins(mEnt, mUsc));
+                let attTot = formatDuration(getDiffMins(mReg, mUsc));
+
+                let stato = '<span style="color:#4ade80;">In Orario</span>';
+                const orarioMax = orariLimite[r.reparto.toUpperCase()];
+                if (mReg !== null && orarioMax !== undefined) {
+                    let dRitardo = mReg - orarioMax;
+                    if (dRitardo < 0) dRitardo += 24 * 60;
+                    if (dRitardo > 0 && dRitardo <= 12 * 60) {
+                        stato = '<span style="color:#ff4d4d; font-weight:bold;">Ritardo</span>';
+                    }
+                }
+
+                const nomeGiorno = giorniNomi[r.giorno] || "-";
+
+                htmlRighe += `<tr>
+                    <td>${nomeGiorno}</td>
+                    <td style="text-align:left; color:#ffcc00;">${r.fornitoreCompleto}</td>
+                    <td>${r.reg || '-'}</td>
+                    <td>${r.ent || '-'}</td>
+                    <td>${r.usc || '-'}</td>
+                    <td>${attEst}</td>
+                    <td>${scarico}</td>
+                    <td style="color:#ffcc00; font-weight:bold;">${attTot}</td>
+                    <td>${stato}</td>
+                </tr>`;
+            });
+
+            if(htmlRighe === '') {
+                htmlRighe = '<tr><td colspan="9" style="padding: 20px; font-weight:bold; color:#ffcc00;">Nessun mezzo trovato in questa selezione</td></tr>';
+            }
+
+            document.getElementById('corpo-tabella-mezzi').innerHTML = htmlRighe;
+            
+            const titolo = repartoSelezionato === 'TOTALE' ? 'Dettaglio Mezzi - Totale Piattaforma' : `Dettaglio Mezzi - ${repartoSelezionato}`;
+            document.getElementById('mezziModalTitle').innerText = titolo;
+            
+            const colBordo = repartoSelezionato === 'TOTALE' ? '#4ade80' : (coloriReparti[repartoSelezionato.toUpperCase()] || '#ffcc00');
+            document.querySelector('#mezziModal .modal-content').style.borderColor = colBordo;
+            document.getElementById('mezziModalTitle').style.color = colBordo;
+
+            document.getElementById('mezziModal').classList.add('active');
+        }
+
+        function chiudiMezziModal(e) {
+            if(e) e.stopPropagation();
+            document.getElementById('mezziModal').classList.remove('active');
+        }
     </script>
+</body>
+</html>
 </body>
 </html>
