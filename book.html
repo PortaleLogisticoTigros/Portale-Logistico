@@ -230,7 +230,8 @@
     </div>
 
     <script>
-        const webAppUrl = "https://script.google.com/macros/s/AKfycbzoEGWIF1Xyuc1U3jGHfgsue_PkmZayNLM4oIQrCi_MDX05aJwDOjJTyVfuHS0RLp8uqA/exec"; 
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbzPmiowGOk2ZO8i9prMbGVfKlVpDV8UIBL02NUUGZbMBueY91KiX96Nd1698aVBZVGYMg/exec";
+        const webAppUpload = 'https://script.google.com/macros/s/AKfycbxjgzkWhP284tzaZjKS2_siazqUYIJcNO8hu6SsktyTWbsxqORHkpuj7OUia2nRDaFWjQ/exec';
         const utentiAutorizzati = ["GIACOMO BARDELLI"];
     
   
@@ -352,27 +353,30 @@
             const nomeUtenteLoggato = localStorage.getItem("utenteLoggato") || "Ospite";
             nomeFormattatoControllo = nomeUtenteLoggato.toUpperCase();
 
-                let frameAnteprima = "";
 
             if (!utentiAutorizzati.includes(nomeFormattatoControllo)) {
-                alert("Accesso negato " + nomeUtenteLoggato + " ma non hai i permessi per caricare file.");
+                alert("Accesso negato " + nomeUtenteLoggato + " non hai i permessi per caricare file.");
                 return;
             }
 
             const file = input.files[0];
                 if (!file) return;
+            
+            
 
-            const nomepercontrollo = file.name.toLowerCase();
+            const nomepercontrollo = file.name.trim().toLowerCase();
                 console.log("nome per il controllo del frame nel quale forzare la vista del loader: " + nomepercontrollo);
+            
+                let frameAnteprima = "";
                     
-                if(nomepercontrollo.includes("book logistico")){
-                       let frameAnteprima = 'BookLogistico';
+                    if(nomepercontrollo.includes("book logistico")){
+                       frameAnteprima = 'BookLogistico';
                     }
                     else if(nomepercontrollo.includes("book controllo qualita pescheria")){
-                        let frameAnteprima = 'BookPescheria';
+                        frameAnteprima = 'BookPescheria';
                     }
                     else if(nomepercontrollo.includes("book controllo qualita ortofrutta")){
-                        let frameAnteprima = 'BookOrtofrutta';
+                        frameAnteprima = 'BookOrtofrutta';
                     }
                     else{
                         alert("Il nome del file caricato non è corretto. Assicurati che contenga 'book logistico', 'book controllo qualita pescheria' o 'book controllo qualita ortofrutta'.");
@@ -412,18 +416,19 @@
             btn.disabled = true;
 
                 let controlloNome = file.name.toLowerCase();
+                let azione = '';
                     
                     console.log("Nome file caricato: " + file.name);
                     console.log("Controllo nome file: " + controlloNome);
 
-                        if(file.name.includes("book logistico")){
-                            let azione = "uploadPDF";
+                        if(controlloNome.includes("book logistico")){
+                            azione = "uploadPDF";
                         }
-                        else if(file.name.includes("book controllo qualita pescheria")){
-                            let azione = "uploadPDFPescheria";
+                        else if(controlloNome.includes("book controllo qualita pescheria")){
+                            azione = "uploadPDFPescheria";
                         }
-                        else if(file.name.includes("book controllo qualita ortofrutta")){
-                            let azione = "uploadPDFOrtofrutta";
+                        else if(controlloNome.includes("book controllo qualita ortofrutta")){
+                            azione = "uploadPDFOrtofrutta";
                         }
 
                            
@@ -434,8 +439,11 @@
                 const base64Data = e.target.result.split(',')[1];
                 const payload = { azione: azione, blob: base64Data, nomeFile: file.name };
 
+                 console.log("Dati passato alla chiamata; ", payload);
+
+
                 try {
-                    await fetch(webAppUrl, {
+                    await fetch(webAppUpload, {
                         method: "POST",
                         mode: "no-cors",
                         body: JSON.stringify(payload)
