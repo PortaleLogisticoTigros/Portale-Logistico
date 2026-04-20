@@ -208,7 +208,7 @@
         
         <ul>
             <li><a href="Home_new.html" style="color: #ffcc00;">HOME</a></li>
-            <li><a href="Viaggi.html">DASHBOARD VIAGGI</a></li>
+            
             <li><a onclick="confermaEsci()" class="logout">ESCI</a></li>
         </ul>
         
@@ -309,7 +309,8 @@
         const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQJSsaqnuyzKhFmxzipIeuX8d5hj95qeEkQ7X6WwyNpeF_88FrjnSEVANZFzaZoA_WI_5GlPgMhs5KR/pub?gid=0&single=true&output=csv';
 
         const coloriReparti = {
-            "FRESCHI": "#5ca0d3",      
+            "FRESCHI": "#5ca0d3",
+            "FRESCHI VENTILAZIONE": "#5ca0d3",      
             "ORTOFRUTTA": "#4ade80",   
             "MACELLERIA": "#d9534f",  
             "PESCHERIA": "#9966cc",    
@@ -322,7 +323,7 @@
 
         const orariLimite = {
             "FRESCHI": 10 * 60, "ORTOFRUTTA": 23 * 60, "MACELLERIA": 19 * 60, "PESCHERIA": 2 * 60,
-            "FORNO": 12 * 60, "PASTICCERIA": 12 * 60, "E-COMMERCE": 12 * 60, "GROCERY": 12 * 60
+            "FORNO": 12 * 60, "PASTICCERIA": 12 * 60, "E-COMMERCE": 12 * 60, "GROCERY": 12 * 60, "FRESCHI VENTILAZIONE": 21 * 60
         };
 
         window.onload = function() {

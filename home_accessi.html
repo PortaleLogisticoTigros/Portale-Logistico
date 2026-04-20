@@ -249,9 +249,12 @@
             "ERMANNO LAMPERTI": ["richiami", "report", "check", "laboratori","fornitori"],
             "ELABORAZIONI CEDI": ["richiami", "report", "check", "laboratori","fornitori"],
             "PAOLO SOMMARUGA": ["richiami", "report", "check", "laboratori","fornitori"],
+            "CBIFFI": ["richiami", "report", "check", "laboratori","fornitori"],
+            "ADEON": ["richiami", "report", "check", "laboratori","fornitori"],
         };
 
         window.onload = function() {
+            
             const comingFrom = document.referrer;
             const welcomeBox = document.getElementById('welcomeBox');
             if (comingFrom.includes("index")) {
@@ -267,6 +270,7 @@
             document.getElementById('userInitials').innerText = iniziali.toUpperCase();
 
             let utenteFormattato = nomeUtente.toUpperCase();
+
             console.log("Utente loggato formattato:", utenteFormattato);
 
             const repartiConsentiti = autorizzazioni[utenteFormattato] || ["richiami"]; 
