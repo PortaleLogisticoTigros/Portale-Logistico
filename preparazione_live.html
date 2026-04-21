@@ -98,6 +98,10 @@
             td:nth-child(4)::before { content: "PREPARATI:"; }
             td:nth-child(5)::before { content: "RIMASTI:"; }
             td:nth-child(6) { flex-direction: column; align-items: center; padding-top: 10px; }
+            .user-fullname{display: none;}
+            .toggle-prep { background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 50px; display: flex; gap: 5px; border: 1px solid rgba(255, 255, 255, 0.1); width: fit-content; margin-left: 5px; margin-top: 2px; }
+            .btn-prep, .btn-fascia { background: transparent; color: white; border: none; padding: 4px 10px; border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 8px; transition: 0.3s; text-transform: uppercase; }
+            .btn-prep.active, .btn-fascia.active { background: #ffcc00 !important; color: #003087 !important; cursor: not-allowed;}
         }
     </style>
 </head>
@@ -120,7 +124,6 @@
         <div class="nav-center">
             <ul>
                 <li><a href="Home_new.html">HOME</a></li>
-                <li><a href="Viaggi.html">VIAGGI</a></li>
                 <li><a onclick="confermaEsci()" style="color:#ffcc00; cursor:pointer">ESCI</a></li>
             </ul>
         </div>
