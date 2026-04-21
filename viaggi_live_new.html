@@ -207,6 +207,7 @@
 
        
         .viaggio-card {
+            position: relative; /* Per posizionare il badge lampeggiante in alto a destra */
             display: flex;
             width: 100%;
             min-height: 120px; 
@@ -227,6 +228,28 @@
             background: rgba(0, 48, 135, 0.8);
             box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
             border-color: rgba(255, 204, 0, 0.6);
+        }
+
+        /* --- STILE BADGE LAMPEGGIANTE --- */
+        .badge-ritorno {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #ffcc00;
+            color: #003087;
+            font-weight: 550;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            padding: 2px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(255, 204, 0, 0.4);
+            animation: lampeggioMorbido 2s infinite alternate;
+            z-index: 5;
+        }
+
+        @keyframes lampeggioMorbido {
+            0% { opacity: 0.5; box-shadow: 0 0 5px rgba(255, 204, 0, 0.2); }
+            100% { opacity: 1; box-shadow: 0 0 15px rgba(255, 204, 0, 0.8); }
         }
 
        
@@ -359,10 +382,11 @@
             .header-titolo h2 { font-size: 1.25rem; }
             .header-subtitle { display: block; margin-left: 0; margin-top: 5px; font-size: 0.8rem; }
             .search-box { width: 100%; box-sizing: border-box; }
-            .search-box:focus-within { width: 100%; } /* Evita sbordature */
+            .search-box:focus-within { width: 100%; } 
 
           
             .viaggio-card { min-height: auto; border-left-width: 5px; border-radius: 12px; }
+            .badge-ritorno { top: auto; bottom: 15px; right: 15px; font-size: 0.7rem; } /* Sposto il badge su mobile */
             .viaggio-info { padding: 15px; gap: 8px; }
             .viaggio-info .fv-badge { font-size: 1rem; padding: 4px 10px; }
             .info-azienda { font-size: 0.95rem; }
@@ -643,7 +667,7 @@
                 
                 let memTargaM = "", memTargaR = "";
                 let memAzienda = "", memAutista = "", memFV = "";
-                let memUscitaMag = "";
+                let memUscitaMag = "", memStatusMag = "";
 
                 const aziendeAmmesse = ["BRIVIO & VIGANO' LOGISTICS SRL", "ITALTRANS SPA", "AUTOTRASPORTI TASSONE SRL", "EMME TRANSPORT S.R.L", "PARATORI SPA"];
 
@@ -684,6 +708,7 @@
                     }
 
                     if (cols[3]) memUscitaMag = cols[3];
+                    if (cols[4]) memStatusMag = cols[4]; // Estraggo lo stato dalla colonna 4
 
                     let tappaPdv = cols[5];
                     
@@ -704,6 +729,10 @@
 
                         if (lastTrip && lastTrip.fv === memFV && lastTrip.targaM === memTargaM) {
                             lastTrip.tappe.push(tappaObj);
+                            // Se una tappa qualsiasi dice "ritorno", flaggiamo tutto il viaggio come in ritorno
+                            if (memStatusMag.toLowerCase().includes("ritorno")) {
+                                lastTrip.inRitorno = true;
+                            }
                         } else {
                             datiViaggiGlobali.push({
                                 fv: memFV,
@@ -712,6 +741,7 @@
                                 targaM: memTargaM,
                                 targaR: memTargaR,
                                 uscitaMag: memUscitaMag,
+                                inRitorno: memStatusMag.toLowerCase().includes("ritorno"), // Verifico subito lo stato
                                 tappe: [tappaObj]
                             });
                         }
@@ -751,8 +781,12 @@
                     `;
                 });
 
+      
+                let badgeRitornoHtml = viaggio.inRitorno ? '<div class="badge-ritorno"><i class="fa-solid fa-truck-fast"></i> Ritorno a deposito</div>' : '';
+
                 html += `
                     <div class="viaggio-card" onclick="apriMappaViaggio(${tripIndex})">
+                        ${badgeRitornoHtml}
                         <div class="viaggio-info">
                             <div class="fv-badge">${viaggio.fv}</div>
                             <div class="info-row info-azienda"><i class="fa-solid fa-building"></i> ${viaggio.azienda}</div>
@@ -782,7 +816,6 @@
                 document.getElementById('corpo-cards').style.display = 'flex'; 
             }
         }
-
 
         function apriMappaViaggio(tripIndex) {
             const viaggio = datiViaggiGlobali[tripIndex];
@@ -836,4 +869,4 @@
 
     </script>
 </body>
-</html>
+</html> 
