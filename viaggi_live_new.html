@@ -279,7 +279,7 @@
         .info-row { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; color: white; }
         .info-row i { color: #ffcc00; width: 20px; text-align: center; font-size: 1.1rem;}
         .info-azienda { font-weight: bold; font-size: 1.05rem; color: #fff; }
-        .col-targa { font-family: monospace; font-size: 1rem; background: rgba(255,255,255,0.15); padding: 3px 8px; border-radius: 5px; font-weight: bold;}
+        .col-targa { font-family: 'Montserrat', sans-serif; font-size: 1rem; background: rgba(255,255,255,0.15); padding: 3px 8px; border-radius: 5px; font-weight: 300;}
 
        
         .viaggio-tappe {
@@ -708,7 +708,7 @@
                     }
 
                     if (cols[3]) memUscitaMag = cols[3];
-                    if (cols[4]) memStatusMag = cols[4]; // Estraggo lo stato dalla colonna 4
+                    if (cols[4]) memStatusMag = cols[4]; 
 
                     let tappaPdv = cols[5];
                     
@@ -729,7 +729,7 @@
 
                         if (lastTrip && lastTrip.fv === memFV && lastTrip.targaM === memTargaM) {
                             lastTrip.tappe.push(tappaObj);
-                            // Se una tappa qualsiasi dice "ritorno", flaggiamo tutto il viaggio come in ritorno
+                           
                             if (memStatusMag.toLowerCase().includes("ritorno")) {
                                 lastTrip.inRitorno = true;
                             }
@@ -741,7 +741,7 @@
                                 targaM: memTargaM,
                                 targaR: memTargaR,
                                 uscitaMag: memUscitaMag,
-                                inRitorno: memStatusMag.toLowerCase().includes("ritorno"), // Verifico subito lo stato
+                                inRitorno: memStatusMag.toLowerCase().includes("ritorno"), 
                                 tappe: [tappaObj]
                             });
                         }
@@ -796,7 +796,7 @@
                                 <span><span class="col-targa">${viaggio.targaM}</span> / <span class="col-targa">${viaggio.targaR}</span></span>
                             </div>
                             <div class="info-row" style="margin-top: 5px;">
-                                <i class="fa-regular fa-clock"></i> Uscita Mag.: <strong style="color: #4ade80; margin-left: 5px;">${viaggio.uscitaMag}</strong>
+                                <i class="fa-regular fa-clock"></i> Uscita Piattaforma: <strong style="color:'white'; margin-left: 5px;">${viaggio.uscitaMag}</strong>
                             </div>
                         </div>
                         <div class="viaggio-tappe">
