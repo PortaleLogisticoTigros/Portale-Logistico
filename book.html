@@ -160,27 +160,37 @@
                scrollbar-width: none; 
             }
             nav::-webkit-scrollbar { display: none; } 
-
             .nav-left, nav ul{ flex: 0 0 auto; width: auto; justify-content: flex-start; margin: 0; padding: 0; }
             .nav-right { flex: 0 0 auto; width: auto; justify-content: flex-end; margin: 0; padding: 0; }
             .user-fullname { display: none; }
             .user-badge { padding: 5px; background: transparent; border: none; }
-            
             nav ul { gap: 15px; overflow: visible; }
             nav ul li a { font-size: 0.9rem; }
-
-            .nav-right { flex-direction: row; flex-wrap: nowrap; gap: 10px; justify-content: flex-end;}
-            .caricoPDF, .stampaPDF { font-size: 8px; height: 30px; align-items: center;}
+            .nav-right { flex-direction: row; flex-wrap: nowrap; gap: 5px; justify-content: flex-end;}
+           
+            .nav-right button, .caricoPDF, .stampaPDF { 
+            width: 100px; 
+            height: 30px; 
+            font-size: 8px;
+            padding: 2px;
+            white-space: nowrap;
+            display: flex;
+            justify-content: center; 
+            align-items: center; 
+        }
             .nav-logo { margin-left: 5px; }
             .nav-logo img { height: 30px; align-self: flex-end; }
-
             .titolo-book { display: none; }
-
             .iframe-wrapper { flex: 1; height: auto; width: 100%; }
+
+
+
+
         }
     </style>
 </head>
 <body>
+
 
     <nav>
         <div class="nav-left">
@@ -303,7 +313,7 @@
             nomeFormattato = nomeUtente.toUpperCase();
             const btnUpload = document.getElementById('btnUpload');
             if (utentiAutorizzati.includes(nomeFormattato)) {
-                btnUpload.style.display = "inline-block"; 
+                btnUpload.style.display = "flex"; 
             } else {
                 btnUpload.remove();
             }
