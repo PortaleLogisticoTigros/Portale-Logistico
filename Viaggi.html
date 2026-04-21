@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Piattaforma Tigros - Viaggi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
 
          @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
@@ -102,6 +103,69 @@
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
         }
 
+        
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 150%; /* Lo posiziona esattamente sotto il link padre */
+            left: 50%;
+            transform: translateX(-50%) translateY(15px); /* Centrato, ma spostato leggermente in giù */
+            background: rgba(0, 48, 135, 0.95); /* Blu scuro Tigros semi-trasparente */
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 204, 0, 0.4);
+            border-radius: 12px;
+            min-width: 220px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 2000;
+        }
+
+      
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0); 
+        }
+
+        .dropdown-menu li {
+            width: 100%;
+            list-style: none;
+        }
+
+       
+        .dropdown-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 15px;
+            font-size: 0.95rem;
+            text-align: left;
+            border-radius: 8px;
+            color: white;
+        }
+
+        .dropdown-menu li a i {
+            color: #ffcc00;
+            width: 20px;
+            text-align: center;
+        }
+
+        .dropdown-menu li a:hover {
+            background: rgba(255, 204, 0, 0.15); /* Sfondo giallino al passaggio */
+            transform: scale(1.02) !important; /* Disabilita lo zoom esagerato globale per non far sbordare il menu */
+            color: #ffcc00;
+            filter: none !important; /* Previene sfocature indesiderate */
+        }
+
         ul:hover li a { filter: blur(3px); opacity: 0.5; transform: scale(0.9); }
         ul li a:hover { filter: blur(0px); opacity: 1; transform: scale(1.2); color: #ffcc00; }
         li a.logout { color: #efba0a; }
@@ -136,11 +200,17 @@
 
         <ul>
             <li><a href="Home_new.html">HOME</a></li>
-            <li><a href="Viaggi.html" style="color: #ffcc00;">DASHBOARD VIAGGI</a></li>
-            <li><a href="Ordini.html">DASHBOARD ORDINI</a></li>
-            <li><a href="Ricevimenti.html">DASHBOARD RICEVIMENTI</a></li>
-           
-            <li><a onclick="confermaEsci()" class="logout">ESCI</a></li>
+            
+            <li class="dropdown">
+                <a href="#">DASHBOARD VIAGGI<i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
+                <ul class="dropdown-menu">
+                     <li><a onclick="viaDash()">DASHBOARD VIAGGI (Old)</a></li>
+                    <li><a onclick="viaDashNew()">DASHBOARD VIAGGI (Tabella) *BETA</a></li>
+                    <li><a onclick="viaDashCard()">DASHBOARD VIAGGI (Card) *BETA</a></li>
+                </ul>
+            </li>
+             <li><a onclick="viaMGZ_Live()">MAGAZZINO LIVE(*Beta)</a></li>
+            <li><a onclick="confermaEsci()" style="color:#efba0a">ESCI</a></li>
         </ul>
 
         <div class="nav-right">
@@ -160,6 +230,8 @@
 
     <script>
 
+        const accessoMenu = ["GIACOMO BARDELLI", "ERMANNO LAMPERTI"];
+
         window.onload = function() {
             const nomeUtente = localStorage.getItem("utenteLoggato") || "Ospite";
             document.getElementById('userFullname').innerText = nomeUtente;
@@ -172,6 +244,9 @@
                 iniziali = parti[0][0] + (parti[0][1] || "");
             }
             document.getElementById('userInitials').innerText = iniziali.toUpperCase();
+
+                localStorage.setItem("vista", "viaggiOld")
+
         };
 
   
@@ -191,6 +266,82 @@
         function tornaHome(){
             window.location.href = "Home.html";
         }
+
+         function viaDash(){
+            const userAttuale = localStorage.getItem("utenteLoggato");
+            const utenteFomattato = userAttuale.trim().toUpperCase();
+            const posizione = localStorage.getItem("viaggi");
+
+                        if(posizione === 'viaggiOld'){return;}
+
+                console.log("Utente dal local: ",utenteFomattato);
+                console.log("Utenti che hanno accesso: ", accessoMenu);
+                    const okAccesso = accessoMenu.includes(utenteFomattato);
+                        console.log("Ok accesso ----> ", okAccesso);
+
+                            if(okAccesso){
+                                localStorage.removeItem("vista");
+                                window.location.href='Viaggi.html';
+                            }
+                            else{
+                                alert("Utente non autorizzato ad accedere al menù");
+                            }
+
+        }
+        
+        function viaMGZ_Live(){
+            const userAttuale = localStorage.getItem("utenteLoggato");
+            const utenteFomattato = userAttuale.trim().toUpperCase();
+                console.log("Utente dal local: ",utenteFomattato);
+                console.log("Utenti che hanno accesso: ", accessoMenu);
+                    const okAccesso = accessoMenu.includes(utenteFomattato);
+                        console.log("Ok accesso ----> ", okAccesso);
+
+                            if(okAccesso){
+                                localStorage.removeItem("vista");
+                                window.location.href='magazzino_live.html';
+                            }
+                            else{
+                                alert("Utente non autorizzato ad accedere al menù");
+                            }
+
+        }
+
+        function viaDashNew(){
+            const userAttuale = localStorage.getItem("utenteLoggato");
+            const utenteFomattato = userAttuale.trim().toUpperCase();
+                console.log("Utente dal local: ",utenteFomattato);
+                console.log("Utenti che hanno accesso: ", accessoMenu);
+                    const okAccesso = accessoMenu.includes(utenteFomattato);
+                        console.log("Ok accesso ----> ", okAccesso);
+
+                            if(okAccesso){
+                                localStorage.removeItem("vista");
+                                window.location.href='viaggi_live.html';
+                            }
+                            else{
+                                alert("Utente non autorizzato ad accedere al menù");
+                            }
+
+        }
+        
+         function viaDashCard(){
+            const userAttuale = localStorage.getItem("utenteLoggato");
+            const utenteFomattato = userAttuale.trim().toUpperCase();
+                console.log("Utente dal local: ",utenteFomattato);
+                console.log("Utenti che hanno accesso: ", accessoMenu);
+                    const okAccesso = accessoMenu.includes(utenteFomattato);
+                        console.log("Ok accesso ----> ", okAccesso);
+
+                            if(okAccesso){
+                                localStorage.removeItem("vista");
+                                window.location.href='viaggi_live_new.html';
+                            }
+                            else{
+                                alert("Utente non autorizzato ad accedere al menù");
+                            }
+
+        }   
     </script>
 
 </body>

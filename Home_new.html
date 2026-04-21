@@ -55,6 +55,69 @@
 
         .user-fullname { color: white; font-size: 0.85rem; font-weight: 500; }
 
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 150%; 
+            left: 50%;
+            transform: translateX(-50%) translateY(15px); 
+            background: rgba(3, 69, 193, 0.95);
+    
+            border: 1px solid rgba(255, 204, 0, 0.4);
+            border-radius: 12px;
+            min-width: 220px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 2000;
+        }
+
+     
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0); 
+        }
+
+        .dropdown-menu li {
+            width: 100%;
+            list-style: none;
+        }
+
+  
+        .dropdown-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 15px;
+            font-size: 0.95rem;
+            text-align: left;
+            border-radius: 8px;
+            color: white;
+        }
+
+        .dropdown-menu li a i {
+            color: #ffcc00;
+            width: 20px;
+            text-align: center;
+        }
+
+        .dropdown-menu li a:hover {
+            background: rgba(255, 204, 0, 0.15); 
+            transform: scale(1.02) !important;
+            color: #ffcc00;
+            filter: none !important;
+        }
+
       
         .btn-loop {
             background: rgba(255, 204, 0, 0.2); border: 1px solid #ffcc00; color: #ffcc00;
@@ -200,13 +263,20 @@
             </button>
         </div>
         <ul>
-            <li><a href="Home_new.html" style="color: #ffcc00;">HOME</a></li>
-            <li><a onclick="viaDash()">DASHBOARD VIAGGI (Old)</a></li>
-            <li><a onclick="viaDashNew()">DASHBOARD VIAGGI (Tabella) *BETA</a></li>
-            <li><a onclick="viaDashCard()">DASHBOARD VIAGGI (Card) *BETA</a></li>
-            <li><a onclick="viaMGZ_Live()">MAGAZZINO LIVE(*Beta)</a></li>
-            <li><a onclick="confermaEsci()" class="logout">ESCI</a></li>
+            <li><a href="#">HOME</a></li>
+            
+            <li class="dropdown">
+                <a href="#">DASHBOARD VIAGGI<i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
+                <ul class="dropdown-menu">
+                     <li><a onclick="viaDash()">DASHBOARD VIAGGI (Old)</a></li>
+                    <li><a onclick="viaDashNew()">DASHBOARD VIAGGI (Tabella) *BETA</a></li>
+                    <li><a onclick="viaDashCard()">DASHBOARD VIAGGI (Card) *BETA</a></li>
+                </ul>
+            </li>
+             <li><a onclick="viaMGZ_Live()">MAGAZZINO LIVE(*Beta)</a></li>
+            <li><a onclick="confermaEsci()" style="color:#efba0a">ESCI</a></li>
         </ul>
+
         <div class="nav-right">
             <div class="nav-logo"><img src="LOGO_TIGROS_VERTICALE.jpg" alt="Logo"></div>
         </div>
@@ -383,6 +453,10 @@
                     else box.remove();
                 }
             });
+
+     
+
+
         };
 
         function viaDash(){
