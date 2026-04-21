@@ -201,7 +201,9 @@
         </div>
         <ul>
             <li><a href="Home_new.html" style="color: #ffcc00;">HOME</a></li>
-            <li><a onclick="viaDash()">DASHBOARD VIAGGI</a></li>
+            <li><a onclick="viaDash()">DASHBOARD VIAGGI (Old)</a></li>
+            <li><a onclick="viaDashNew()">DASHBOARD VIAGGI (Tabella) *BETA</a></li>
+            <li><a onclick="viaDashCard()">DASHBOARD VIAGGI (Card) *BETA</a></li>
             <li><a onclick="viaMGZ_Live()">MAGAZZINO LIVE(*Beta)</a></li>
             <li><a onclick="confermaEsci()" class="logout">ESCI</a></li>
         </ul>
@@ -416,6 +418,40 @@
                             }
 
         }
+
+        function viaDashNew(){
+            const userAttuale = localStorage.getItem("utenteLoggato");
+            const utenteFomattato = userAttuale.trim().toUpperCase();
+                console.log("Utente dal local: ",utenteFomattato);
+                console.log("Utenti che hanno accesso: ", accessoMenu);
+                    const okAccesso = accessoMenu.includes(utenteFomattato);
+                        console.log("Ok accesso ----> ", okAccesso);
+
+                            if(okAccesso){
+                                window.location.href='viaggi_live.html';
+                            }
+                            else{
+                                alert("Utente non autorizzato ad accedere al menù");
+                            }
+
+        }
+        
+         function viaDashCard(){
+            const userAttuale = localStorage.getItem("utenteLoggato");
+            const utenteFomattato = userAttuale.trim().toUpperCase();
+                console.log("Utente dal local: ",utenteFomattato);
+                console.log("Utenti che hanno accesso: ", accessoMenu);
+                    const okAccesso = accessoMenu.includes(utenteFomattato);
+                        console.log("Ok accesso ----> ", okAccesso);
+
+                            if(okAccesso){
+                                window.location.href='viaggi_live_new.html';
+                            }
+                            else{
+                                alert("Utente non autorizzato ad accedere al menù");
+                            }
+
+        }   
 
 
 

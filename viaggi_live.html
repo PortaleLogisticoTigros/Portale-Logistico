@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piattaforma Tigros - Book Logistico</title>
+    <link rel="icon" type="image/png" href="images.png">
+    <link rel="apple-touch-icon" href="images.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap');
+
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #2b75ee 0%, #a0861d 100%);
+            font-family: 'Montserrat', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; 
+        }
+
+        /* --- NAVBAR --- */
+        nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-left { flex: 1; display: flex; justify-content: flex-start; align-items: center; gap: 20px;}
+        .user-badge {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 5px 12px; border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+
+        .user-initials {
+            width: 30px; height: 30px; background: #ffcc00; color: #003087;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-weight: bold; font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .user-fullname { color: white; font-size: 0.85rem; text-transform: capitalize; white-space: nowrap; }
+
+        nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; flex: 2; justify-content: center; text-align: center;}
+        li a { text-decoration: none; color: white; font-family: 'Montserrat', sans-serif; font-size: 1.15rem; transition: all 0.4s ease; cursor: pointer; white-space: nowrap; }
+
+        .nav-right { flex: 1; display: flex; justify-content: flex-end; align-items: center; }
+        .nav-logo img { height: 40px; width: auto; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2)); }
+        
+        ul:hover li a { filter: blur(2px); opacity: 0.6; }
+        ul li a:hover { filter: blur(0px); opacity: 1; transform: scale(1.1); color: #ffcc00; }
+
+        /* --- STILI TABELLA DINAMICA E RAGGRUPPATA --- */
+        .main-wrapper {
+            flex: 1;
+            padding: 1%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .table-container {
+            width: 98%;
+            height: 98%;
+            background: rgba(0, 48, 135, 0.4);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            box-sizing: border-box;
+            display: none;
+            flex-direction: column;
+        }
+
+        .table-container h2 {
+            color: #ffcc00;
+            margin-top: 0;
+            text-transform: uppercase;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+            padding-bottom: 10px;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .table-scroll {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        table { 
+            width: 100%; 
+            border-collapse: separate; 
+            border-spacing: 0;
+            color: white; 
+            white-space: nowrap; 
+            font-size: 0.9rem; 
+        }
+
+        th { 
+            background: #002266; 
+            color: #ffcc00; 
+            padding: 15px 12px; 
+            text-transform: uppercase; 
+            border-bottom: 2px solid #ffcc00; 
+            text-align: left; 
+            font-size: 0.8rem;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        td { 
+            padding: 12px; 
+            border-bottom: 1px solid rgba(255,255,255,0.05); 
+            border-right: 1px solid rgba(255,255,255,0.05);
+            vertical-align: middle;
+        }
+
+        .bg-even { background-color: rgba(255, 255, 255, 0.02); }
+        .bg-odd { background-color: rgba(0, 48, 135, 0.3); }
+        
+        .trip-border-bottom td { border-bottom: 2px solid rgba(255, 204, 0, 0.6) !important; }
+        
+        /* Cursor pointer per far capire che la riga è cliccabile per la mappa */
+        tbody tr { cursor: pointer; transition: background-color 0.2s; }
+        tbody tr:hover { background-color: rgba(255,204,0,0.1) !important; }
+        
+        .col-fv { font-weight: 900; color: #ffcc00; font-size: 1.1rem;}
+        .col-targa { font-family: monospace; font-size: 1rem; background: rgba(255,255,255,0.15); padding: 4px 8px; border-radius: 5px; color: #fff;}
+        .col-rifiuti { font-weight: bold; }
+        .rifiuti-si { color: #4ade80; }
+        .rifiuti-no { color: #ff4d4d; }
+        .col-tappa { font-weight: bold; color: white; }
+
+        #loader { text-align: center; color: #ffcc00; font-size: 1.5rem; font-weight: bold; margin: auto; }
+
+        .table-scroll::-webkit-scrollbar { width: 10px; height: 10px; }
+        .table-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
+        .table-scroll::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; border: 2px solid rgba(0,0,0,0.2);}
+
+        /* --- STILI MODALE MAPPA --- */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px);
+            display: flex; justify-content: center; align-items: center; z-index: 3000;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        
+        .modal-content {
+            background: #003087; border: 2px solid #ffcc00; border-radius: 20px;
+            padding: 20px; width: 90%; max-width: 1000px; height: 80vh; color: white;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6); transform: scale(0.9); transition: all 0.3s ease;
+            position: relative; display: flex; flex-direction: column;
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        
+        .modal-close {
+            position: absolute; top: 15px; right: 20px; color: #ffcc00; font-size: 1.8rem;
+            cursor: pointer; transition: 0.2s; z-index: 10;
+        }
+        .modal-close:hover { transform: scale(1.2); color: white; }
+
+        .btn-maps {
+            background: #ffcc00; color: #003087; text-align: center; padding: 12px;
+            border-radius: 50px; font-weight: 900; text-decoration: none; font-size: 1.1rem;
+            margin-top: 15px; transition: 0.3s; display: block;
+        }
+        .btn-maps:hover { background: #fff; color: #003087; transform: scale(1.02); }
+
+        @media (max-width: 768px) {
+            body { height: 100vh; overflow: hidden; }
+            nav { flex-direction: row; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 10px; gap: 15px; justify-content: flex-start; scrollbar-width: none; }
+            nav::-webkit-scrollbar { display: none; } 
+            .nav-left, nav ul, .nav-right { flex: 0 0 auto; width: auto; justify-content: flex-start; margin: 0; padding: 0; }
+            .user-fullname { display: none; }
+            .user-badge { padding: 5px; background: transparent; border: none; }
+            nav ul { gap: 15px; overflow: visible; }
+            nav ul li a { font-size: 0.9rem; }
+            .nav-right { flex-direction: row; flex-wrap: nowrap; gap: 10px; align-items: center; }
+            .nav-logo { margin-left: 5px; }
+            .nav-logo img { height: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <div class="user-badge" onclick="location.href='info_utente.html'">
+                <div class="user-initials" id="userInitials">??</div>
+                <span class="user-fullname" id="userFullname">Utente</span>
+            </div>
+           
+        </div>
+
+        <ul>
+            <li><a href="Home_new.html">HOME</a></li>
+            <li><a href="Viaggi.html">DASHBOARD VIAGGI</a></li>
+            <li><a onclick="confermaEsci()" style="color:#efba0a">ESCI</a></li>
+        </ul>
+
+        <div class="nav-right">
+            <div class="nav-logo">
+                <img src="LOGO_TIGROS_VERTICALE.jpg" alt="Logo Tigros">
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div id="loader">Caricamento Viaggi in corso...<i class="fa-solid fa-spinner fa-spin"></i></div>
+        
+        <div class="table-container" id="tabella-viaggi">
+            <h2>Ufficio Trasporti - Viaggi live</h2>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>N° Foglio (FV)</th>
+                            <th>Azienda</th>
+                            <th>Autista</th>
+                            <th>Targa Mezzo / Rimorchio</th>
+                            <th>Uscita Mag.</th>
+                            <th>Tappa (PDV)</th>
+                            <th>Arrivo PDV</th>
+                            <th>Scarico</th>
+                            <th>Uscita PDV</th>
+                            <th>Tot. Viaggio</th>
+                            <th>Rifiuti</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo-tabella">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="mappaModal" class="modal-overlay" onclick="chiudiMappa()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <i class="fa-solid fa-xmark modal-close" onclick="chiudiMappa()"></i>
+            <h2 id="titolo-mappa" style="color: #ffcc00; margin-top: 0; text-transform: uppercase;">Mappa Percorso</h2>
+            
+            <div style="flex: 1; border: 3px solid #ffcc00; border-radius: 15px; overflow: hidden; background: #fff;">
+                <iframe id="iframe-mappa" width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen></iframe>
+            </div>
+            
+            <a id="btn-apri-maps" href="#" target="_blank" class="btn-maps">
+                <i class="fa-solid fa-map-location-dot"></i> APRI IN GOOGLE MAPS (APP / SCHERMO INTERO)
+            </a>
+        </div>
+    </div>
+
+   <script>
+        const linkCSV_Viaggi = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTSO1vf4XV08odABDgyY5wmcM-gV9Nkcb7v6g7PP3Y5G1sXYCMwFS8_hRTn16iuMc1TpLkw2TK50WbK/pub?output=csv';
+        const linkCSV_Indirizzi = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKDicXbnb8rPYBUbQO-0HQTZomXOn60fYWn6XIuf7MlTBYW3LW1UlrXf0ppyVh71jRf0lf6ZuoELit/pub?output=csv';
+
+        let datiViaggiGlobali = [];
+        let mappaIndirizzi = {}; 
+        
+        // Variabile per evitare che il loader gigante riappaia ogni 2 minuti
+        let primoAvvio = true;
+
+        window.onload = async function() {
+            let userRaw = (localStorage.getItem("utenteLoggato") || "Ospite").trim().toUpperCase();
+            if(userRaw === 'OSPITE'){
+                alert("Non sei autorizzato ad accedere oppure esegui il log in");
+                window.location.href="index.html";
+                return;
+            }
+
+            let userFormattato = userRaw.split(/[ ._-]+/).map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(" ");
+            document.getElementById('userFullname').innerText = userFormattato;
+            
+            const parti = userRaw.split(/[ ._-]+/);
+            let inits = (parti.length >= 2) ? parti[0][0] + parti[1][0] : userRaw.substring(0, 2);
+            document.getElementById('userInitials').innerText = inits.toUpperCase();
+
+            // Primo download dei dati
+            await Promise.all([
+                caricaIndirizzi(),
+                caricaDatiViaggi()
+            ]);
+
+
+            setInterval(caricaDatiViaggi, 120000);
+        };
+
+        function confermaEsci() { 
+            if(confirm("Sei sicuro di voler uscire?")) {
+                localStorage.clear();
+                window.location.href="index.html";
+            }
+        }
+
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            for (let char of line) {
+                if (char === '"') inQuotes = !inQuotes;
+                else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; } 
+                else { current += char; }
+            }
+            result.push(current.trim());
+            return result;
+        }
+
+        async function caricaIndirizzi() {
+            try {
+                const response = await fetch(linkCSV_Indirizzi + "&nocache=" + new Date().getTime());
+                const rawData = await response.text();
+                const lines = rawData.split(/\r?\n/).filter(l => l.trim().length > 0);
+                
+                for (let i = 1; i < lines.length; i++) {
+                    let cols = parseCSVLine(lines[i]);
+                    if(cols[0] && cols[3]) {
+                        let codicePdv = cols[0].trim();
+                        let indirizzo = cols[3].trim();
+                        mappaIndirizzi[codicePdv] = indirizzo;
+                    }
+                }
+            } catch (error) {
+                console.error("Errore caricamento indirizzi: ", error);
+            }
+        }
+
+
+        async function caricaDatiViaggi() {
+            
+      
+            if (primoAvvio) {
+                document.getElementById('loader').style.display = 'block';
+                document.getElementById('tabella-viaggi').style.display = 'none';
+            }
+
+            try {
+                const response = await fetch(linkCSV_Viaggi + "&nocache=" + new Date().getTime());
+                const rawData = await response.text();
+                
+                const lines = rawData.split(/\r?\n/).filter(l => l.trim().length > 0);
+                if (lines.length < 2) throw new Error("Nessun dato nel CSV");
+
+                datiViaggiGlobali = []; 
+                
+                let memTargaM = "", memTargaR = "";
+                let memAzienda = "", memAutista = "", memFV = "";
+                let memUscitaMag = "";
+
+                const aziendeAmmesse = ["BRIVIO & VIGANO' LOGISTICS SRL", "ITALTRANS SPA", "AUTOTRASPORTI TASSONE SRL", "EMME TRANSPORT S.R.L", "PARATORI SPA"];
+
+                for (let i = 1; i < lines.length; i++) {
+                    let cols = parseCSVLine(lines[i]);
+                    
+                    if (cols[1]) {
+                        memTargaM = cols[1].substring(0, 7).toUpperCase();
+                        memTargaR = cols[1].substring(7, 14).toUpperCase() || "-";
+                    }
+
+                    if (cols[2]) {
+                        let testoCella = cols[2].toUpperCase().trim();
+                        memAzienda = "N.D."; memAutista = "N.D."; memFV = "N.D.";
+
+                        for (let az of aziendeAmmesse) {
+                            if (testoCella.includes(az)) {
+                                memAzienda = az;
+                                testoCella = testoCella.replace(az, ""); 
+                                break;
+                            }
+                        }
+
+                        let idxFV = testoCella.indexOf("FV.");
+                        if (idxFV !== -1) {
+                            let bloccoFV = testoCella.substring(idxFV);
+                            let fineBlocco = bloccoFV.indexOf("/");
+                            if (fineBlocco !== -1) {
+                                memFV = bloccoFV.substring(0, fineBlocco).trim();
+                            } else {
+                                memFV = bloccoFV.trim();
+                            }
+                            testoCella = testoCella.replace(memFV, "");
+                        }
+
+                        let autistaRimasto = testoCella.replace(/\//g, '').trim();
+                        if (autistaRimasto !== "") { memAutista = autistaRimasto; }
+                    }
+
+                    if (cols[3]) memUscitaMag = cols[3];
+
+                    let tappaPdv = cols[5];
+                    
+                    if (tappaPdv) {
+                        let rifiutiRisp = cols[6] ? cols[6].toUpperCase() : "-";
+                        let classeRifiuti = rifiutiRisp === 'SI' ? 'rifiuti-si' : (rifiutiRisp === 'NO' ? 'rifiuti-no' : '');
+
+                        let tappaObj = {
+                            tappaTesto: tappaPdv,
+                            rifiuti: `<span class="col-rifiuti ${classeRifiuti}">${rifiutiRisp}</span>`,
+                            tempoViaggio: cols[7] || "-",
+                            arrivo: cols[8] || "-",
+                            uscitaPdv: cols[9] || "-",
+                            tempoScarico: cols[10] || "-"
+                        };
+
+                        let lastTrip = datiViaggiGlobali.length > 0 ? datiViaggiGlobali[datiViaggiGlobali.length - 1] : null;
+
+                        if (lastTrip && lastTrip.fv === memFV && lastTrip.targaM === memTargaM) {
+                            lastTrip.tappe.push(tappaObj);
+                        } else {
+                            datiViaggiGlobali.push({
+                                fv: memFV,
+                                azienda: memAzienda,
+                                autista: memAutista,
+                                targaM: memTargaM,
+                                targaR: memTargaR,
+                                uscitaMag: memUscitaMag,
+                                tappe: [tappaObj]
+                            });
+                        }
+                    }
+                }
+
+                disegnaTabella(datiViaggiGlobali);
+
+            } catch (error) {
+                console.error("Errore elaborazione CSV: ", error);
+                if(primoAvvio) document.getElementById('loader').innerHTML = `Errore caricamento dati: ${error.message}`;
+            } finally {
+              
+                primoAvvio = false;
+            }
+        }
+
+        function disegnaTabella(viaggiRaggruppati) {
+            const tbody = document.getElementById('corpo-tabella');
+            let html = "";
+
+            viaggiRaggruppati.forEach((viaggio, tripIndex) => {
+                let tappeCount = viaggio.tappe.length;
+                let colorClass = tripIndex % 2 === 0 ? 'bg-even' : 'bg-odd';
+
+                viaggio.tappe.forEach((tappa, stopIndex) => {
+                    let borderClass = (stopIndex === tappeCount - 1) ? 'trip-border-bottom' : '';
+
+                    html += `<tr class="riga-tappa ${colorClass} ${borderClass}" onclick="apriMappaViaggio(${tripIndex})">`;
+                    
+                    if (stopIndex === 0) {
+                        html += `
+                            <td rowspan="${tappeCount}" class="col-fv">${viaggio.fv}</td>
+                            <td rowspan="${tappeCount}">${viaggio.azienda}</td>
+                            <td rowspan="${tappeCount}">${viaggio.autista}</td>
+                            <td rowspan="${tappeCount}">
+                                <span class="col-targa">${viaggio.targaM}</span> / <span class="col-targa">${viaggio.targaR}</span>
+                            </td>
+                            <td rowspan="${tappeCount}">${viaggio.uscitaMag}</td>
+                        `;
+                    }
+                    
+                    html += `
+                            <td class="col-tappa">${tappa.tappaTesto}</td>
+                            <td>${tappa.arrivo}</td>
+                            <td>${tappa.tempoScarico}</td>
+                            <td>${tappa.uscitaPdv}</td>
+                            <td>${tappa.tempoViaggio}</td>
+                            <td>${tappa.rifiuti}</td>
+                        </tr>
+                    `;
+                });
+            });
+
+    
+            tbody.innerHTML = html;
+            
+    
+            if (document.getElementById('loader').style.display !== 'none') {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('tabella-viaggi').style.display = 'flex'; 
+            }
+        }
+
+ 
+        function apriMappaViaggio(tripIndex) {
+            const viaggio = datiViaggiGlobali[tripIndex];
+            
+            const codiceCedi = "100000";
+            const indirizzoCedi = mappaIndirizzi[codiceCedi];
+
+            if (!indirizzoCedi) {
+                alert("Errore: Indirizzo di Partenza (100000) non trovato nel database indirizzi.");
+                return;
+            }
+
+            let tappeIndirizziValidi = [];
+
+            viaggio.tappe.forEach(t => {
+                let codiceNegozio = t.tappaTesto.split('-')[0].trim();
+                let indirizzo = mappaIndirizzi[codiceNegozio];
+
+                if (indirizzo) {
+                    tappeIndirizziValidi.push(encodeURIComponent(indirizzo));
+                } else {
+                    console.warn("Indirizzo non trovato per il negozio:", codiceNegozio);
+                }
+            });
+
+            if (tappeIndirizziValidi.length === 0) {
+                alert("Nessun indirizzo valido trovato per le tappe di questo viaggio.");
+                return;
+            }
+
+            const start = encodeURIComponent(indirizzoCedi);
+            const end = start;
+
+            let daddrStr = tappeIndirizziValidi.join("+to:");
+            daddrStr += "+to:" + end;
+            const urlIframe = `https://maps.google.com/maps?saddr=${start}&daddr=${daddrStr}&output=embed`;
+
+            const urlDirect = `https://www.google.com/maps/dir/${start}/${tappeIndirizziValidi.join('/')}/${end}`;
+
+            document.getElementById('titolo-mappa').innerText = `Giro Autista: ${viaggio.autista} (${viaggio.targaM})`;
+            document.getElementById('iframe-mappa').src = urlIframe;
+            document.getElementById('btn-apri-maps').href = urlDirect;
+
+            document.getElementById('mappaModal').classList.add('active');
+        }
+
+        function chiudiMappa() {
+            document.getElementById('mappaModal').classList.remove('active');
+            document.getElementById('iframe-mappa').src = "";
+        }
+
+    </script>
+</body>
+</html>
