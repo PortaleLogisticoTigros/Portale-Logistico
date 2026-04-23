@@ -248,6 +248,7 @@
                     align-items: center; 
                     justify-content: center;
                 }
+            .princ-nav a{font-size: 25px; font-weight: 550; letter-spacing: 3px; }
             .btn-loop { display: none; }
         }
 
@@ -257,7 +258,7 @@
 </head>
 <body>
 
-    <nav id="barra-nav">
+    <nav class="princ-nav" id="barra-nav">
         <div class="nav-left">
             <div class="user-badge" onclick="location.href='info_utente.html'">
                 <div class="user-initials" id="userInitials">??</div>
@@ -282,7 +283,7 @@
             <li class="exitDesk"><a onclick="confermaEsci()" style="color:#efba0a">ESCI</a></li>
         </ul>
          <li class="dropdown-mobile">
-                <a href="#" style="font-family: 'Montserrat', sans-serif; color: #ffcc00;"><i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; margin-right: 5px;"></i>MENU</a>
+                <a href="#" style="font-family: 'Montserrat', sans-serif; color: #ffcc00;"><i class="fa-solid fa-chevron-down" style="font-size: 1.3rem; font-weight: 600; letter-spacing: 1px; margin-right: 10px;"></i>MENU</a>
                 <ul class="dropdown-menu-mobile">
                      <li><a href="#">HOME</a></li>
                      <li><a onclick="viaDash()">DASHBOARD VIAGGI (Old)</a></li>
