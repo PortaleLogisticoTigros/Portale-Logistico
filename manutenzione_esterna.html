@@ -428,8 +428,9 @@
             <div class="manutenzioni-reparto">
                 <div class="selezione-reparto">
                     <small class="titoletto-menu">SELEZIONA IL REPARTO</small>
-                    <select id="tendina-reparto" onchange="popolaDettaglioReparto()"> 
-                        <option value="Forno" selected>Reparto Forno</option>
+                    <select id="tendina-reparto" onchange="popolaDettaglioReparto()">
+                        <option value="Tutti" selected>Totale Piattaforma</option>
+                        <option value="Forno">Reparto Forno</option>
                         <option value="Pasticceria">Reparto Pasticceria</option>
                         <option value="Laboratorio Formaggi">Laboratorio Formaggi</option>
                         <option value="Laboratorio Pescheria">Laboratorio Pescheria</option>
@@ -540,7 +541,7 @@
                     </div>
 
                     <div style="display: flex; flex-direction: column; gap: 5px;">
-                        <label style="color: #ffcc00; font-size: 0.85rem; font-weight: bold; font-family: 'Montserrat', sans-serif;">Area Reparto:</label>
+                        <label style="color:#ffcc00; font-size: 0.85rem; font-weight: bold; font-family: 'Montserrat', sans-serif;">Area Reparto:</label>
                         <select id="nuova-att-area" style="width: 100%; padding: 10px;">
                             <option value="" disabled selected>Scegli un'area...</option>
                             <option value="Area 1">Area 1</option>
@@ -699,108 +700,154 @@
         }, 400);
     }
 
-    function popolaDettaglioReparto() {
-        const listContainer = document.getElementById('lista-attivita-dinamica-reparti');
-        const internalSpinner = document.getElementById('spinner-attivita-reparti');
-        if (tuttiIDati.length === 0) return;
-        listContainer.style.opacity = "0.3";
-        if(internalSpinner) internalSpinner.style.display = 'flex';
-        setTimeout(() => {
-            const annoSel = document.getElementById('selectAnno').value;
-            const meseSel = document.getElementById('selectMese').value;
-            const repartoSel = document.getElementById('tendina-reparto').value.trim().toUpperCase();
-            const datiFiltratiLista = tuttiIDati.filter(d => {
-                const matchAnno = d.ANNO == annoSel;
-                const matchReparto = d.REPARTO.trim().toUpperCase() === repartoSel;
-                return vistaAttuale === 'MESE' ? (matchAnno && d.MESE === meseSel && matchReparto) : (matchAnno && matchReparto);
-            });
-            const datiAnnoReparto = tuttiIDati.filter(d => d.ANNO == annoSel && d.REPARTO.trim().toUpperCase() === repartoSel);
-            let conteggiMensili = nomiMesi.map(m => datiAnnoReparto.filter(d => d.MESE === m).length);
-            let totaleInterventiAnno = datiAnnoReparto.length;
-            let incidenzeMensili = conteggiMensili.map(c => totaleInterventiAnno > 0 ? ((c / totaleInterventiAnno) * 100).toFixed(1) : 0);
+            function popolaDettaglioReparto() {
+                const listContainer = document.getElementById('lista-attivita-dinamica-reparti');
+                const internalSpinner = document.getElementById('spinner-attivita-reparti');
+                
+                if (tuttiIDati.length === 0) return;
+                
+                listContainer.style.opacity = "0.3";
+                if(internalSpinner) internalSpinner.style.display = 'flex';
+                
+                setTimeout(() => {
+                    const annoSel = document.getElementById('selectAnno').value;
+                    const meseSel = document.getElementById('selectMese').value;
+                    const repartoSel = document.getElementById('tendina-reparto').value.trim().toUpperCase();
+
             
+                    let conteggiMensili = []; 
+                    let incidenzeMensili = []; 
+                    let totaleInterventiAnno = 0; 
+                    
+
+                    let datiFiltratiLista = [];
+                    let datiAnnoReparto = [];
+
+                console.log("Reparto selezionato:", repartoSel);
+
+  
+                    if (repartoSel !== "TUTTI") {
+
+                        
+                        datiFiltratiLista = tuttiIDati.filter(d => {
+                            const matchAnno = d.ANNO == annoSel;
+                            const matchReparto = d.REPARTO.trim().toUpperCase() === repartoSel;
+                            return vistaAttuale === 'MESE' ? (matchAnno && d.MESE === meseSel && matchReparto) : (matchAnno && matchReparto);
+                        });
+
+                        datiAnnoReparto = tuttiIDati.filter(d => d.ANNO == annoSel && d.REPARTO.trim().toUpperCase() === repartoSel);
+
+                    } else {
+                    
+                        
+
+                        datiFiltratiLista = tuttiIDati.filter(d => {
+                            const matchAnno = d.ANNO == annoSel;
+                            return vistaAttuale === 'MESE' ? (matchAnno && d.MESE === meseSel) : matchAnno;
+                        });
+
+                        datiAnnoReparto = tuttiIDati.filter(d => d.ANNO == annoSel);
+                    }
+
+                conteggiMensili = nomiMesi.map(m => datiAnnoReparto.filter(d => d.MESE === m).length);
+                totaleInterventiAnno = datiAnnoReparto.length;
+                incidenzeMensili = conteggiMensili.map(c => totaleInterventiAnno > 0 ? ((c / totaleInterventiAnno) * 100).toFixed(1) : 0);
+            
+                        if(repartoSel === 'TUTTI'){
+                            colIstogramma = '#003087';
+                        }
+                        else{
+                            colIstogramma = '#ffcc00';
+                        }
+  
             const ctx = document.getElementById('chartAndamentoReparto').getContext('2d');
-            if (chartRepartoInstance) chartRepartoInstance.destroy();
-           chartRepartoInstance = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['GEN', 'FEB', 'MAR', 'APR', 'MAG', 'GIU', 'LUG', 'AGO', 'SET', 'OTT', 'NOV', 'DIC'],
-        datasets: [
-            { 
-                label: '% Incidenza', 
-                data: incidenzeMensili, 
-                type: 'line', 
-                borderColor: 'white', 
-                tension: 0.4, 
-                yAxisID: 'y1',
-                datalabels: {
-                    display: true,
-                    align: 'top',
-                    anchor: 'end',
-                    color: 'white',
-                    font: { weight: 'bold' },
-                    formatter: (value) => value > 0 ? value + '%' : ''
-                }
-            },      
-            { 
-                label: 'N° Interventi', 
-                data: conteggiMensili, 
-                backgroundColor: '#ffcc00', 
-                borderRadius: 5, 
-                yAxisID: 'y',
-                datalabels: {
-                    display: true,
-                    align: 'top',      
-                    anchor: 'start',  
-                    color: '#003087',  // Colore scuro per contrasto sul giallo
-                    offset: 5,         // Distanza dalla base
-                    font: { weight: '900', size: 11 },
-                    formatter: (value) => value > 0 ? value : ''
-                }
+                    if (chartRepartoInstance) chartRepartoInstance.destroy();
+        
+        chartRepartoInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['GEN', 'FEB', 'MAR', 'APR', 'MAG', 'GIU', 'LUG', 'AGO', 'SET', 'OTT', 'NOV', 'DIC'],
+                datasets: [
+                    { 
+                        label: '% Incidenza', 
+                        data: incidenzeMensili, 
+                        type: 'line', 
+                        borderColor: 'white', 
+                        tension: 0.4, 
+                        yAxisID: 'y1',
+                        datalabels: {
+                            display: true,
+                            align: 'top',
+                            anchor: 'end',
+                            color: 'white',
+                            font: { weight: 'bold' },
+                            formatter: (value) => value > 0 ? value + '%' : ''
+                        }
+                    },      
+                    { 
+                        label: 'N° Interventi', 
+                        data: conteggiMensili, 
+                        backgroundColor: colIstogramma,
+                        borderRadius: 5, 
+                        yAxisID: 'y',
+                        datalabels: {
+                            display: true,
+                            align: 'top',      
+                            anchor: 'start',  
+                            color: 'white',
+                            offset: 5,         
+                            font: { weight: '900', size: 11 },
+                            formatter: (value) => value > 0 ? value : ''
+                        }
+                    },
+                ]
             },
-        ]
-    },
-    options: { 
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: { 
-            y: { 
-                beginAtZero: true, 
-                ticks: { color: 'white' },
-                grid: { color: 'rgba(255,255,255,0.1)' } 
-            }, 
-            y1: { 
-                position: 'right', 
-                max: 100, 
-                ticks: { color: '#ffcc00' },
-                grid: { display: false } // Nascondi griglia doppia
-            },
-            x: { ticks: { color: 'white' } }
-        },
-        plugins: { 
-            legend: { labels: { color: 'white' } },
-            // Disabilita il datalabels globale per gestirlo nei singoli dataset sopra
-            datalabels: {
-                display: false 
+            options: { 
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { 
+                    y: { 
+                        beginAtZero: true, 
+                        ticks: { color: 'white' },
+                        grid: { color: 'rgba(255,255,255,0.1)' } 
+                    }, 
+                    y1: { 
+                        position: 'right', 
+                        max: 100, 
+                        ticks: { color: '#ffcc00' },
+                        grid: { display: false } 
+                    },
+                    x: { ticks: { color: 'white' } }
+                },
+                plugins: { 
+                    legend: { labels: { color: 'white' } },
+                    datalabels: { display: false }
+                }
             }
-        }
-    }
-});
-            const riepilogo = {}; let spesaTotReparto = 0;
-            datiFiltratiLista.forEach(d => {
-                let desc = (d.ATTIVITÀ_SVOLTE || d.DESCRIZIONE_INTERVENTO || "INTERVENTO").trim().toUpperCase();
-                let imp = parseFloat((d.TOTALE_SPESA || "0").replace('€', '').replace(/\./g, '').replace(',', '.').trim()) || 0;
-                riepilogo[desc] = (riepilogo[desc] || 0) + imp;
-                spesaTotReparto += imp;
-            });
-            listContainer.innerHTML = "";
+        });
+
+
+        const riepilogo = {}; 
+        let spesaTotReparto = 0;
+    
+        datiFiltratiLista.forEach(d => {
+            let desc = (d.ATTIVITÀ_SVOLTE || d.DESCRIZIONE_INTERVENTO || "INTERVENTO").trim().toUpperCase();
+            let imp = parseFloat((d.TOTALE_SPESA || "0").replace('€', '').replace(/\./g, '').replace(',', '.').trim()) || 0;
+            riepilogo[desc] = (riepilogo[desc] || 0) + imp;
+            spesaTotReparto += imp;
+        });
+
+        listContainer.innerHTML = "";
+        
             Object.keys(riepilogo).sort((a,b) => riepilogo[b] - riepilogo[a]).forEach(desc => {
                 const li = document.createElement('li');
-                li.innerHTML = `<span style="font-weight:700;">${desc}</span><div class="dati-destra"><span class="importo-attivita">${riepilogo[desc].toLocaleString('it-IT', { style: 'currency', currency: 'EUR' })}</span><span class="inc-attivita">${((riepilogo[desc]/spesaTotReparto)*100).toFixed(1)}%</span></div>`;
+                li.innerHTML = `<span style="font-weight:700;">${desc}</span><div class="dati-destra"><span class="importo-attivita">${riepilogo[desc].toLocaleString('it-IT', { style: 'currency', currency: 'EUR' })}</span><span class="inc-attivita">${spesaTotReparto > 0 ? ((riepilogo[desc]/spesaTotReparto)*100).toFixed(1) : 0}%</span></div>`;
                 listContainer.appendChild(li);
             });
+
             listContainer.style.opacity = "1";
             if(internalSpinner) internalSpinner.style.display = 'none';
+
         }, 400);
     }
 
