@@ -418,6 +418,93 @@
             #titolo-mappa { font-size: 1.1rem; padding-right: 20px; }
             .btn-maps { font-size: 0.85rem; padding: 12px; margin-top: 10px; }
         }
+
+
+        .ai-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 550px;
+            max-height: 900px;
+            background: rgba(0, 48, 135, 0.95);
+            backdrop-filter: blur(15px);
+            border: 2px solid #ffcc00;
+            border-radius: 20px;
+            display: none; 
+            flex-direction: column;
+            z-index: 5000;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            overflow: hidden;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .ai-header {
+            background: #ffcc00;
+            color: #003087;
+            padding: 12px 20px;
+            font-weight: 900;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-content {
+            padding: 20px;
+            color: white;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .ai-content strong { color: #ffcc00; }
+
+        .btn-ai-trigger {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: #ffcc00;
+            color: #003087;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 4000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: none;
+            transition: 0.3s;
+        }
+
+        .btn-ai-trigger:hover { transform: scale(1.1) rotate(15deg); }
+
+        .typing-dots span {
+            display: inline-block;
+            width: 8px; height: 8px;
+            background: #ffcc00;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: typing 1s infinite;
+        }
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 768px) {
+            .ai-panel { width: 90%; left: 5%; right: 5%; bottom: 80px; }
+        }
+
     </style>
 </head>
 <body>
@@ -483,9 +570,25 @@
         </div>
     </div>
 
+    <button class="btn-ai-trigger" onclick="avviaAnalisiGemini()" title="Chiedi analisi a Gemini AI">
+        <i class="fa-solid fa-robot"></i>
+    </button>
+
+    <div id="aiPanel" class="ai-panel">
+        <div class="ai-header">
+            <span><i class="fa-solid fa-brain"></i> ASSISTENTE GEMINI</span>
+            <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="document.getElementById('aiPanel').style.display='none'"></i>
+        </div>
+        <div id="aiContent" class="ai-content">
+            </div>
+    </div>
+
     <script>
         const linkCSV_Viaggi = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTSO1vf4XV08odABDgyY5wmcM-gV9Nkcb7v6g7PP3Y5G1sXYCMwFS8_hRTn16iuMc1TpLkw2TK50WbK/pub?output=csv';
         const linkCSV_Indirizzi = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKDicXbnb8rPYBUbQO-0HQTZomXOn60fYWn6XIuf7MlTBYW3LW1UlrXf0ppyVh71jRf0lf6ZuoELit/pub?output=csv';
+        
+        // CONFIGURAZIONE GEMINI
+        const GEMINI_API_KEY = "AIzaSyBDL8uKZx8zfb3K7eJvdhKcIfsnEcn7yNc";
 
         const accessoMenu = ["GIACOMO BARDELLI", "ERMANNO LAMPERTI", "CEDI CASSANO"];
 
@@ -508,7 +611,7 @@
             let inits = (parti.length >= 2) ? parti[0][0] + parti[1][0] : userRaw.substring(0, 2);
             document.getElementById('userInitials').innerText = inits.toUpperCase();
             
-                localStorage.setItem("vista", "viaggiCard");
+            localStorage.setItem("vista", "viaggiCard");
 
             await Promise.all([
                 caricaIndirizzi(),
@@ -872,6 +975,59 @@
             document.getElementById('iframe-mappa').src = "";
         }
 
+       async function avviaAnalisiGemini() {
+                    const panel = document.getElementById('aiPanel');
+                    const content = document.getElementById('aiContent');
+                    
+                    panel.style.display = 'flex';
+                    content.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div><p>Giacomo, sto interrogando Gemini 3 Flash...</p>`;
+
+                    if (!datiViaggiGlobali || datiViaggiGlobali.length === 0) {
+                        content.innerHTML = "Dati non disponibili.";
+                        return;
+                    }
+
+                    const sintesiDati = datiViaggiGlobali.map(v => ({
+                        az: v.azienda.substring(0,10),
+                        aut: v.autista.split(' ')[0],
+                        rit: v.inRitorno ? 'S' : 'N',
+                        tap: v.tappe.length
+                    }));
+
+                    const promptText = `Sei un esperto logistico Tigros. Analizza questi viaggi: ${JSON.stringify(sintesiDati)}. 
+                    Dimmi in 5 punti: 1. Quanti mezzi sono in rientro  2. il tempo medio del viaggio. 3. Quanti sono in fase di scarico. 4.quanti non sono arrivati alla prima destinazione. 5.calcola la statistica di quanti hanno scaricato e quanti ne mancano.  Rispondi in HTML semplice con <strong>.`;
+
+                    // URL AGGIORNATO PER GEMINI 3 FLASH (v1beta è necessario per le preview)
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_API_KEY}`;
+
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                contents: [{ parts: [{ text: promptText }] }]
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        if (data.error) {
+                            console.error("Errore Gemini:", data.error);
+                            content.innerHTML = `Giacomo, errore API: <strong>${data.error.message}</strong>`;
+                            return;
+                        }
+
+                        if (data.candidates && data.candidates[0].content) {
+                            let testo = data.candidates[0].content.parts[0].text;
+                            content.innerHTML = testo.replace(/```html|```/g, "").trim();
+                        } else {
+                            content.innerHTML = "Gemini non ha generato una risposta. Riprova tra poco.";
+                        }
+
+                    } catch (error) {
+                        content.innerHTML = "Errore di connessione tecnica.";
+                    }
+                }
     </script>
 </body>
-</html> 
+</html>
