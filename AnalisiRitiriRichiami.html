@@ -84,36 +84,12 @@
             padding-bottom: 80px; 
         }
 
-                .main-container::-webkit-scrollbar {
-                    width: 10px;               
-                    height: 10px;              
-                }
+        .main-container::-webkit-scrollbar { width: 10px; height: 10px; }
+        .main-container::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
+        .main-container::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; border: 2px solid rgba(0, 48, 135, 0.5); }
+        .main-container::-webkit-scrollbar-thumb:hover { background: #ffdb4d; }
+        .main-container { scrollbar-width: thin; scrollbar-color: #ffcc00 rgba(255, 255, 255, 0.05); }
 
-             
-                .main-container::-webkit-scrollbar-track {
-                    background: rgba(255, 255, 255, 0.05); 
-                    border-radius: 10px;
-                }
-
-    
-                .main-container::-webkit-scrollbar-thumb {
-                    background: #ffcc00;       
-                    border-radius: 10px;     
-                    border: 2px solid rgba(0, 48, 135, 0.5);
-                }
-
-
-                .main-container::-webkit-scrollbar-thumb:hover {
-                    background: #ffdb4d; 
-                }
-
-                .main-container {
-                    scrollbar-width: thin;
-                    scrollbar-color: #ffcc00 rgba(255, 255, 255, 0.05);
-                }
-
-
-        
         .box_lato{
             background: rgba(255, 255, 255, 0.1); 
             backdrop-filter: blur(15px);
@@ -136,7 +112,6 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.3);
             width: 98%;     
             max-width: 98vw;     
-           
             box-sizing: border-box;
         }
 
@@ -177,14 +152,10 @@
             transition: transform 0.2s;
         }
 
-      
-
         .col-nome { flex: 3; text-align: left; font-size: 22px; transition: transform 0.2s;}
         .col-val { flex: 1; text-align: center; font-size: 22px; transition: transform 0.2s;}
 
-           .causale-row:hover, .col-val:hover{
-           transform:  scale(1.01);
-        } 
+        .causale-row:hover, .col-val:hover{ transform:  scale(1.01); } 
 
         .data-row, .data-row-marchi {
             display: flex;
@@ -242,12 +213,10 @@
         @keyframes blinkInvert { 0%, 100% { background-color: #ffcc00; color: #003087; } 50% { background-color: #003087; color: #ffcc00; } }
         .loading-effect { animation: blinkInvert 1.2s infinite; cursor: wait; pointer-events: none; border: 2px solid #ffcc00 !important; }
 
-   
         .toggle-container { background: rgba(0,0,0,0.2); padding: 5px; border-radius: 50px; display: flex; gap: 10px; }
         .btn-toggle { background: transparent; color: white; border: none; padding: 8px 15px; border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 11px; transition: 0.3s; text-transform: uppercase; }
         .btn-toggle.active { background: #ffcc00; color: #003087; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         .header-box-titolo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; width: 100%; }
-
 
          .container-analisi{
             display: flex;
@@ -258,7 +227,6 @@
             margin: 0 auto;
             height: 40vh;
         }
-
 
             .container-richiami {
                 display: flex;
@@ -312,11 +280,8 @@
             color: #ffcc00;
             background-color: #003087;
             border-radius: 15px;
-
-
         }
 
-        
                     .infoTigros, .valueTigros, .percValueTigros,
                     .infoIndustria, .valueIndustria, .percValueIndustria,
                     .infoPrimia, .valuePrimia, .percValuePrimia {
@@ -347,8 +312,8 @@
                 display: flex;
                 flex-direction: row;
                 justify-content: center; 
-                gap: 15%;               
-                margin-left: 0;       
+                gap: 15%;                
+                margin-left: 0;        
                 padding: 20px 0;
                 width: 100%;
                           
@@ -382,9 +347,6 @@
                 transform: scale(1.05);
             }
 
-
-
-
             .conatinare-analisi-bottom {
                 display: flex;
                 flex-direction: row;
@@ -407,7 +369,6 @@
             .info-tot-marchi{
                 display: flex;
                 flex: 1;
-
                 justify-content: row;
             }
 
@@ -417,7 +378,6 @@
                     align-items: center;
                     padding: 15px;
                     gap: 15px;
-
                 }
 
                 .settore-analisi {
@@ -443,7 +403,6 @@
                     flex-wrap: wrap; 
                     justify-content: center;
                     gap: 8px;
-
                     
                 }
 
@@ -472,7 +431,6 @@
                     text-align: center;
                     border-radius: 50px;
                     padding: 15px 30px;
-
                 }
 
                 .boxino-giallo small {
@@ -540,7 +498,7 @@
 
               #ListaRichiamiTigros, #ListaRichiamiIndustria, #ListaRichiamiPrimia {
                     display: flex;
-                    flex-direction: row;      
+                    flex-direction: row;     
                     flex-wrap: wrap;        
                     justify-content: center;
                     gap: 10px;              
@@ -596,6 +554,53 @@
 
                 }
 
+        /* --- LOADER OVERLAY (Sfondo scuro a tutto schermo) --- */
+        #loader-overlay { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0, 48, 135, 1); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 9999; 
+            transition: opacity 0.5s ease; 
+        }
+
+        /* --- SPINNER ANIMATO A PUNTINI --- */
+        .container-spinner {
+            --uib-size: 80px;
+            --uib-color: #ffcc00;
+            --uib-speed: .9s;
+            --uib-center: calc(var(--uib-size) / 2 - var(--uib-size) / 5 / 2);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            height: var(--uib-size);
+            width: var(--uib-size);
+            animation: rotate calc(var(--uib-speed) * 3) linear infinite;
+        }
+
+        .dot { position: absolute; top: 0; left: 0; display: flex; align-items: center; justify-content: flex-start; height: 100%; width: 100%; }
+        .dot::before { content: ''; height: 20%; width: 20%; border-radius: 50%; background-color: var(--uib-color); animation: oscillate var(--uib-speed) ease-in-out infinite alternate; transition: background-color 0.3s ease; }
+        .dot:nth-child(1)::before { transform: translateX(var(--uib-center)); }
+        .dot:nth-child(2) { transform: rotate(45deg); }
+        .dot:nth-child(2)::before { transform: translateX(var(--uib-center)); animation-delay: calc(var(--uib-speed) * -0.125); }
+        .dot:nth-child(3) { transform: rotate(90deg); }
+        .dot:nth-child(3)::before { transform: translateX(var(--uib-center)); animation-delay: calc(var(--uib-speed) * -0.25); }
+        .dot:nth-child(4) { transform: rotate(135deg); }
+        .dot:nth-child(4)::before { transform: translateX(var(--uib-center)); animation-delay: calc(var(--uib-speed) * -0.375); }
+        .dot:nth-child(5) { transform: rotate(180deg); }
+        .dot:nth-child(5)::before { transform: translateX(var(--uib-center)); animation-delay: calc(var(--uib-speed) * -0.5); }
+        .dot:nth-child(6) { transform: rotate(225deg); }
+        .dot:nth-child(6)::before { transform: translateX(var(--uib-center)); animation-delay: calc(var(--uib-speed) * -0.625); }
+        .dot:nth-child(7) { transform: rotate(270deg); }
+        .dot:nth-child(7)::before { transform: translateX(var(--uib-center)); animation-delay: calc(var(--uib-speed) * -0.75); }
+        .dot:nth-child(8) { transform: rotate(315deg); }
+        .dot:nth-child(8)::before { transform: translateX(var(--uib-center)); animation-delay: calc(var(--uib-speed) * -0.875); }
+
+        @keyframes oscillate { 0% { transform: translateX(var(--uib-center)) scale(0); opacity: 0.25; } 100% { transform: translateX(0) scale(1); opacity: 1; } }
+        @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         /* ------------------------------------------------------------------ */
         /* MEDIA QUERIES SOLO PER MOBILE (Fino a 768px)                       */
@@ -740,6 +745,19 @@
 </head>
 <body>
 
+    <div id="loader-overlay">
+        <div class="container-spinner">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+
     <nav>
         <div class="nav-left"><div class="user-badge" onclick="location.href='info_utente.html'"><div class="user-initials" id="userInitials">??</div><span class="user-fullname" id="userFullname">Utente</span></div></div>
         <ul>
@@ -877,7 +895,7 @@
                                 <span>0</span>                              
                                 <span>0</span>
                             </div>
-                            <div class="percValueTigros">    
+                            <div class="percValueTigros">   
                                 <span>0%</span>
                                 <span>0%</span>
                             </div>
@@ -885,7 +903,7 @@
                 </div>
                 <div class="box_lato" id="analisiMarchiIndustria" style="display:none; flex-direction: column;">
                     <h3 style="font-family: 'Montserrat', sans-serif; color:#ffcc00; background-color: #003087; border-radius: 15px; text-align: center; padding: 5PX 10px; font-size: 25px;">ANALISI INDUSTRIA</h3> 
-                        <div class="infoIndustria" id="infoIndustria">    
+                        <div class="infoIndustria" id="infoIndustria">   
                             <span>PRODOTTI INDUSTRIA</span>
                             <span>INDUSTRIA - BANCHI TIGROS</span>
                         </div>
@@ -912,7 +930,7 @@
                                 <span>0</span>
                                 <span>0</span>
                             </div>
-                            <div class="percValuePrimia">    
+                            <div class="percValuePrimia">   
                                 <span>0%</span>
                                 <span>0%</span>
                                 <span>0%</span>
@@ -1028,7 +1046,21 @@
                 tuttiIDati = csvToJSON(csvData);
                 aggiornaTuttoSilenziosamente(); 
                 btnAggiorna.classList.remove('loading-effect');
-            } catch (e) { console.error("Errore database:", e); }
+                
+                // Nasconde lo spinner con fade dopo aver caricato i dati
+                setTimeout(() => {
+                    const loader = document.getElementById('loader-overlay');
+                    if(loader) {
+                        loader.style.opacity = '0';
+                        setTimeout(() => { loader.style.display = 'none'; }, 500);
+                    }
+                }, 500);
+
+            } catch (e) { 
+                console.error("Errore database:", e); 
+                const loader = document.getElementById('loader-overlay');
+                if(loader) { loader.style.display = 'none'; }
+            }
         }
 
         function csvToJSON(csv) {

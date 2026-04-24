@@ -104,6 +104,87 @@
             flex-shrink: 0;
         }
 
+        /* --- LOADER OVERLAY (Sfondo scuro a tutto schermo) --- */
+        #loader-overlay { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0, 48, 135, 1); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 9999; 
+            transition: opacity 0.5s ease; 
+        }
+
+        /* --- SPINNER ANIMATO A PUNTINI --- */
+        .container-spinner {
+            --uib-size: 80px;
+            --uib-color: #ffcc00;
+            --uib-speed: .9s;
+            --uib-center: calc(var(--uib-size) / 2 - var(--uib-size) / 5 / 2);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            height: var(--uib-size);
+            width: var(--uib-size);
+            animation: rotate calc(var(--uib-speed) * 3) linear infinite;
+        }
+
+        .dot {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100%;
+            width: 100%;
+        }
+
+        .dot::before {
+            content: '';
+            height: 20%;
+            width: 20%;
+            border-radius: 50%;
+            background-color: var(--uib-color);
+            animation: oscillate var(--uib-speed) ease-in-out infinite alternate;
+            transition: background-color 0.3s ease;
+        }
+
+        .dot:nth-child(1)::before { transform: translateX(var(--uib-center)); }
+        
+        .dot:nth-child(2) { transform: rotate(45deg); }
+        .dot:nth-child(2)::before { transform: translateX(var(--uib-center)); animation-delay: calc(var(--uib-speed) * -0.125); }
+        
+        .dot:nth-child(3) { transform: rotate(90deg); }
+        .dot:nth-child(3)::before { transform: translateX(var(--uib-center)); animation-delay: calc(var(--uib-speed) * -0.25); }
+        
+        .dot:nth-child(4) { transform: rotate(135deg); }
+        .dot:nth-child(4)::before { transform: translateX(var(--uib-center)); animation-delay: calc(var(--uib-speed) * -0.375); }
+        
+        .dot:nth-child(5) { transform: rotate(180deg); }
+        .dot:nth-child(5)::before { transform: translateX(var(--uib-center)); animation-delay: calc(var(--uib-speed) * -0.5); }
+        
+        .dot:nth-child(6) { transform: rotate(225deg); }
+        .dot:nth-child(6)::before { transform: translateX(var(--uib-center)); animation-delay: calc(var(--uib-speed) * -0.625); }
+        
+        .dot:nth-child(7) { transform: rotate(270deg); }
+        .dot:nth-child(7)::before { transform: translateX(var(--uib-center)); animation-delay: calc(var(--uib-speed) * -0.75); }
+        
+        .dot:nth-child(8) { transform: rotate(315deg); }
+        .dot:nth-child(8)::before { transform: translateX(var(--uib-center)); animation-delay: calc(var(--uib-speed) * -0.875); }
+
+        @keyframes oscillate {
+            0% { transform: translateX(var(--uib-center)) scale(0); opacity: 0.25; }
+            100% { transform: translateX(0) scale(1); opacity: 1; }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         table { width: 100%; border-collapse: collapse; color: white; white-space: nowrap; }
         th { background: rgba(0, 48, 135, 0.9); color: #ffcc00; padding: 12px; font-size: 0.9rem; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
         td { padding: 10px 8px; border: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 1rem; font-weight: bold; }
@@ -140,10 +221,6 @@
         h2 { font-family: 'Montserrat', sans-serif; color: #ffcc00; text-transform: uppercase; border-bottom: 2px solid #ffcc00; font-size: 1.2rem; margin-top: 0; margin-bottom: 15px;}
         .canvas-wrapper { position: relative; flex: 1; width: 100%; }
         
-        #loader-overlay { position: fixed; inset: 0; background: rgba(0, 48, 135, 1); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease; }
-        .spinner { width: 40px; height: 40px; border: 4px solid #ffcc00; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
         /* --- MODALI --- */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px);
@@ -191,26 +268,32 @@
             .chart-container { min-height: 350px; }
             .modal-grid { grid-template-columns: 1fr; }
             .modal-stat.full { grid-column: span 1; }
+            .user-fullname{display: none;}
+            .nav-king{display: flex;}
+            .nav-left{justify-content: flex-start; align-items: center;}
+            .nav-right{justify-content: flex-end; align-items: center;}
+            .nav-center {justify-content: center; list-style: none; flex-wrap: nowrap; text-wrap: nowrap; margin-left: 80px;}
+            .titleDesk{display: none;}
         }
 
     </style>
 </head>
 <body>
 
-    <nav id="barra-nav">
+    <nav class="nav-king" id="barra-nav">
         <div class="nav-left">
             <div class="user-badge" onclick="location.href='info_utente.html'">
                 <div class="user-initials" id="userInitials">??</div>
                 <span class="user-fullname" id="userFullname">Utente</span>
             </div>
-            <div style="font-family: 'Montserrat', sans-serif; font-size: 1.2rem; color: #ffcc00; font-weight: bold; margin-left: 20px;">TIGROS - ACCESSI PIATTAFORMA</div>
+            <div class="titleDesk" style="font-family: 'Montserrat', sans-serif; font-size: 1.2rem; color: #ffcc00; font-weight: bold; margin-left: 20px;">TIGROS - ACCESSI PIATTAFORMA</div>
         </div>
-        
-        <ul>
-            <li><a href="Home_new.html" style="color: #ffcc00;">HOME</a></li>
-            
-            <li><a onclick="confermaEsci()" class="logout">ESCI</a></li>
-        </ul>
+        <div class="nav-center">
+            <ul class="ul-menu">
+                <li><a href="Home_new.html" style="color: #ffcc00;">HOME</a></li>
+                <li><a onclick="confermaEsci()" class="logout">ESCI</a></li>
+            </ul>
+        </div>
         
         <div class="nav-right">
             <button class="btn-preview" onclick="window.location.href='home_accessi.html'">INDIETRO</button>
@@ -218,7 +301,18 @@
         </div>
     </nav>
 
-    <div id="loader-overlay"><div class="spinner"></div><p style="font-family: 'Montserrat', sans-serif; color: #ffcc00; margin-top:10px; font-size: 20px;">Lettura Database Accessi Logistica...</p></div>
+    <div id="loader-overlay">
+        <div class="container-spinner">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
 
     <div id="repartoModal" class="modal-overlay" onclick="chiudiModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
@@ -726,7 +820,5 @@
             document.getElementById('mezziModal').classList.remove('active');
         }
     </script>
-</body>
-</html>
 </body>
 </html>
