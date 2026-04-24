@@ -159,6 +159,7 @@
             display: none; /* Appare via JS in 'flex' */
             justify-content: space-between;
             align-items: center;
+            
         }
 
         .header-titolo h2 {
@@ -181,6 +182,7 @@
         /* Stile Barra di Ricerca */
         .search-box {
             display: flex;
+    
             align-items: center;
             background: rgba(0, 48, 135, 0.5);
             border: 1px solid rgba(255, 204, 0, 0.5);
@@ -672,7 +674,7 @@
                 let memAzienda = "", memAutista = "", memFV = "";
                 let memUscitaMag = "", memStatusMag = "";
 
-                const aziendeAmmesse = ["BRIVIO & VIGANO' LOGISTICS SRL", "ITALTRANS SPA", "AUTOTRASPORTI TASSONE SRL", "EMME TRANSPORT S.R.L", "PARATORI SPA"];
+                const aziendeAmmesse = ["BRIVIO & VIGANO' LOGISTICS SRL", "ITALTRANS SPA", "AUTOTRASPORTI TASSONE SRL", "EMME TRANSPORT S.R.L", "PARATORI SPA", "AUTOTRASPORTI BRIVIO & VIGANO' SRL"];
 
                 for (let i = 1; i < lines.length; i++) {
                     let cols = parseCSVLine(lines[i]);
