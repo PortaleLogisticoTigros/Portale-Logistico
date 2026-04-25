@@ -1002,12 +1002,10 @@
                             t_tot: v.tappe.length
                         }));
 
-                        const promptText = `Sei l'assistente logistico Tigros. Analizza per ${nomeOspite} questi dati: ${JSON.stringify(sintesiDati)}. 
-                        Indica in 3 punti: Criticità (ritardi o tappe non fatte), Fornitore più attivo e un consiglio operativo rapido. 
-                        Rispondi in HTML (usa <strong> per evidenziare). Sii sintetico.`;
+                       const promptText = `Sei un esperto logistico Tigros. Analizza questi viaggi: ${JSON.stringify(sintesiDati)}. 
+                        Dimmi in 5 punti: 1. Quanti mezzi sono in rientro  2. il tempo medio del viaggio. 3. Quanti sono in fase di scarico. 4.quanti non sono arrivati alla prima destinazione. 5.calcola la statistica di quanti hanno scaricato e quanti ne mancano.  Rispondi in HTML semplice con <strong>.`;
 
-                        // 3. URL CORRETTO PER GEMINI 3 (v1beta + gemini-3-flash-preview)
-                        // Questo URL corrisponde esattamente a quello che abbiamo visto nel tuo screenshot del Playground
+                       
                         const target = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${getSecureKey()}`;
 
                         try {
