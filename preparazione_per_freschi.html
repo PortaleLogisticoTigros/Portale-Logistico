@@ -427,10 +427,7 @@
                 <span class="user-fullname" id="userFullname">Utente</span>
             </div>
 
-            <div class="toggle-prep">
-                <button class="btn-prep" type="button" id="btn-prep" onclick="cambiaVista('LIVE')">Live</button>
-                <button class="btn-fascia active" type="button" id="btn-fascia" onclick="cambiaVista('FASCIA')">Fascia</button>
-            </div>
+            
             
             <div class="date-filter">
                 <label class="mostraDataSelettore" for="dateSelect"><i class="fa-regular fa-calendar"></i> DATA:</label>
@@ -512,11 +509,7 @@
 
         const ordineReparti = [
             "Cedi 21 - Ventilazione", "Cedi 21 - Picking", 
-            "Cedi 23 - Ortofrutta", "Cedi 23 - IV Gamma", 
-            "Cedi 24 - Cameri Picking", "Cedi 24 - Cameri Expo", 
-            "Cedi 25 - Cameri Consumo", "Cedi 28 - Macelleria", 
-            "Cedi 29 - Pescheria", "Cedi 35 - Cassano Acque", 
-            "Totale Piattaforme"
+           
         ];
 
         window.onload = () => {
@@ -678,15 +671,7 @@
 
                 if (cedi === "21" && areaPrep === "VENTILA") nomeChiave = "Cedi 21 - Ventilazione";
                     else if (cedi === "21" && areaPrep === "PICKING") nomeChiave = "Cedi 21 - Picking";
-                        else if (cedi === "23" && areaPrep === "FRUTTA") nomeChiave = "Cedi 23 - Ortofrutta";
-                            else if (cedi === "23" && areaPrep === "4 GAMMA") nomeChiave = "Cedi 23 - IV Gamma";
-                                else if (cedi === "24" && areaPrep === "CASS PICK") nomeChiave = "Cedi 24 - Cameri Picking";
-                                    else if (cedi === "24" && areaPrep === "EXPO PICK") nomeChiave = "Cedi 24 - Cameri Expo";
-                                        else if (cedi === "25" && areaPrep === "CONSUMO") nomeChiave = "Cedi 25 - Cameri Consumo";
-                                            else if (cedi === "28" && areaPrep === "VENTILA") nomeChiave = "Cedi 28 - Macelleria";
-                                                else if (cedi === "29" && areaPrep === "VENTILA") nomeChiave = "Cedi 29 - Pescheria";
-                                                    else if (cedi === "35" && areaPrep === "CASS PICK") nomeChiave = "Cedi 35 - Cassano Acque";
-                                                        /*else if (cedi === "0" && descrizione === "TOTALE") nomeChiave = "Totale Piattaforme";*/
+                       
 
                     if (!nomeChiave) continue; 
 

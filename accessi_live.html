@@ -220,11 +220,11 @@
             body { height: auto; overflow-y: auto; } /* Sblocca su tablet verticali */
         }
 
-        @media (max-width: 768px) {
-            body { height: auto; overflow-y: auto; } /* Sblocca scroll globale su mobile */
+        @media (max-width: 950px) {
+            body { height: auto; overflow-y: auto; } 
             
-            nav { padding: 10px; flex-direction: column; gap: 10px; align-items: stretch; }
-            .nav-left, .nav-right { justify-content: space-between; width: 100%; }
+            nav { padding: 10px; flex-direction: row; gap: 10px; align-items: center; }
+            .nav-left, .nav-right { justify-content: center; width: 100%; }
             .nav-right { justify-content: flex-end; }
             
             .user-fullname { display: none; }

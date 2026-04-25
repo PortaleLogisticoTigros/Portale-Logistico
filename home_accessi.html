@@ -274,7 +274,7 @@
             console.log("Utente loggato formattato:", utenteFormattato);
 
             const repartiConsentiti = autorizzazioni[utenteFormattato] || ["richiami"]; 
-            const tuttiIBox = [ "richiami", "report", "check", "laboratori","fornitori" ];
+            const tuttiIBox = [ "richiami", "report", "laboratori","fornitori" ];
 
             tuttiIBox.forEach(reparto => {
                 const boxWrapper = document.getElementById('box-' + reparto);
