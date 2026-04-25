@@ -6,8 +6,8 @@
     <title>Piattaforma Tigros - Accedi</title>
     <link rel="icon" type="image/png" href="images.png">
     <link rel="apple-touch-icon" href="images.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
         
         body {
@@ -31,19 +31,52 @@
             text-align: center;
             color: #003087; 
             width: 350px;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             animation: apparizioneIniziale 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
-        @keyframes apparizioneIniziale {
-            0% { opacity: 0; filter: blur(20px); transform: scale(0.85); }
-            100% { opacity: 1; filter: blur(0px); transform: scale(1); }
+
+        .container-load {
+            --uib-size: 45px;
+            --uib-color: #003087;
+            --uib-speed: 1.75s;
+            --uib-bg-opacity: .1;
+            position: relative;
+            height: var(--uib-size);
+            width: var(--uib-size);
+            transform: rotate(45deg);
+            animation: rotate calc(var(--uib-speed) * 2) ease-in-out infinite;
+            margin: 20px auto 0; /* Centratura automatica */
+            display: none; /* Nascosto di base */
         }
 
+        .half {
+            --uib-half-size: calc(var(--uib-size) * 0.435);
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: var(--uib-half-size);
+            height: var(--uib-half-size);
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .half:first-child { top: 8.25%; left: 8.25%; border-radius: 50% 50% calc(var(--uib-size) / 15); }
+        .half:last-child { bottom: 8.25%; right: 8.25%; transform: rotate(180deg); align-self: flex-end; border-radius: 50% 50% calc(var(--uib-size) / 15); }
+        .half:last-child::after { animation-delay: calc(var(--uib-speed) * -1); }
+        .half::before { content: ''; height: 100%; width: 100%; position: absolute; top: 0; left: 0; background-color: var(--uib-color); opacity: var(--uib-bg-opacity); }
+        .half::after { content: ''; position: relative; z-index: 1; display: block; background-color: var(--uib-color); height: 100%; transform: rotate(45deg) translate(-3%, 50%) scaleX(1.2); width: 100%; transform-origin: bottom right; border-radius: 0 0 calc(var(--uib-size) / 20) 0; animation: flow calc(var(--uib-speed) * 2) linear infinite both; }
+
+        @keyframes flow { 0% { transform: rotate(45deg) translate(-3%, 50%) scaleX(1.2); } 30% { transform: rotate(45deg) translate(115%, 50%) scaleX(1.2); } 30.001%, 50% { transform: rotate(0deg) translate(-85%, -85%) scaleX(1); } 80%, 100% { transform: rotate(0deg) translate(0%, 0%) scaleX(1); } }
+        @keyframes rotate { 0%, 30% { transform: rotate(45deg); } 50%, 80% { transform: rotate(225deg); } 100% { transform: rotate(405deg); } }
+        @keyframes apparizioneIniziale { 0% { opacity: 0; filter: blur(20px); transform: scale(0.85); } 100% { opacity: 1; filter: blur(0px); transform: scale(1); } }
+
+
+
         .foto-profilo { width: 120px; height: auto; margin-bottom: 20px; display: block; margin-left: auto; margin-right: auto; }
-        h1 { font-family: 'Montserrat', sans-serif; font-size: 2.2rem; margin: 0; }
-        h2 { font-family: 'Montserrat', sans-serif; font-style: oblique; font-size: 1.1rem; color: #ffcc00; -webkit-text-stroke: 0.5px #003087; margin-bottom: 20px; }
+        h1 { font-family: 'Montserrat', sans-serif; font-size: 2rem; margin: 0; padding: 20px 0; }
 
         .login-group { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
         #sceltaIniziale:hover button { filter: blur(4px); opacity: 0.6; transform: scale(0.95); }
@@ -52,28 +85,16 @@
         .form-scelta { display: none; flex-direction: column; gap: 12px; margin-top: 20px; }
         .show { display: flex; animation: fadeIn 0.5s ease forwards; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        input { 
-            background: rgba(255, 255, 255, 0.8); 
-            border: 1px solid #003087; 
-            padding: 12px; 
-            border-radius: 8px; 
-            outline: none; 
-            color: #003087; 
-            font-weight: bold;
-            transition: border 0.3s ease;
-        }
-
+        input { background: rgba(255, 255, 255, 0.8); border: 1px solid #003087; padding: 12px; border-radius: 8px; outline: none; color: #003087; font-weight: bold; }
         .input-errore { border: 2px solid #ee2d24 !important; background: rgba(255, 200, 200, 0.9); }
 
         button { width: 100%; padding: 12px; font-size: 1.1rem; background: #003087; color: white; border: none; border-radius: 8px; cursor: pointer; font-family: 'Montserrat', sans-serif; letter-spacing: 1px; transition: all 0.3s ease; }
         .btn-back { background: rgba(0, 48, 135, 0.2); color: #003087; font-size: 0.9rem; margin-top: 10px; }
 
-        #messaggio { margin-top: 20px; font-weight: bold; min-height: 25px; }
+
+        #messaggio_testo { margin-top: 20px; font-weight: bold; font-size: 0.9rem; min-height: 20px; display: none; }
         .successo { color: #008000; }
         .errore { color: #ee2d24; }
     </style>
@@ -82,8 +103,7 @@
 
     <div class="container" id="mainContainer">
         <img src="LOGO_TIGROS_VERTICALE.jpg" alt="Logo Tigros" class="foto-profilo">
-        <h1 style="display: flex; padding: 25px; align-items: center;">PIATTAFORMA TIGROS</h1>
-
+        <h1>PIATTAFORMA TIGROS</h1>
 
         <div id="sceltaIniziale" class="login-group">
             <button onclick="mostraForm('login')">ACCEDI</button>
@@ -93,7 +113,7 @@
         <div id="formLogin" class="form-scelta">
             <input type="text" id="user" placeholder="Username">
             <input type="password" id="psw" placeholder="Password">
-            <button onkeypress="controllaLogin()" onclick="controllaLogin()">ENTRA</button>
+            <button onclick="controllaLogin()">ENTRA</button>
             <button class="btn-back" onclick="tornaIndietro()">INDIETRO</button>
         </div>
 
@@ -106,16 +126,21 @@
             <button class="btn-back" onclick="tornaIndietro()">INDIETRO</button>
         </div>
 
-        <div id="messaggio"></div>
+        <div id="loader" class="container-load">
+            <div class="half"></div>
+            <div class="half"></div>
+        </div>
+
+        <div id="messaggio_testo"></div>
     </div>
 
     <script>
-
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjgzkWhP284tzaZjKS2_siazqUYIJcNO8hu6SsktyTWbsxqORHkpuj7OUia2nRDaFWjQ/exec"; 
 
         function mostraForm(tipo) {
             document.getElementById('sceltaIniziale').style.display = 'none';
             const container = document.getElementById('mainContainer');
+            resetUI();
             if (tipo === 'login') {
                 container.style.width = "400px";
                 document.getElementById('formLogin').classList.add('show');
@@ -130,29 +155,33 @@
             document.getElementById('formReg').classList.remove('show');
             document.getElementById('sceltaIniziale').style.display = 'flex';
             document.getElementById('mainContainer').style.width = "350px";
-            document.getElementById('messaggio').innerHTML = "";
-            resetErrori();
+            resetUI();
         }
 
-        function resetErrori() {
+        function resetUI() {
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('messaggio_testo').style.display = 'none';
+            document.getElementById('messaggio_testo').innerHTML = "";
             const inputs = document.querySelectorAll('input');
             inputs.forEach(i => i.classList.remove('input-errore'));
         }
 
-
         async function controllaLogin() {
             const user = document.getElementById('user').value;
             const pass = document.getElementById('psw').value;
-            const msg = document.getElementById('messaggio');
+            const loader = document.getElementById('loader');
+            const msg = document.getElementById('messaggio_testo');
 
             if (!user || !pass) {
+                msg.style.display = "block";
                 msg.innerHTML = "⚠️ Inserisci le credenziali";
                 msg.className = "errore";
                 return;
             }
 
-            msg.innerHTML = "⏳ Accesso in corso...";
-            msg.className = "";
+            // Mostra loader e nasconde errori precedenti
+            msg.style.display = "none";
+            loader.style.display = "block";
 
             try {
                 const response = await fetch(SCRIPT_URL, {
@@ -164,60 +193,66 @@
 
                 if (result === "OK") {
                     localStorage.setItem("utenteLoggato", user);
-                    msg.innerHTML = "✅ Accesso autorizzato!";
-                    msg.className = "successo";
-                    setTimeout(() => { window.location.href = "Home_new.html"; }, 1000);
-                } else if (result === "NON_APPROVATO") {
-                    msg.innerHTML = "⏳ Account in attesa di approvazione";
-                    msg.className = "errore";
+                    // ACCESSO DIRETTO: Nessun messaggio di successo, andiamo subito alla home
+                    window.location.href = "Home_new.html";
                 } else {
-                    msg.innerHTML = "❌ Username o Password errati";
+                    // Nascondi loader se c'è un errore per mostrare il testo
+                    loader.style.display = "none";
+                    msg.style.display = "block";
                     msg.className = "errore";
+                    if (result === "NON_APPROVATO") {
+                        msg.innerHTML = "⏳ Account in attesa di approvazione";
+                    } else {
+                        msg.innerHTML = "❌ Username o Password errati";
+                    }
                 }
             } catch (error) {
-                msg.innerHTML = "❌ Errore di connessione al database";
+                loader.style.display = "none";
+                msg.style.display = "block";
+                msg.innerHTML = "❌ Errore di connessione";
                 msg.className = "errore";
             }
         }
 
-
         async function inviaRegistrazione() {
-            
-            resetErrori();
             const email = document.getElementById('regEmail').value;
             const user = document.getElementById('regUser').value;
             const pass = document.getElementById('regPass').value;
             const conf = document.getElementById('regConf').value;
-            const msg = document.getElementById('messaggio');
+            const loader = document.getElementById('loader');
+            const msg = document.getElementById('messaggio_testo');
+
+            resetUI();
 
             if (!email || !user || !pass || !conf) {
+                msg.style.display = "block";
                 msg.innerHTML = "⚠️ Compila tutti i campi";
                 msg.className = "errore";
                 return;
             }
 
             if (pass !== conf) {
-                document.getElementById('regPass').classList.add('input-errore');
-                document.getElementById('regConf').classList.add('input-errore');
+                msg.style.display = "block";
                 msg.innerHTML = "❌ Le password non coincidono!";
                 msg.className = "errore";
                 return;
             }
 
-            msg.innerHTML = "⏳ Invio richiesta...";
-            msg.className = "";
+            loader.style.display = "block";
             
             try {
                 await fetch(SCRIPT_URL, {
                     method: 'POST',
                     body: JSON.stringify({ azione: "registrazione", email, user, pass })
                 });
-
+                loader.style.display = "none";
+                msg.style.display = "block";
                 msg.innerHTML = "✅ Richiesta inviata correttamente!";
                 msg.className = "successo";
                 setTimeout(tornaIndietro, 3000);
-
             } catch (error) {
+                loader.style.display = "none";
+                msg.style.display = "block";
                 msg.innerHTML = "❌ Errore durante l'invio";
                 msg.className = "errore";
             }
