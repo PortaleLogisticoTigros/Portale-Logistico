@@ -986,7 +986,7 @@
                         const nomeOspite = soloNome.charAt(0).toUpperCase() + soloNome.slice(1).toLowerCase();
 
                         panel.style.display = 'flex';
-                        content.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div><p>Ciao ${nomeOspite}, sto interrogando Gemini 3 Flash...</p>`;
+                        content.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div><p>Ciao ${nomeOspite}, sto chiedendo un'analisi dei giri a Gemini ...</p>`;
 
                         if (!datiViaggiGlobali || datiViaggiGlobali.length === 0) {
                             content.innerHTML = "Dati non disponibili. Attendi il caricamento delle card.";
@@ -1003,7 +1003,7 @@
                         }));
 
                        const promptText = `Sei un esperto logistico Tigros. Analizza questi viaggi: ${JSON.stringify(sintesiDati)}. 
-                        Dimmi in 5 punti: 1. Quanti mezzi sono in rientro  2. il tempo medio del viaggio. 3. Quanti sono in fase di scarico. 4.quanti non sono arrivati alla prima destinazione. 5.calcola la statistica di quanti hanno scaricato e quanti ne mancano.  Rispondi in HTML semplice con <strong>.`;
+                        Dimmi in 5 punti: 1. Quanti mezzi sono in rientro (tieni conto che i mezzi in rientro sono quelli con la dicitura "RITORNO A DEPOSITO")  2. il tempo medio del viaggio. 3. Quanti sono in fase di scarico. 4.quanti non sono arrivati alla prima destinazione. 5.calcola la statistica di quanti hanno scaricato e quanti ne mancano.  Rispondi in HTML semplice con <strong>.`;
 
                        
                         const target = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${getSecureKey()}`;
