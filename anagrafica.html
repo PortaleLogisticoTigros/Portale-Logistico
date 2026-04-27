@@ -532,6 +532,12 @@
         }
 
         function togglePassword(elementId) {
+                const utenteLoggato = localStorage.getItem("utenteLoggato") || "Ospite";
+                    if(utenteLoggato.trim().toUpperCase() !== 'GIACOMO BARDELLI'){
+                        alert("Non hai i permessi per visualizzare le password.");
+                        return;
+                    }
+
             const pwdSpan = document.getElementById(elementId);
             const pwdReal = passwordData[elementId];
             
@@ -543,6 +549,13 @@
         }
 
         async function eliminaUtente(nomeDaEliminare, cardElement) {
+            const utenteLoggato = localStorage.getItem("utenteLoggato") || "Ospite";
+                    if(utenteLoggato.trim().toUpperCase() !== 'GIACOMO BARDELLI'){
+                        alert("Non hai i permessi per eliminare gli utenti.");
+                        return;
+                    }
+
+
             if (!confirm(`ATTENZIONE: Sei sicuro di voler eliminare l'utente "${nomeDaEliminare}" dal database? L'operazione è irreversibile.`)) {
                 return;
             }
