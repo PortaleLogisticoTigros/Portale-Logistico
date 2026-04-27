@@ -394,6 +394,86 @@
                                     transform: rotate(360deg);
                                     }
                                 }
+            .ai-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 550px;
+            max-height: 900px;
+            background: rgba(0, 48, 135, 0.95);
+            backdrop-filter: blur(15px);
+            border: 2px solid #ffcc00;
+            border-radius: 20px;
+            display: none; 
+            flex-direction: column;
+            z-index: 5000;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            overflow: hidden;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .ai-header {
+            background: #ffcc00;
+            color: #003087;
+            padding: 12px 20px;
+            font-weight: 900;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-content {
+            padding: 20px;
+            color: white;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .ai-content strong { color: #ffcc00; }
+
+        .btn-ai-trigger {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: #ffcc00;
+            color: #003087;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 4000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: none;
+            transition: 0.3s;
+        }
+
+        .btn-ai-trigger:hover { transform: scale(1.1) rotate(15deg); }
+
+        .typing-dots span {
+            display: inline-block;
+            width: 8px; height: 8px;
+            background: #ffcc00;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: typing 1s infinite;
+        }
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
 
 
 
@@ -496,11 +576,27 @@
         </div>
     </div>
 
+     <button class="btn-ai-trigger" onclick="avviaAnalisiGemini()" title="Analisi Preparazione con Gemini">
+        <i class="fa-solid fa-robot"></i>
+    </button>
+
+        <div id="aiPanel" class="ai-panel">
+            <div class="ai-header">
+                <span><i class="fa-solid fa-brain"></i> ASSISTENTE GEMINI</span>
+                <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="document.getElementById('aiPanel').style.display='none'"></i>
+            </div>
+        <div id="aiContent" class="ai-content"></div>
+    </div>
+
+
     <script>
         const linkCSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT17pUiDnZxN1zENf_l3_xPc5wBnlyOTBbbb7GxPyaMTMAWB4wqxFzEZq58OzMgvof5zBpVeZ0NQyrG/pub?output=csv';
 
         let globalCsvText = ""; 
         let globalDates = [];
+
+         const _0x4f22 = ["QUl6YVN5Q05QNHBtVGdJZ19zNE1hejRKSXo3WU5GdzJpTDc1NkRv", "YmFzZTY0"]; 
+        const getSecureKey = () => atob(_0x4f22[0]);
 
 
         const fasceStandard = [];
@@ -1007,6 +1103,107 @@
 
                             loadingIndicator.style.display = 'none';
                         }
+
+        async function avviaAnalisiGemini() {
+                            const panel = document.getElementById('aiPanel');
+                            const content = document.getElementById('aiContent');
+                            
+                            const userRaw = localStorage.getItem("utenteLoggato") || "User";
+                            const soloNome = userRaw.trim().split(' ')[0];
+                            const nomeOspite = soloNome.charAt(0).toUpperCase() + soloNome.slice(1).toLowerCase();
+
+                            const nomeFormattati = userRaw.trim().toUpperCase();
+                            if(nomeFormattati !== 'GIACOMO BARDELLI'){
+                                alert('Funzione in fase di test. L\'analisi restituisce il calcolo dell\'andamento della preparazione e la stima dell\'orario di completamento.');
+                                return;
+                            }
+
+                            panel.style.display = 'flex';
+                            content.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div><p>Ciao ${nomeOspite}, sto analizzando l'andamento storico delle fasce...</p>`;
+
+                            const blocchiReparto = document.querySelectorAll('.container-reparto');
+                            const reportProduzione = [];
+
+                            blocchiReparto.forEach(blocco => {
+                                const nomeMagazzino = blocco.querySelector('h4').innerText;
+                                const ordinati = blocco.querySelector('.col-ordinati').innerText;
+                                const progressivoTd = blocco.querySelectorAll('tbody tr:nth-child(2) td'); // PROGRESSIVO TOTALE
+                                const deltaTd = blocco.querySelectorAll('tbody tr:nth-child(1) td'); // COLLI IN FASCIA
+                                const headerTh = blocco.querySelectorAll('thead th');
+
+                                let storicoFasce = [];
+                                let ultimoValoreValido = 0;
+                                let ritmoUltimaOra = 0;
+
+                                // Scansioniamo tutte le fasce orarie
+                                deltaTd.forEach((td, index) => {
+                                    // Ignoriamo la cella degli ORDINATI (rowspan) che è l'indice 0 del tr ma non del th delle fasce
+                                    const testoDelta = td.innerText.replace('+', '').replace(/\./g, '').trim();
+                                    const valDelta = parseInt(testoDelta);
+
+                                    if (!isNaN(valDelta)) {
+                                        const fasciaOraria = headerTh[index + 1] ? headerTh[index + 1].innerText : "N.D.";
+                                        storicoFasce.push({
+                                            ora: fasciaOraria,
+                                            colli_in_fascia: valDelta
+                                        });
+                                        ritmoUltimaOra = valDelta; // L'ultimo valore numerico trovato
+                                    }
+                                });
+
+                                // Recuperiamo il progressivo finale vero (anche se le ultime fasce sono vuote)
+                                progressivoTd.forEach(td => {
+                                    const valProg = parseInt(td.innerText.replace(/\./g, ''));
+                                    if (!isNaN(valProg)) ultimoValoreValido = valProg;
+                                });
+
+                                const percAvanzamento = ((ultimoValoreValido / parseInt(ordinati.replace(/\./g, ''))) * 100).toFixed(1) + '%';
+
+                                reportProduzione.push({
+                                    magazzino: nomeMagazzino,
+                                    ordinato: ordinati,
+                                    fatto_totale: ultimoValoreValido,
+                                    avanzamento: percAvanzamento,
+                                    ritmo_recente: ritmoUltimaOra,
+                                    dettaglio_fasce: storicoFasce // Passiamo tutto lo storico a Gemini
+                                });
+                            });
+
+                            const promptText = `Sei un supervisore logistico Tigros. Analizza lo storico delle fasce: ${JSON.stringify(reportProduzione)}.
+                            REGOLE DI ANALISI:
+                            1. Analizza il "dettaglio_fasce" a ritroso. Se le ultime fasce hanno 0 colli e l'avanzamento è ~100%, il magazzino è COMPLETATO (es. Pescheria o Expo Cameri).
+                            2. Se il magazzino è in lavorazione, calcola la fine stimata basandoti sul ritmo delle ultime fasce con dati e i colli mancanti.
+                            3. STILE HTML:
+                            - Categorie: "COMPLETATI", "IN LAVORAZIONE", "DA AVVIARE".
+                            - Box: style="background: rgba(255,255,255,0.1); border-left: 5px solid #ffcc00; padding: 15px; margin-bottom: 10px; border-radius: 8px;"
+                            - Titoli: <h3 style="color: #ffcc00; margin-top: 0;">
+                            - Evidenzia "FINE STIMATA" o "ORA COMPLETAMENTO" in grande e grassetto.
+                            4. Usa emoji (✅, 🚀, 🟠). NO markdown, solo HTML.`;
+
+                            const target = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${getSecureKey()}`;
+
+                            try {
+                                const response = await fetch(target, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        contents: [{ parts: [{ text: promptText }] }]
+                                    })
+                                });
+
+                                const data = await response.json();
+
+                                if (data.candidates && data.candidates[0].content) {
+                                    let analisi = data.candidates[0].content.parts[0].text;
+                                    content.innerHTML = analisi.replace(/```html|```/g, "").trim();
+                                } else {
+                                    content.innerHTML = "Errore nella generazione visiva. Riprova.";
+                                }
+                            } catch (error) {
+                                content.innerHTML = "Errore di connessione.";
+                            }
+                        }
+
 
     </script>
 </body>
