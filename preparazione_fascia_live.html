@@ -1109,7 +1109,12 @@
         async function avviaAnalisiGemini() {
                             const panel = document.getElementById('aiPanel');
                             const content = document.getElementById('aiContent');
+                            const dataSelezionata = document.getElementById('dateSelect').value;
                             
+                            const dataGrezza = new Date();
+                            const dataFormattata = dataGrezza.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                                console.log("Data attuale a sistema: ", dataFormattata);
+
                             const userRaw = localStorage.getItem("utenteLoggato") || "User";
                             const soloNome = userRaw.trim().split(' ')[0];
                             const nomeOspite = soloNome.charAt(0).toUpperCase() + soloNome.slice(1).toLowerCase();
@@ -1120,6 +1125,11 @@
 
                                         if(!controlloAuth){
                                             alert('Funzione in fase di test.\n L\'analisi restituisce il calcolo dell\'andamento della preparazione.\n La stima dell\'orario di completamento.');
+                                            return;
+                                        }
+
+                                        if (dataSelezionata !== dataFormattata) {
+                                            alert('L\'analisi è disponibile solo per la data odierna. \nSeleziona la data attuale per avviare l\'analisi con Gemini.');
                                             return;
                                         }
 
@@ -1140,9 +1150,8 @@
                                 let ultimoValoreValido = 0;
                                 let ritmoUltimaOra = 0;
 
-                                // Scansioniamo tutte le fasce orarie
                                 deltaTd.forEach((td, index) => {
-                                    // Ignoriamo la cella degli ORDINATI (rowspan) che è l'indice 0 del tr ma non del th delle fasce
+
                                     const testoDelta = td.innerText.replace('+', '').replace(/\./g, '').trim();
                                     const valDelta = parseInt(testoDelta);
 
@@ -1177,13 +1186,14 @@
                             const promptText = `Sei un supervisore logistico Tigros. Analizza lo storico delle fasce: ${JSON.stringify(reportProduzione)}.
                             REGOLE DI ANALISI:
                             1. Analizza il "dettaglio_fasce" a ritroso. Se le ultime fasce hanno 0 colli e l'avanzamento è ~100%, il magazzino è COMPLETATO (es. Pescheria o Expo Cameri).
-                            2. Se il magazzino è in lavorazione, calcola la fine stimata basandoti sul ritmo delle ultime fasce con dati e i colli mancanti.
-                            3. STILE HTML:
+                            2. Se il magazzino è in lavorazione, calcola la fine stimata basandoti sul ritmo delle ultime fasce con dati e i colli mancanti mettendo la quantità di ore necessarie per completare e tra parentesi l'orario stimato di completamento (es. "2h (ore 16:30)").
+                            3. Se i colli dell'ultima fascia passata sono uguali o prossimi all'ordinato e le fasce successive sono a zero, considera la preparazione del magazzino completata.
+                            4. STILE HTML:
                             - Categorie: "COMPLETATI", "IN LAVORAZIONE", "DA AVVIARE".
                             - Box: style="background: rgba(255,255,255,0.1); border-left: 5px solid #ffcc00; padding: 15px; margin-bottom: 10px; border-radius: 8px;"
                             - Titoli: <h3 style="color: #ffcc00; margin-top: 0;">
                             - Evidenzia "FINE STIMATA" o "ORA COMPLETAMENTO" in grande e grassetto.
-                            4. Usa emoji (✅, 🚀, 🟠). NO markdown, solo HTML.`;
+                            5. Usa emoji (✅, 🚀, 🟠). NO markdown, solo HTML.`;
 
                             const target = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${getSecureKey()}`;
 
@@ -1202,7 +1212,7 @@
                                     let analisi = data.candidates[0].content.parts[0].text;
                                     content.innerHTML = analisi.replace(/```html|```/g, "").trim();
                                 } else {
-                                    content.innerHTML = "Errore nella generazione visiva. Riprova.";
+                                    content.innerHTML = "Errore nell'analisi, i server Google hanno troppa richiesta. Riprova tra qualche secondo.";
                                 }
                             } catch (error) {
                                 content.innerHTML = "Errore di connessione.";
