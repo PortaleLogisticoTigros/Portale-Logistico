@@ -592,6 +592,8 @@
     <script>
         const linkCSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT17pUiDnZxN1zENf_l3_xPc5wBnlyOTBbbb7GxPyaMTMAWB4wqxFzEZq58OzMgvof5zBpVeZ0NQyrG/pub?output=csv';
 
+         const accessoGemini = ["GIACOMO BARDELLI", "MATTIA SCAPIN"];
+
         let globalCsvText = ""; 
         let globalDates = [];
 
@@ -1113,10 +1115,13 @@
                             const nomeOspite = soloNome.charAt(0).toUpperCase() + soloNome.slice(1).toLowerCase();
 
                             const nomeFormattati = userRaw.trim().toUpperCase();
-                            if(nomeFormattati !== 'GIACOMO BARDELLI'){
-                                alert('Funzione in fase di test. L\'analisi restituisce il calcolo dell\'andamento della preparazione e la stima dell\'orario di completamento.');
-                                return;
-                            }
+
+                                    const controlloAuth = accessoGemini.includes(nomeFormattati);
+
+                                        if(!controlloAuth){
+                                            alert('Funzione in fase di test.\n L\'analisi restituisce il calcolo dell\'andamento della preparazione.\n La stima dell\'orario di completamento.');
+                                            return;
+                                        }
 
                             panel.style.display = 'flex';
                             content.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div><p>Ciao ${nomeOspite}, sto analizzando l'andamento storico delle fasce...</p>`;
